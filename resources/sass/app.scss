@@ -1,12 +1,29 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
-// Variables
+// orig
+//// Variables
+//@import 'variables';
+//
+//// Bulma
+//@import "~bulma/bulma";
+//
+//// Custom
+//@import "custom";
+
+
+
+@import '../../node_modules/bootstrap/scss/functions';
+// fix for bootstrap sizes: map
+$sizes: ();
 @import 'variables';
+@import 'bootstrap';
+@import '../../node_modules/bootstrap-vue/dist/bootstrap-vue.css';
+
 
 // Bulma
 @import "~bulma/bulma";
 
+
 // Custom
 @import "custom";
-

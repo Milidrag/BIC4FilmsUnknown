@@ -22,6 +22,9 @@ window.Vue = vue;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('query-message', require('./components/base/QueryMessage.vue').default);
+Vue.component('datatable-light', require('./components/DatatableLight.vue').default);
+Vue.component('dialog-modal', require('./components/DialogModal.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -31,4 +34,17 @@ Vue.component('query-message', require('./components/base/QueryMessage.vue').def
 
 const app = new Vue({
     el: '#app',
+    data: {
+        newName: '',
+        names: ['John', 'Mike'],
+        results: [
+            {id: 1, slug: "thiel"}
+        ]
+    },
+    methods: {
+        addName() {
+            this.names.push(this.newName);
+            this.newName = '';
+        },
+    }
 });

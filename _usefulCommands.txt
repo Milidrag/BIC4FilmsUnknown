@@ -1,0 +1,18 @@
+# netstat -ban
+#php artisan key:generate
+#php artisan migrate
+#php artisan db:seed
+#H:\Priv\Dokumente.Arbeit\Technikum.Wien\Programmieren\s04_IEu01_unknownFilms>H:\Priv\Apps\PHP.v.7.3.10\php H:\Priv\Apps\PHP.v.7.3.10\composer.phar install
+# install table framework
+#H:\Priv\Apps\Node.v12.16.3.x64\npm --save-dev vue-jd-table
+#H:\Priv\Apps\Node.v12.16.3.x64\npm install --save-dev @fortawesome/fontawesome-free
+# run any time a component changes
+H:\Priv\Apps\Node.v12.16.3.x64\npm run dev --prefer-offline --no-audit --progress=false
+
+# install datatables-light
+H:\Priv\Apps\Node.v12.16.3.x64\npm install v-datatable-light
+H:\Priv\Apps\Node.v12.16.3.x64\npm install lodash.orderby
+H:\Priv\Apps\Node.v12.16.3.x64\npm install vue-simple-spinner
+
+# install modal plugin
+H:\Priv\Apps\Node.v12.16.3.x64\npm install vue bootstrap-vue bootstrap
