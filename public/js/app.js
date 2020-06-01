@@ -1957,28 +1957,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var form = new Form({
-  'actor_id': '',
-  'title': '',
-  'body': ''
+  'id': '',
+  'name': '',
+  'description': '',
+  'film_id': '',
+  'noReset': ['film_id']
 });
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Create",
-  components: {
-    QueryMessage: QueryMessage
-  },
   props: {
     isEditable: {
       required: false,
       type: Boolean,
       "default": false
+    },
+    currentActor: {
+      required: false,
+      type: Object
     }
   },
   data: function data() {
     return {
       edit: undefined,
       form: form,
-      url: ''
+      url: '',
+      films: [],
+      noFilms: false
     };
   },
   methods: {
@@ -1987,13 +2006,46 @@ var form = new Form({
 
       if (this.edit) this.form.put(this.url);else this.form.post(this.url).then(function (response) {
         _this.url = '/actor/' + response.slug;
-        _this.form.blog_id = response.actor_id;
-        _this.form.title = response.title;
-        _this.form.body = response.body;
-        _this.form.noReset = ['actor_id', 'title', 'body'];
+        _this.form.actor_id = response.actor_id;
+        _this.form.name = response.name;
+        _this.form.description = response.description;
+        _this.form.film_id = response.film_id;
+        _this.form.noReset = ['actor_id', 'name', 'description', 'film_id'];
         _this.edit = true;
         window.history.pushState("", "", _this.url);
       });
+    }
+  },
+  created: function created() {
+    var _this2 = this;
+
+    axios.get('/list/film').then(function (response) {
+      _this2.films = response.data;
+      if (_this2.loading) _this2.noFilms = true;
+    });
+    this.edit = this.isEditable;
+
+    if (this.edit) {
+      this.url = '/actor/' + this.currentActor.slug;
+      this.form.actor_id = this.currentActor.id;
+      this.form.name = this.currentActor.name;
+      this.form.description = this.currentActor.description;
+      this.form.film_id = this.currentActor.film_id;
+      this.form.noReset = ['actors_id', 'name', 'description', 'film_id'];
+    } else {
+      this.url = '/actor';
+    }
+  },
+  computed: {
+    loading: function loading() {
+      return !this.films.length;
+    }
+  },
+  watch: {
+    films: function films() {
+      if (!this.loading && this.form.film_id === '') {
+        this.form.film_id = _.first(this.films).id;
+      }
     }
   }
 });
@@ -19718,66 +19770,145 @@ var render = function() {
                     }
                   },
                   [
-                    !_vm.edit
-                      ? _c("div", { staticClass: "field" }, [
-                          _c(
-                            "label",
-                            { staticClass: "label", attrs: { for: "title" } },
-                            [_vm._v("Name")]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "control" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.title,
-                                  expression: "form.title"
-                                }
-                              ],
-                              staticClass: "input",
-                              class: {
-                                "is-danger": _vm.form.errors.has("title")
-                              },
-                              attrs: {
-                                id: "title",
-                                type: "text",
-                                autofocus: ""
-                              },
-                              domProps: { value: _vm.form.title },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.form,
-                                    "title",
-                                    $event.target.value
-                                  )
-                                }
+                    _c("div", { staticClass: "field" }, [
+                      _c(
+                        "label",
+                        { staticClass: "label", attrs: { for: "name" } },
+                        [_vm._v("Name")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "control" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.name,
+                              expression: "form.name"
+                            }
+                          ],
+                          staticClass: "input",
+                          attrs: { id: "name" },
+                          domProps: { value: _vm.form.name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
                               }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _vm.form.errors.has("title")
-                            ? _c("p", {
-                                staticClass: "help is-danger",
-                                domProps: {
-                                  textContent: _vm._s(
-                                    _vm.form.errors.get("title")
-                                  )
-                                }
-                              })
-                            : _vm._e()
-                        ])
-                      : _vm._e(),
+                              _vm.$set(_vm.form, "name", $event.target.value)
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _vm.form.errors.has("name")
+                        ? _c("p", {
+                            staticClass: "help is-danger",
+                            domProps: {
+                              textContent: _vm._s(_vm.form.errors.get("name"))
+                            }
+                          })
+                        : _vm._e()
+                    ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "field" }, [
                       _c(
                         "label",
-                        { staticClass: "label", attrs: { for: "body" } },
+                        { staticClass: "label", attrs: { for: "film" } },
+                        [_vm._v("Films")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "control" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "select is-fullwidth",
+                            class: _vm.loading ? "is-loading" : ""
+                          },
+                          [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.film_id,
+                                    expression: "form.film_id"
+                                  }
+                                ],
+                                attrs: { id: "film", disabled: _vm.loading },
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.form,
+                                      "film_id",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _vm.loading
+                                  ? _c(
+                                      "option",
+                                      {
+                                        domProps: { value: this.form.film_id }
+                                      },
+                                      [_vm._v(" Loading...")]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm._l(_vm.films, function(cat) {
+                                  return !_vm.loading
+                                    ? _c("option", {
+                                        domProps: {
+                                          value: cat.id,
+                                          textContent: _vm._s(cat.name)
+                                        }
+                                      })
+                                    : _vm._e()
+                                })
+                              ],
+                              2
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm.form.errors.has("film_id")
+                        ? _c("p", {
+                            staticClass: "help is-danger",
+                            domProps: {
+                              textContent: _vm._s(
+                                _vm.form.errors.get("film_id")
+                              )
+                            }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.noFilms
+                        ? _c("p", { staticClass: "help is-warning" }, [
+                            _vm._v("Add some movies to create an actor!")
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "field" }, [
+                      _c(
+                        "label",
+                        { staticClass: "label", attrs: { for: "description" } },
                         [_vm._v("Description")]
                       ),
                       _vm._v(" "),
@@ -19787,29 +19918,35 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.body,
-                              expression: "form.body"
+                              value: _vm.form.description,
+                              expression: "form.description"
                             }
                           ],
                           staticClass: "textarea",
-                          attrs: { id: "body" },
-                          domProps: { value: _vm.form.body },
+                          attrs: { id: "description" },
+                          domProps: { value: _vm.form.description },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.$set(_vm.form, "body", $event.target.value)
+                              _vm.$set(
+                                _vm.form,
+                                "description",
+                                $event.target.value
+                              )
                             }
                           }
                         })
                       ]),
                       _vm._v(" "),
-                      _vm.form.errors.has("body")
+                      _vm.form.errors.has("description")
                         ? _c("p", {
                             staticClass: "help is-danger",
                             domProps: {
-                              textContent: _vm._s(_vm.form.errors.get("body"))
+                              textContent: _vm._s(
+                                _vm.form.errors.get("description")
+                              )
                             }
                           })
                         : _vm._e(),

@@ -10,26 +10,40 @@
                         <query-message :success="form.isSuccess()" :fail="form.isFail()"
                                        :message="form.failMessage || form.successMessage"></query-message>
                         <form @submit.prevent="submit">
-                            <div class="field" v-if="!edit">
-                                <label class="label" for="title">Name</label>
+
+
+                            <div class="field">
+                                <label class="label" for="name">Name</label>
                                 <div class="control">
-                                    <input id="title"
-                                           v-model="form.title"
-                                           class="input"
-                                           v-bind:class="{ 'is-danger': form.errors.has('title')}"
-                                           type="text" autofocus>
+                                    <input id="name" v-model="form.name" class="input"></input>
                                 </div>
-                                <p class="help is-danger" v-if="form.errors.has('title')"
-                                   v-text="form.errors.get('title')"/>
+                                <p class="help is-danger" v-if="form.errors.has('name')"
+                                   v-text="form.errors.get('name')"/>
                             </div>
 
                             <div class="field">
-                                <label class="label" for="body">Description</label>
+                                <label class="label" for="film">Films</label>
                                 <div class="control">
-                                    <textarea id="body" v-model="form.body" class="textarea"></textarea>
+                                    <div class="select is-fullwidth" :class="loading ? 'is-loading' : ''">
+                                        <select id="film" :disabled="loading" v-model="form.film_id">
+                                            <option v-if="loading" :value="this.form.film_id"> Loading...</option>
+                                            <option v-for="cat in films" v-if="!loading" v-text="cat.name"
+                                                    :value="cat.id"/>
+                                        </select>
+                                    </div>
                                 </div>
-                                <p class="help is-danger" v-if="form.errors.has('body')"
-                                   v-text="form.errors.get('body')"/>
+                                <p class="help is-danger" v-if="form.errors.has('film_id')"
+                                   v-text="form.errors.get('film_id')"/>
+                                <p v-if="noFilms" class="help is-warning">Add some movies to create an actor!</p>
+                            </div>
+
+                            <div class="field">
+                                <label class="label" for="description">Description</label>
+                                <div class="control">
+                                    <textarea id="description" v-model="form.description" class="textarea"></textarea>
+                                </div>
+                                <p class="help is-danger" v-if="form.errors.has('description')"
+                                   v-text="form.errors.get('description')"/>
                                 <p class="help">
                                     You can use <a target="_blank"
                                                    href="https://daringfireball.net/projects/markdown/syntax">
@@ -49,21 +63,24 @@
 
 <script>
     let form = new Form({
-        'actor_id': '',
-        'title': '',
-        'body': '',
+        'id': '',
+        'name': '',
+        'description': '',
+        'film_id': '',
+        'noReset': ['film_id']
     });
 
     export default {
         name: "Create",
-        components: {
-            QueryMessage
-        },
         props: {
             isEditable: {
                 required: false,
                 type: Boolean,
                 default: false
+            },
+            currentActor: {
+                required: false,
+                type: Object
             }
         },
         data() {
@@ -71,6 +88,8 @@
                 edit: undefined,
                 form: form,
                 url: '',
+                films: [],
+                noFilms: false
             }
         },
         methods: {
@@ -84,22 +103,56 @@
                         .then((response) => {
                             this.url = '/actor/' + response.slug;
 
-                            this.form.blog_id = response.actor_id;
-                            this.form.title = response.title;
-                            this.form.body = response.body;
+                            this.form.actor_id = response.actor_id;
+                            this.form.name = response.name;
+                            this.form.description = response.description;
+                            this.form.film_id = response.film_id;
 
-                            this.form.noReset = ['actor_id', 'title', 'body'];
+                            this.form.noReset = ['actor_id', 'name', 'description', 'film_id'];
 
                             this.edit = true;
 
                             window.history.pushState("", "", this.url);
                         });
             }
+        },
+        created() {
+            axios.get('/list/film')
+                .then(response => {
+                    this.films = response.data;
+
+                    if (this.loading)
+                        this.noFilms = true;
+                });
+
+            this.edit = this.isEditable;
+
+            if (this.edit) {
+                this.url = '/actor/' + this.currentActor.slug;
+                this.form.actor_id = this.currentActor.id;
+                this.form.name = this.currentActor.name;
+                this.form.description = this.currentActor.description;
+                this.form.film_id = this.currentActor.film_id;
+
+                this.form.noReset = ['actors_id', 'name', 'description', 'film_id'];
+            } else {
+                this.url = '/actor';
+            }
+        },
+
+        computed: {
+            loading() {
+                return !this.films.length
+            }
+        },
+
+        watch: {
+            films() {
+                if (!this.loading && this.form.film_id === '') {
+                    this.form.film_id = _.first(this.films).id;
+                }
+            }
         }
-
-
-
-
     }
 </script>
 
