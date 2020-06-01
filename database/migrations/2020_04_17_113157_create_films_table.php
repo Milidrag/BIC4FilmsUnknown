@@ -19,19 +19,12 @@ class CreateFilmsTable extends Migration
             $table->string('slug')->unique();
             $table->string('name')->unique();
             $table->string('description');
+            $table->unsignedBigInteger('actor_id');
+            $table->unsignedBigInteger('film_id');
 
             $table->timestamps();
         });
 
-        Schema::create('actor_film', function (Blueprint $table) {
-            $table->unsignedBigInteger('actor_id');
-            $table->unsignedBigInteger('film_id');
-
-
-
-        $table->index(['actor_id','film_id']);
-
-        });
 
     }
 
@@ -42,5 +35,6 @@ class CreateFilmsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('films');Schema::dropIfExists('actor_film');    }
+        Schema::dropIfExists('films');
+    }
 }
