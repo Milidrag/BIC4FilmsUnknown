@@ -2216,7 +2216,7 @@ var workingData = [];
       var xmlHttp = new XMLHttpRequest();
 
       xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+        if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
           var res = JSON.parse(xmlHttp.responseText);
           callbackMethod(res, responseStorage);
         }
@@ -2321,13 +2321,13 @@ var workingData = [];
     actionSearch: function actionSearch(event) {
       var searchString = document.getElementById('input-search').value;
 
-      if (typeof searchString !== 'undefined' && searchString == "") {
-        if (event.type == "keyup" && searchString == "") {
+      if (typeof searchString !== 'undefined' && searchString === "") {
+        if (event.type === "keyup" && searchString === "") {
           this.updateUserInfo("info", "Removing search filter.");
           this.httpGet("list/actor", this.processBackendResponse);
         }
 
-        if (event.type == "click") {
+        if (event.type === "click") {
           this.updateUserInfo("warning", "The search string must not be empty! Reseting Filter.");
           this.httpGet("list/actor", this.processBackendResponse);
         }
@@ -2341,13 +2341,13 @@ var workingData = [];
       var element = document.getElementById("userInfo");
       element.innerHTML = info;
 
-      if (level == "success") {
+      if (level === "success") {
         element.classList.add("alert");
         element.classList.add("alert-success");
-      } else if (level == "info") {
+      } else if (level === "info") {
         element.classList.add("alert");
         element.classList.add("alert-info");
-      } else if (level == "warning") {
+      } else if (level === "warning") {
         element.classList.add("alert");
         element.classList.add("alert-warning");
       } else {
@@ -82773,8 +82773,8 @@ var Form = /*#__PURE__*/function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! H:\Priv\Dokumente.Arbeit\Technikum.Wien\Programmieren\s04_IEu01_unknownFilms\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! H:\Priv\Dokumente.Arbeit\Technikum.Wien\Programmieren\s04_IEu01_unknownFilms\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/db/Documents/BIC4FilmsUnknown/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/db/Documents/BIC4FilmsUnknown/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
