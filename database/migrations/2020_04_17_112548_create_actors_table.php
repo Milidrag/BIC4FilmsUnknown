@@ -19,7 +19,6 @@ class CreateActorsTable extends Migration
             $table->string('slug')->unique();
             $table->string('name')->unique();
             $table->string('description');
-            $table->unsignedBigInteger('film_id');
 
             $table->timestamps();
         });

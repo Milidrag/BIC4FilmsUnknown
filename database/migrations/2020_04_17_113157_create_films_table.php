@@ -19,9 +19,13 @@ class CreateFilmsTable extends Migration
             $table->string('slug')->unique();
             $table->string('name')->unique();
             $table->string('description');
+            $table->unsignedBigInteger('actor_id');
+            $table->unsignedBigInteger('film_id');
 
             $table->timestamps();
         });
+
+
     }
 
     /**
