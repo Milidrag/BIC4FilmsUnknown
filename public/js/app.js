@@ -2061,58 +2061,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
  // This imports <b-modal> as well as the v-b-modal directive as a plugin:
 
 
-vue__WEBPACK_IMPORTED_MODULE_4___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_3__["ModalPlugin"]);
-vue__WEBPACK_IMPORTED_MODULE_4___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_3__["ButtonPlugin"]); // import "bootstrap/dist/css/bootstrap.min.css";
-// import "bootstrap-vue/dist/bootstrap-vue.css";
+vue__WEBPACK_IMPORTED_MODULE_4___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_3__["ButtonPlugin"]);
 
- // import DialogeModal from "./DialogeModal";
 
 var addZero = function addZero(value) {
   return ("0" + value).slice(-2);
@@ -2125,8 +2080,7 @@ var formatDate = function formatDate(value) {
   }
 
   return "";
-}; //var initialData = [];
-
+};
 
 var workingData = [];
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2156,17 +2110,96 @@ var workingData = [];
       required: false,
       "default": 10
     },
+    // indicate whether a search function is provided
+    isSearchAble: {
+      type: Boolean,
+      required: false,
+      "default": true
+    },
     // unique column
     trackBy: {
       type: String,
       required: false,
       "default": "none"
-    } // ,
-    // workingData: {
-    //     type: Array,
-    //     required: false
-    // }
-
+    },
+    editFormDefinition: {
+      type: Array,
+      required: true,
+      "default": function _default() {
+        // layout of a form definition that must be provided
+        return [{
+          fieldName: "slug",
+          fieldLabel: "Slug",
+          fieldIsDisplayed: false,
+          isMandatory: true,
+          validationFailedMessage: "A Slug is required",
+          fieldType: "b-form-input",
+          // data field must be specified otherwise v-bind does not work
+          fieldData: ""
+        }, {
+          fieldName: "name",
+          fieldLabel: "Name",
+          fieldIsDisplayed: true,
+          isMandatory: true,
+          validationFailedMessage: "A super Name is required",
+          fieldType: "b-form-input",
+          // data field must be specified otherwise v-bind does not work
+          fieldData: ""
+        }, {
+          fieldName: "description",
+          fieldLabel: "Description",
+          fieldIsDisplayed: true,
+          isMandatory: true,
+          validationFailedMessage: "A Description is required",
+          fieldType: "b-form-input",
+          fieldData: ""
+        }, {
+          fieldName: "film_id",
+          fieldLabel: "FilmId",
+          fieldIsDisplayed: true,
+          isMandatory: true,
+          validationFailedMessage: "A FilmId is required",
+          fieldType: "b-form-select",
+          fieldData: ""
+        }];
+      }
+    },
+    // where to get the available options for the select
+    optionsUrl: {
+      type: String,
+      required: false,
+      "default": "list/film"
+    },
+    // url that fetches the complete dataset
+    getTableDataUrl: {
+      type: String,
+      required: true,
+      "default": "list/actor"
+    },
+    // url to use to update / delete a table entry
+    modifyEntryUrl: {
+      type: String,
+      required: true,
+      "default": "actor/"
+    },
+    // table row contains multiple attributes which of them should be used to update an entry e.g. /actor/{slug}
+    modifyIdentifierOfEntry: {
+      type: String,
+      required: true,
+      "default": "slug"
+    },
+    // url where to post queries
+    searchTableDataUrl: {
+      type: String,
+      required: false,
+      "default": "search/actor"
+    },
+    // is appended to the body when posting to searchUrl
+    searchSelector: {
+      type: String,
+      required: false,
+      "default": "q="
+    }
   },
   data: function data() {
     workingData = JSON.parse(this.initialData);
@@ -2208,21 +2241,25 @@ var workingData = [];
   },
   methods: {
     actionSearch: function actionSearch(event) {
-      var searchString = document.getElementById('input-search').value;
+      if (this.isSearchAble === true) {
+        var searchString = document.getElementById('input-search').value;
 
-      if (typeof searchString !== 'undefined' && searchString === "") {
-        if (event.type === "keyup" && searchString === "") {
-          this.updateUserInfo("info", "Removing search filter.");
-          this.serverDataGet("list/actor");
-        }
+        if (typeof searchString !== 'undefined' && searchString === "") {
+          if (event.type === "keyup" && searchString === "") {
+            this.updateUserInfo("info", "Removing search filter.");
+            this.serverDataGet(this.getTableDataUrl);
+          }
 
-        if (event.type === "click") {
-          this.updateUserInfo("warning", "The search string must not be empty! Reseting Filter.");
-          this.serverDataGet("list/actor");
+          if (event.type === "click") {
+            this.updateUserInfo("warning", "The search string must not be empty! Reseting Filter.");
+            this.serverDataGet(this.getTableDataUrl);
+          }
+        } else {
+          this.updateUserInfo("info", "Updating...");
+          this.serverDataSearch(this.searchTableDataUrl, this.searchSelector + searchString);
         }
       } else {
-        this.updateUserInfo("info", "Updating...");
-        this.serverDataSearch("search/actor", "q=" + searchString);
+        this.updateUserInfo("warning", "Searching is not supported.");
       }
     },
     changeDescription: function changeDescription(event, id) {
@@ -2247,9 +2284,9 @@ var workingData = [];
       var _this = this;
 
       // alert("Click props:" + JSON.stringify(props) );
-      axios["delete"]('actor/' + props['rowData']['slug']).then(function (response) {
+      axios["delete"](this.modifyEntryUrl + props['rowData'][this.modifyIdentifierOfEntry]).then(function (response) {
         var index = workingData.find(function (entry) {
-          return entry.slug === props['rowData']['slug'];
+          return entry.slug === props['rowData'][_this.modifyIdentifierOfEntry];
         }); // find the post index
 
         if (~index) {
@@ -2273,7 +2310,7 @@ var workingData = [];
       var _this2 = this;
 
       console.log("running " + formulaData);
-      axios.put('actor/' + formulaData['slug'], formulaData).then(function (response) {
+      axios.put(this.modifyEntryUrl + formulaData[this.modifyIdentifierOfEntry], formulaData).then(function (response) {
         _this2.dialogOkCallback();
       })["catch"](function (error) {
         _this2.dialogFailedCallback();
@@ -2281,7 +2318,7 @@ var workingData = [];
     },
     dialogOkCallback: function dialogOkCallback() {
       this.updateUserInfo("info", "record has been updated");
-      this.serverDataGet('list/actor');
+      this.serverDataGet(this.getTableDataUrl);
     },
     dialogFailedCallback: function dialogFailedCallback() {
       this.updateUserInfo("warning", "cannot update record");
@@ -2378,7 +2415,7 @@ var workingData = [];
     // reformat initial data
     this.processBackendResponse(workingData); // get list for dropdowns
 
-    axios.get('list/film').then(function (res) {
+    axios.get(this.optionsUrl).then(function (res) {
       // console.log(res)
       _this5.dropdownListing = res.data;
     })["catch"](function (error) {
@@ -2386,8 +2423,10 @@ var workingData = [];
     });
   },
   mounted: function mounted() {
-    document.getElementById('input-search').addEventListener("keyup", this.actionSearch);
-    document.getElementById('btn-search').addEventListener("click", this.actionSearch);
+    if (this.isSearchAble) {
+      document.getElementById('input-search').addEventListener("keyup", this.actionSearch);
+      document.getElementById('btn-search').addEventListener("click", this.actionSearch);
+    }
   }
 });
 
@@ -45231,7 +45270,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*\n default color was:\n    color: #337ab7;\n    instead of\n    color: #00d1b2;\n*/\n#datatable-light {\n    font-family: \"Avenir\", Helvetica, Arial, sans-serif;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n    text-align: center;\n    color: #00b89c;\n    margin-top: 60px;\n}\n#datatable-light .title {\n    margin-bottom: 30px;\n}\n#datatable-light .items-per-page {\n    height: 100%;\n    display: flex;\n    align-items: flex-start;\n    color: #00d1b2;\n}\n#datatable-light .items-per-page label {\n    margin: 0 15px;\n}\n\n/* Datatable CSS */\n.v-datatable-light .header-item {\n    cursor: pointer;\n    color: #00d1b2;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light .header-item:hover {\n    color: #ed9b19;\n}\n.v-datatable-light .header-item.no-sortable {\n    cursor: default;\n}\n.v-datatable-light .header-item.no-sortable:hover {\n    color: #00d1b2;\n}\n.v-datatable-light .header-item .th-wrapper {\n    display: flex;\n    width: 100%;\n    height: 100%;\n    font-weight: bold;\n    align-items: center;\n}\n.v-datatable-light .header-item .th-wrapper.checkboxes {\n    justify-content: center;\n}\n.v-datatable-light .header-item .th-wrapper .arrows-wrapper {\n    display: flex;\n    flex-direction: column;\n    margin-left: 10px;\n    justify-content: space-between;\n}\n.v-datatable-light .header-item .th-wrapper .arrows-wrapper.centralized {\n    justify-content: center;\n}\n.v-datatable-light .arrow {\n    transition: color 0.15s ease-in-out;\n    width: 0;\n    height: 0;\n    border-left: 8px solid transparent;\n    border-right: 8px solid transparent;\n}\n.v-datatable-light .arrow.up {\n    border-bottom: 8px solid #00d1b2;\n    margin-bottom: 5px;\n}\n.v-datatable-light .arrow.up:hover {\n    border-bottom: 8px solid #ed9b19;\n}\n.v-datatable-light .arrow.down {\n    border-top: 8px solid #00d1b2;\n}\n.v-datatable-light .arrow.down:hover {\n    border-top: 8px solid #ed9b19;\n}\n/* example colorization of cells / rows / columns\n#datatable-light .v-datatable-light .row-1 .column-2 {\n    color: green;\n}\n*/\n.v-datatable-light .datatable-footer {\n    display: flex;\n    justify-content: space-between;\n    width: 600px;\n}\n/* End Datatable CSS */\n\n/* Pagination CSS */\n.v-datatable-light-pagination {\n    list-style: none;\n    display: flex;\n    align-items: flex-end;\n    justify-content: flex-end;\n    margin: 0;\n    padding: 0;\n    width: 300px;\n    height: 30px;\n}\n.v-datatable-light-pagination .pagination-item {\n    width: 30px;\n    margin-right: 5px;\n    font-size: 16px;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light-pagination .pagination-item.selected {\n    color: #ed9b19;\n}\n.v-datatable-light-pagination .pagination-item .page-btn {\n    background-color: transparent;\n    outline: none;\n    border: none;\n    color: #00d1b2;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light-pagination .pagination-item .page-btn:hover {\n    color: #ed9b19;\n}\n.v-datatable-light-pagination .pagination-item .page-btn:disabled {\n    cursor: not-allowed;\n    box-shadow: none;\n    opacity: 0.65;\n}\n/* END PAGINATION CSS */\n\n/* ITEMS PER PAGE DROPDOWN CSS */\n.item-per-page-dropdown {\n    background-color: transparent;\n    min-height: 30px;\n    border: 1px solid #00d1b2;\n    border-radius: 5px;\n    color: #00d1b2;\n}\n.item-per-page-dropdown:hover {\n    cursor: pointer;\n}\n/* END ITEMS PER PAGE DROPDOWN CSS */\n#datatable-light .userInfo {\n    float: left;\n    padding: 6px;\n    font-size: 17px;\n}\n#datatable-light .hidden{\n    visibility: hidden;\n    opacity: 0;\n    transition: visibility 0s 10s, opacity 10s linear;\n}\n#datatable-light .search-container {\n    float: right;\n    box-sizing: border-box;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    background-position: 10px 10px;\n    background-repeat: no-repeat;\n    background-color: white;\n}\n#datatable-light .search-container input[type=text] {\n    padding: 6px;\n    font-size: 17px;\n    border: none;\n}\n#datatable-light .search-container button {\n    float: right;\n    padding: 6px 10px;\n    background: #ddd;\n    font-size: 17px;\n    border: none;\n    cursor: pointer;\n}\n#datatable-light .search-container button:hover {\n    background: #ccc;\n}\n@media screen and (max-width: 600px) {\n#datatable-light .search-container .search-container {\n        float: none;\n}\n#datatable-light a, #datatable-light .search-container input[type=text], #datatable-light .search-container button {\n        float: none;\n        display: block;\n        text-align: left;\n        width: 100%;\n        margin: 0;\n        padding: 14px;\n}\n#datatable-light .search-container input[type=text] {\n        border: 1px solid #ccc;\n}\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*\n default color was:\n    color: #337ab7;\n    instead of\n    color: #00d1b2;\n*/\n#datatable-light {\n    font-family: \"Avenir\", Helvetica, Arial, sans-serif;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n    text-align: center;\n    color: #00b89c;\n    margin-top: 60px;\n}\n#datatable-light .title {\n    margin-bottom: 30px;\n}\n#datatable-light .items-per-page {\n    height: 100%;\n    display: flex;\n    align-items: flex-start;\n    color: #00d1b2;\n}\n#datatable-light .items-per-page label {\n    margin: 0 15px;\n}\n\n/* Datatable CSS */\n.v-datatable-light .header-item {\n    cursor: pointer;\n    color: #00d1b2;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light .header-item:hover {\n    color: #ed9b19;\n}\n.v-datatable-light .header-item.no-sortable {\n    cursor: default;\n}\n.v-datatable-light .header-item.no-sortable:hover {\n    color: #00d1b2;\n}\n.v-datatable-light .header-item .th-wrapper {\n    display: flex;\n    width: 100%;\n    height: 100%;\n    font-weight: bold;\n    align-items: center;\n}\n.v-datatable-light .header-item .th-wrapper.checkboxes {\n    justify-content: center;\n}\n.v-datatable-light .header-item .th-wrapper .arrows-wrapper {\n    display: flex;\n    flex-direction: column;\n    margin-left: 10px;\n    justify-content: space-between;\n}\n.v-datatable-light .header-item .th-wrapper .arrows-wrapper.centralized {\n    justify-content: center;\n}\n.v-datatable-light .arrow {\n    transition: color 0.15s ease-in-out;\n    width: 0;\n    height: 0;\n    border-left: 8px solid transparent;\n    border-right: 8px solid transparent;\n}\n.v-datatable-light .arrow.up {\n    border-bottom: 8px solid #00d1b2;\n    margin-bottom: 5px;\n}\n.v-datatable-light .arrow.up:hover {\n    border-bottom: 8px solid #ed9b19;\n}\n.v-datatable-light .arrow.down {\n    border-top: 8px solid #00d1b2;\n}\n.v-datatable-light .arrow.down:hover {\n    border-top: 8px solid #ed9b19;\n}\n/* example colorization of cells / rows / columns\n#datatable-light .v-datatable-light .row-1 .column-2 {\n    color: green;\n}\n*/\n.v-datatable-light .datatable-footer {\n    display: flex;\n    justify-content: space-between;\n    width: 600px;\n}\n/* End Datatable CSS */\n\n/* Pagination CSS */\n.v-datatable-light-pagination {\n    list-style: none;\n    display: flex;\n    align-items: flex-end;\n    justify-content: flex-end;\n    margin: 0;\n    padding: 0;\n    width: 300px;\n    height: 30px;\n}\n.v-datatable-light-pagination .pagination-item {\n    width: 30px;\n    margin-right: 5px;\n    font-size: 16px;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light-pagination .pagination-item.selected {\n    color: #ed9b19;\n}\n.v-datatable-light-pagination .pagination-item .page-btn {\n    background-color: transparent;\n    outline: none;\n    border: none;\n    color: #00d1b2;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light-pagination .pagination-item .page-btn:hover {\n    color: #ed9b19;\n}\n.v-datatable-light-pagination .pagination-item .page-btn:disabled {\n    cursor: not-allowed;\n    box-shadow: none;\n    opacity: 0.65;\n}\n/* END PAGINATION CSS */\n\n/* ITEMS PER PAGE DROPDOWN CSS */\n.item-per-page-dropdown {\n    background-color: transparent;\n    min-height: 30px;\n    border: 1px solid #00d1b2;\n    border-radius: 5px;\n    color: #00d1b2;\n}\n.item-per-page-dropdown:hover {\n    cursor: pointer;\n}\n/* END ITEMS PER PAGE DROPDOWN CSS */\n#datatable-light .userInfo {\n    float: left;\n    padding: 6px;\n    font-size: 17px;\n}\n#datatable-light .hidden{\n    visibility: hidden;\n    opacity: 0;\n    transition: visibility 0s 10s, opacity 10s linear;\n}\n#datatable-light .search-container {\n    float: right;\n    box-sizing: border-box;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    background-position: 10px 10px;\n    background-repeat: no-repeat;\n    background-color: white;\n}\n#datatable-light .search-container input[type=text] {\n    padding: 6px;\n    font-size: 17px;\n    border: none;\n}\n#datatable-light .search-container button {\n    float: right;\n    padding: 6px 10px;\n    background: #ddd;\n    font-size: 17px;\n    border: none;\n    cursor: pointer;\n}\n#datatable-light .search-container button:hover {\n    background: #ccc;\n}\n@media screen and (max-width: 600px) {\n#datatable-light .search-container .search-container {\n        float: none;\n}\n#datatable-light a, #datatable-light .search-container input[type=text], #datatable-light .search-container button {\n        float: none;\n        display: block;\n        text-align: left;\n        width: 100%;\n        margin: 0;\n        padding: 14px;\n}\n#datatable-light .search-container input[type=text] {\n        border: 1px solid #ccc;\n}\n}\n", ""]);
 
 // exports
 
@@ -69257,46 +69296,7 @@ var render = function() {
         attrs: {
           "dialog-id": "edit-form-dialog",
           "dialog-title": "Edit Record",
-          "form-definition": [
-            {
-              fieldName: "slug",
-              fieldLabel: "Slug",
-              fieldIsDisplayed: false,
-              isMandatory: true,
-              validationFailedMessage: "A Slug is required",
-              fieldType: "b-form-input",
-              // data field must be specified otherwise v-bind does not work
-              fieldData: ""
-            },
-            {
-              fieldName: "name",
-              fieldLabel: "Name",
-              fieldIsDisplayed: true,
-              isMandatory: true,
-              validationFailedMessage: "A super Name is required",
-              fieldType: "b-form-input",
-              // data field must be specified otherwise v-bind does not work
-              fieldData: ""
-            },
-            {
-              fieldName: "description",
-              fieldLabel: "Description",
-              fieldIsDisplayed: true,
-              isMandatory: true,
-              validationFailedMessage: "A Description is required",
-              fieldType: "b-form-input",
-              fieldData: ""
-            },
-            {
-              fieldName: "film_id",
-              fieldLabel: "FilmId",
-              fieldIsDisplayed: true,
-              isMandatory: true,
-              validationFailedMessage: "A FilmId is required",
-              fieldType: "b-form-select",
-              fieldData: ""
-            }
-          ],
+          "form-definition": _vm.editFormDefinition,
           "form-data": _vm.formData,
           "dialog-options": _vm.dropdownListing,
           dialogCallback: _vm.dialogCallback
@@ -69306,42 +69306,44 @@ var render = function() {
       _c("div", [
         _c("div", { staticClass: "userInfo", attrs: { id: "userInfo" } }),
         _vm._v(" "),
-        _c("div", { staticClass: "search-container" }, [
-          _c("form"),
-          _vm._v(" "),
-          _c("input", {
-            attrs: {
-              id: "input-search",
-              type: "text",
-              placeholder: "Search..",
-              name: "q"
-            }
-          }),
-          _vm._v(" "),
-          _c("button", { attrs: { id: "btn-search", type: "submit" } }, [
-            _c(
-              "svg",
-              {
-                staticClass:
-                  "s-input-icon s-input-icon__search svg-icon iconSearch",
-                attrs: {
-                  "aria-hidden": "true",
-                  width: "18",
-                  height: "18",
-                  viewBox: "0 0 18 18"
-                }
-              },
-              [
-                _c("path", {
+        _vm.isSearchAble
+          ? _c("div", { staticClass: "search-container" }, [
+              _c("form", [
+                _c("input", {
                   attrs: {
-                    d:
-                      "M18 16.5l-5.14-5.18h-.35a7 7 0 10-1.19 1.19v.35L16.5 18l1.5-1.5zM12 7A5 5 0 112 7a5 5 0 0110 0z"
+                    id: "input-search",
+                    type: "text",
+                    placeholder: "Search..",
+                    name: "q"
                   }
-                })
-              ]
-            )
-          ])
-        ])
+                }),
+                _vm._v(" "),
+                _c("button", { attrs: { id: "btn-search", type: "submit" } }, [
+                  _c(
+                    "svg",
+                    {
+                      staticClass:
+                        "s-input-icon s-input-icon__search svg-icon iconSearch",
+                      attrs: {
+                        "aria-hidden": "true",
+                        width: "18",
+                        height: "18",
+                        viewBox: "0 0 18 18"
+                      }
+                    },
+                    [
+                      _c("path", {
+                        attrs: {
+                          d:
+                            "M18 16.5l-5.14-5.18h-.35a7 7 0 10-1.19 1.19v.35L16.5 18l1.5-1.5zM12 7A5 5 0 112 7a5 5 0 0110 0z"
+                        }
+                      })
+                    ]
+                  )
+                ])
+              ])
+            ])
+          : _vm._e()
       ]),
       _vm._v(" "),
       _vm._m(0),

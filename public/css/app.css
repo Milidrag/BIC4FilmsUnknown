@@ -151,8 +151,7 @@
   text-align: center;
   overflow: visible;
   position: relative;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
- box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .b-avatar:focus {
@@ -21354,7 +21353,7 @@ a.navbar-item.is-active,
 }
 
 .navbar-item img {
-  max-height: 3.3rem;
+  max-height: 1.75rem;
 }
 
 .navbar-item.has-dropdown {

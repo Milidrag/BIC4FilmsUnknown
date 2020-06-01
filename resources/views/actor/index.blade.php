@@ -58,9 +58,57 @@ https://github.com/Egorvah/vudal
                                 "__slot:actions:actionRemove",
                                 "__slot:actions"
                                 ]'
+                             :edit-form-definition='
+                                 [
+                                    {
+                                        fieldName: "slug",
+                                        fieldLabel: "Slug",
+                                        fieldIsDisplayed: false,
+                                        isMandatory: true,
+                                        validationFailedMessage: "A Slug is required",
+                                        fieldType: "b-form-input",
+                                        // data field must be specified otherwise v-bind does not work
+                                        fieldData: ""
+                                    },
+                                    {
+                                        fieldName: "name",
+                                        fieldLabel: "Name",
+                                        fieldIsDisplayed: true,
+                                        isMandatory: true,
+                                        validationFailedMessage: "A super Name is required",
+                                        fieldType: "b-form-input",
+                                        // data field must be specified otherwise v-bind does not work
+                                        fieldData: ""
+                                    },
+                                    {
+                                        fieldName: "description",
+                                        fieldLabel: "Description",
+                                        fieldIsDisplayed: true,
+                                        isMandatory: true,
+                                        validationFailedMessage: "A Description is required",
+                                        fieldType: "b-form-input",
+                                        fieldData: ""
+                                    },
+                                    {
+                                        fieldName: "film_id",
+                                        fieldLabel: "FilmId",
+                                        fieldIsDisplayed: true,
+                                        isMandatory: true,
+                                        validationFailedMessage: "A FilmId is required",
+                                        fieldType: "b-form-select",
+                                        fieldData: ""
+                                    }
+                                ]
+                                '
                              :track-by="'slug'"
                              :initial-data="'{{ $actor }}'"
                              :sort="'yes'"
+                             :options-url="'list/film'"
+                             :get-table-data-url="'list/actor'"
+                             :modify-entry-url="'actor/'"
+                             :modify-identifier-of-entry="'slug'"
+                             :search-table-data-url="'search/actor'"
+                             :search-selector="'q='"
             ></datatable-light>
 
 

@@ -20,48 +20,7 @@
         <dialog-modal
             :dialog-id="'edit-form-dialog'"
             :dialog-title="'Edit Record'"
-            :form-definition='
-                    [
-                        {
-                            fieldName: "slug",
-                            fieldLabel: "Slug",
-                            fieldIsDisplayed: false,
-                            isMandatory: true,
-                            validationFailedMessage: "A Slug is required",
-                            fieldType: "b-form-input",
-                            // data field must be specified otherwise v-bind does not work
-                            fieldData: ""
-                        },
-                        {
-                            fieldName: "name",
-                            fieldLabel: "Name",
-                            fieldIsDisplayed: true,
-                            isMandatory: true,
-                            validationFailedMessage: "A super Name is required",
-                            fieldType: "b-form-input",
-                            // data field must be specified otherwise v-bind does not work
-                            fieldData: ""
-                        },
-                        {
-                            fieldName: "description",
-                            fieldLabel: "Description",
-                            fieldIsDisplayed: true,
-                            isMandatory: true,
-                            validationFailedMessage: "A Description is required",
-                            fieldType: "b-form-input",
-                            fieldData: ""
-                        },
-                        {
-                            fieldName: "film_id",
-                            fieldLabel: "FilmId",
-                            fieldIsDisplayed: true,
-                            isMandatory: true,
-                            validationFailedMessage: "A FilmId is required",
-                            fieldType: "b-form-select",
-                            fieldData: ""
-                        }
-                    ]
-                    '
+            :form-definition="editFormDefinition"
             v-bind:form-data=formData
             v-bind:dialog-options="dropdownListing"
             :dialogCallback="dialogCallback"
@@ -72,17 +31,16 @@
         <div>
             <div class="userInfo" id="userInfo">
             </div>
-            <div class="search-container">
+            <div class="search-container" v-if="isSearchAble">
                 <!--
                 <form action="search/actor" method="post">
-
                 -->
                 <form>
-                </form>
                     <input id="input-search" type="text" placeholder="Search.." name="q">
                     <button id="btn-search" type="submit">
                     <svg aria-hidden="true" class="s-input-icon s-input-icon__search svg-icon iconSearch" width="18" height="18" viewBox="0 0 18 18"><path d="M18 16.5l-5.14-5.18h-.35a7 7 0 10-1.19 1.19v.35L16.5 18l1.5-1.5zM12 7A5 5 0 112 7a5 5 0 0110 0z"></path></svg>
                     </button>
+                </form>
             </div>
         </div>
         <div>
@@ -183,14 +141,10 @@
     import { DataTable, ItemsPerPageDropdown, Pagination } from "v-datatable-light";
     import orderBy from "lodash.orderby";
     // This imports <b-modal> as well as the v-b-modal directive as a plugin:
-    import { ModalPlugin, ButtonPlugin }  from "bootstrap-vue";
-    Vue.use(ModalPlugin);
+    import { ButtonPlugin }  from "bootstrap-vue";
     Vue.use(ButtonPlugin);
-    // import "bootstrap/dist/css/bootstrap.min.css";
-    // import "bootstrap-vue/dist/bootstrap-vue.css";
-    import Vue from 'vue';
-    // import DialogeModal from "./DialogeModal";
 
+    import Vue from 'vue';
 
     const addZero = value => ("0" + value).slice(-2);
 
@@ -204,8 +158,6 @@
         return "";
     };
 
-
-    //var initialData = [];
     var workingData = [];
 
     export default {
@@ -235,17 +187,101 @@
                 required: false,
                 default: 10
             },
+            // indicate whether a search function is provided
+            isSearchAble: {
+                type: Boolean,
+                required: false,
+                default: true
+            },
             // unique column
             trackBy: {
                 type: String,
                 required: false,
                 default: "none"
+            },
+            editFormDefinition: {
+                type: Array,
+                required: true,
+                default: function () {
+                    // layout of a form definition that must be provided
+                    return [
+                        {
+                            fieldName: "slug",
+                            fieldLabel: "Slug",
+                            fieldIsDisplayed: false,
+                            isMandatory: true,
+                            validationFailedMessage: "A Slug is required",
+                            fieldType: "b-form-input",
+                            // data field must be specified otherwise v-bind does not work
+                            fieldData: ""
+                        },
+                        {
+                            fieldName: "name",
+                            fieldLabel: "Name",
+                            fieldIsDisplayed: true,
+                            isMandatory: true,
+                            validationFailedMessage: "A super Name is required",
+                            fieldType: "b-form-input",
+                            // data field must be specified otherwise v-bind does not work
+                            fieldData: ""
+                        },
+                        {
+                            fieldName: "description",
+                            fieldLabel: "Description",
+                            fieldIsDisplayed: true,
+                            isMandatory: true,
+                            validationFailedMessage: "A Description is required",
+                            fieldType: "b-form-input",
+                            fieldData: ""
+                        },
+                        {
+                            fieldName: "film_id",
+                            fieldLabel: "FilmId",
+                            fieldIsDisplayed: true,
+                            isMandatory: true,
+                            validationFailedMessage: "A FilmId is required",
+                            fieldType: "b-form-select",
+                            fieldData: ""
+                        }
+                    ];
+                }
+            },
+            // where to get the available options for the select
+            optionsUrl: {
+                type: String,
+                required: false,
+                default: "list/film"
+            },
+            // url that fetches the complete dataset
+            getTableDataUrl:{
+                type: String,
+                required: true,
+                default: "list/actor"
+            },
+            // url to use to update / delete a table entry
+            modifyEntryUrl:{
+                type: String,
+                required: true,
+                default: "actor/"
+            },
+            // table row contains multiple attributes which of them should be used to update an entry e.g. /actor/{slug}
+            modifyIdentifierOfEntry:{
+                type: String,
+                required: true,
+                default: "slug"
+            },
+            // url where to post queries
+            searchTableDataUrl:{
+                type:String,
+                required: false,
+                default: "search/actor"
+            },
+            // is appended to the body when posting to searchUrl
+            searchSelector:{
+                type: String,
+                required: false,
+                default: "q="
             }
-            // ,
-            // workingData: {
-            //     type: Array,
-            //     required: false
-            // }
         },
         data: function() {
             workingData = JSON.parse(this.initialData);
@@ -287,20 +323,24 @@
         },
         methods: {
             actionSearch: function (event){
-                var searchString = document.getElementById('input-search').value;
-                if (typeof searchString !== 'undefined' && searchString === ""){
-                    if ( event.type === "keyup" && searchString === "" ){
-                        this.updateUserInfo("info","Removing search filter.");
-                        this.serverDataGet("list/actor" );
-                    } if ( event.type === "click" ){
-                        this.updateUserInfo("warning","The search string must not be empty! Reseting Filter.");
-                        this.serverDataGet("list/actor" );
+                if ( this.isSearchAble === true ){
+                    var searchString = document.getElementById('input-search').value;
+                    if (typeof searchString !== 'undefined' && searchString === ""){
+                        if ( event.type === "keyup" && searchString === "" ){
+                            this.updateUserInfo("info","Removing search filter.");
+                            this.serverDataGet( this.getTableDataUrl );
+                        } if ( event.type === "click" ){
+                            this.updateUserInfo("warning","The search string must not be empty! Reseting Filter.");
+                            this.serverDataGet( this.getTableDataUrl );
+                        }
+                    } else {
+                        this.updateUserInfo("info","Updating...");
+                        this.serverDataSearch(this.searchTableDataUrl,this.searchSelector + searchString);
                     }
-
                 } else {
-                    this.updateUserInfo("info","Updating...");
-                    this.serverDataSearch("search/actor","q=" + searchString);
+                    this.updateUserInfo("warning","Searching is not supported.");
                 }
+
             },
             changeDescription: function(event, id) {
                 this.data = this.data.map(item =>
@@ -321,9 +361,9 @@
             },
             dtRemoveClick: function(props){
                 // alert("Click props:" + JSON.stringify(props) );
-                axios.delete('actor/' + props['rowData']['slug'] )
+                axios.delete(this.modifyEntryUrl + props['rowData'][this.modifyIdentifierOfEntry] )
                     .then(response => {
-                        const index = workingData.find(entry => entry.slug === props['rowData']['slug'] ) // find the post index
+                        const index = workingData.find(entry => entry.slug === props['rowData'][this.modifyIdentifierOfEntry] ) // find the post index
                         if (~index) {// if the post exists in array
                             workingData.splice(index, 1) //delete the row
                             this.updateTableView(); // update the view
@@ -338,7 +378,7 @@
             },
             dialogCallback( formulaData ) {
                 console.log("running " + formulaData);
-                axios.put('actor/'+formulaData['slug'] , formulaData )
+                axios.put(this.modifyEntryUrl + formulaData[this.modifyIdentifierOfEntry] , formulaData )
                     .then( (response) => {
                         this.dialogOkCallback()
                     }).catch(  (error) => {
@@ -347,7 +387,7 @@
             },
             dialogOkCallback() {
                 this.updateUserInfo("info", "record has been updated");
-                this.serverDataGet('list/actor');
+                this.serverDataGet( this.getTableDataUrl );
             },
             dialogFailedCallback() {
                 this.updateUserInfo("warning", "cannot update record");
@@ -434,7 +474,7 @@
             // reformat initial data
             this.processBackendResponse(workingData);
             // get list for dropdowns
-            axios.get('list/film').then( (res) => {
+            axios.get( this.optionsUrl ).then( (res) => {
                 // console.log(res)
                 this.dropdownListing = res.data
             }).catch(  (error) => {
@@ -442,9 +482,10 @@
             });
         },
         mounted() {
-            document.getElementById('input-search').addEventListener("keyup", this.actionSearch);
-            document.getElementById('btn-search').addEventListener("click", this.actionSearch);
-
+            if (this.isSearchAble){
+                document.getElementById('input-search').addEventListener("keyup", this.actionSearch);
+                document.getElementById('btn-search').addEventListener("click", this.actionSearch);
+            }
         }
     };
 </script>
