@@ -36,7 +36,7 @@ https://github.com/Egorvah/vudal
                                 name: "description",
                                 label: "Description",
                                 sortable: true,
-                                customElement: "DescriptionNew"
+                                // customElement: "DescriptionNew"
                                 },
                                 {
                                 name: "film_id",
@@ -55,7 +55,7 @@ https://github.com/Egorvah/vudal
                                 sortable: false,
                                 isDate:    true
                                 },
-                                "__slot:actions:actionFirst",
+                                "__slot:actions:actionRemove",
                                 "__slot:actions"
                                 ]'
                              :track-by="'slug'"
@@ -65,34 +65,34 @@ https://github.com/Egorvah/vudal
 
 
 
-            <br>
-            <br>
-            <div id="app">
-                <div class="columns medium-3" v-for="(result, index) in results" :key="index">
-                    <div class="card">
-                        <div class="card-divider">
-                            <p v-text="result.id"> </p>
-                        </div>
-                        <div class="card-section">
-                            <p v-text="result.slug"> </p>
-                            <p v-text="index"> </p>
-                        </div>
-                    </div>
-                </div>
+{{--            <br>--}}
+{{--            <br>--}}
+{{--            <div id="app">--}}
+{{--                <div class="columns medium-3" v-for="(result, index) in results" :key="index">--}}
+{{--                    <div class="card">--}}
+{{--                        <div class="card-divider">--}}
+{{--                            <p v-text="result.id"> </p>--}}
+{{--                        </div>--}}
+{{--                        <div class="card-section">--}}
+{{--                            <p v-text="result.slug"> </p>--}}
+{{--                            <p v-text="index"> </p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
 
 
-                <ul>
-                    <li v-for="name in names" v-text="name"></li>
-                </ul>
+{{--                <ul>--}}
+{{--                    <li v-for="name in names" v-text="name"></li>--}}
+{{--                </ul>--}}
 
-                <input type="text" v-model="newName">
-                <button @click="addName">
-                    Add Name
-                </button>
-            </div>
-            <br>
-            <br>
+{{--                <input type="text" v-model="newName">--}}
+{{--                <button @click="addName">--}}
+{{--                    Add Name--}}
+{{--                </button>--}}
+{{--            </div>--}}
+{{--            <br>--}}
+{{--            <br>--}}
 
 
 

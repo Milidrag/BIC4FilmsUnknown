@@ -11,26 +11,62 @@
 
 -->
 
+
+
 <template>
     <div id="datatable-light">
         <h3 class="title">{{ tableTitle }}</h3>
 
-        <div>
-            <b-button id="show-btn" @click="$bvModal.show('bv-modal-example')">Open Modal</b-button>
-
-            <b-modal id="bv-modal-example" hide-footer>
-                <template v-slot:modal-title>
-                    Using <code>$bvModal</code> Methods
-                </template>
-                <div class="d-block text-center">
-                    <h3>Hello From This Modal!</h3>
-                </div>
-                <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">Close Me</b-button>
-            </b-modal>
-        </div>
-
-
-        <dialog-modal></dialog-modal>
+        <dialog-modal
+            :dialog-id="'edit-form-dialog'"
+            :dialog-title="'Edit Record'"
+            :form-definition='
+                    [
+                        {
+                            fieldName: "slug",
+                            fieldLabel: "Slug",
+                            fieldIsDisplayed: false,
+                            isMandatory: true,
+                            validationFailedMessage: "A Slug is required",
+                            fieldType: "b-form-input",
+                            // data field must be specified otherwise v-bind does not work
+                            fieldData: ""
+                        },
+                        {
+                            fieldName: "name",
+                            fieldLabel: "Name",
+                            fieldIsDisplayed: true,
+                            isMandatory: true,
+                            validationFailedMessage: "A super Name is required",
+                            fieldType: "b-form-input",
+                            // data field must be specified otherwise v-bind does not work
+                            fieldData: ""
+                        },
+                        {
+                            fieldName: "description",
+                            fieldLabel: "Description",
+                            fieldIsDisplayed: true,
+                            isMandatory: true,
+                            validationFailedMessage: "A Description is required",
+                            fieldType: "b-form-input",
+                            fieldData: ""
+                        },
+                        {
+                            fieldName: "film_id",
+                            fieldLabel: "FilmId",
+                            fieldIsDisplayed: true,
+                            isMandatory: true,
+                            validationFailedMessage: "A FilmId is required",
+                            fieldType: "b-form-select",
+                            fieldData: ""
+                        }
+                    ]
+                    '
+            v-bind:form-data=formData
+            v-bind:dialog-options="dropdownListing"
+            :dialogCallback="dialogCallback"
+        >
+        </dialog-modal>
 
         <!-- Datatable -->
         <div>
@@ -43,7 +79,6 @@
                 -->
                 <form>
                 </form>
-                    <input type="hidden" name="_token" :value="csrf">
                     <input id="input-search" type="text" placeholder="Search.." name="q">
                     <button id="btn-search" type="submit">
                     <svg aria-hidden="true" class="s-input-icon s-input-icon__search svg-icon iconSearch" width="18" height="18" viewBox="0 0 18 18"><path d="M18 16.5l-5.14-5.18h-.35a7 7 0 10-1.19 1.19v.35L16.5 18l1.5-1.5zM12 7A5 5 0 112 7a5 5 0 0110 0z"></path></svg>
@@ -77,11 +112,16 @@
                 <!--
                 <input type="button" class="btn btn-primary" value="Edit" @click="dtEditClick(props);">
                 -->
+                <!--
                 <b-button id="edit-btn" variant="primary" @click="$bvModal.show('bv-modal-example')">Edit</b-button>
+                -->
+               <b-button id="edit-btn" variant="primary"  @click="dtEditClick(props)">Edit</b-button>
             </template>
-            <!-- Action link slot -->
-            <template v-slot:actionFirst="props">
-                <a href="#" @click.prevent="actionFirstClick(props)">Actions First</a>
+
+            <!-- Action remove slot -->
+            <template v-slot:actionRemove="props">
+                <b-button id="remove-btn" variant="primary"  @click="dtRemoveClick(props)">Remove</b-button>
+<!--                <a href="#" @click.prevent="actionFirstClick(props)">Actions First</a>-->
             </template>
 
             <!-- custom header using boolean -->
@@ -195,6 +235,7 @@
                 required: false,
                 default: 10
             },
+            // unique column
             trackBy: {
                 type: String,
                 required: false,
@@ -209,54 +250,6 @@
         data: function() {
             workingData = JSON.parse(this.initialData);
             return {
-                // access the csrf token from the view (meta information)
-                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-//                 headerFields:
-//                    [
-//                     "__slot:checkboxes",
-//                     {
-//                         name: "slug",
-//                         label: "Slug",
-//                         sortable: true
-//                     },
-//                     {
-//                         name: "name",
-//                         label: "Name",
-//                         sortable: true
-//                     },
-//                     {
-//                         name: "description",
-//                         label: "Description",
-//                         sortable: true,
-//                         customElement: "DescriptionNew"
-//                     },
-//                     {
-//                         name: "film_id",
-//                         label: "FilmNr",
-//                         sortable: true
-//                     },
-// // print current date
-// //                     {
-// //                         name: "created",
-// //                         customHeader: true,
-// //                         label: "Created",
-// //                         sortable: true,
-// //                         format: formatDate
-// //                     },
-//                     {
-//                         name: "created_at",
-//                         label: "Created",
-//                         sortable: false
-//                     },
-//                     {
-//                         name: "updated_at",
-//                         label: "Updated",
-//                         sortable: false
-//                     },
-//                     "__slot:actions:actionFirst",
-//                     "__slot:actions"
-//                ],
-
                 data: workingData.slice(0, this.initialItemsPerPage),
                 datatableCss: {
                     table: "table table-bordered table-hover table-striped table-center",
@@ -285,50 +278,85 @@
                 listItemsPerPage: [5, 10, 20, 50, 100],
                 itemsPerPage: this.initialItemsPerPage,
                 currentPage: 1,
-                //totalItems: function() { return workingData.length },
                 totalItems: workingData.length,
                 description: null,
-                createHeaderName: "created:header"
+                createHeaderName: "created:header",
+                formData: {},
+                dropdownListing: []
             };
         },
         methods: {
-            httpGet: function (Url, callbackMethod, responseStorage){
-                var xmlHttp = new XMLHttpRequest();
-                xmlHttp.onreadystatechange = function() {
-                    if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-                        var res = JSON.parse(xmlHttp.responseText);
-                        callbackMethod( res, responseStorage );
+            actionSearch: function (event){
+                var searchString = document.getElementById('input-search').value;
+                if (typeof searchString !== 'undefined' && searchString === ""){
+                    if ( event.type === "keyup" && searchString === "" ){
+                        this.updateUserInfo("info","Removing search filter.");
+                        this.serverDataGet("list/actor" );
+                    } if ( event.type === "click" ){
+                        this.updateUserInfo("warning","The search string must not be empty! Reseting Filter.");
+                        this.serverDataGet("list/actor" );
                     }
+
+                } else {
+                    this.updateUserInfo("info","Updating...");
+                    this.serverDataSearch("search/actor","q=" + searchString);
                 }
-                xmlHttp.open("GET", Url, true); // true for asynchronous
-                xmlHttp.send(null);
             },
-            httpPost: function (Url, body, callbackMethod){
-                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                var xmlHttp = new XMLHttpRequest();
-                xmlHttp.onreadystatechange = function() {
-                    if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-                        var res = JSON.parse(xmlHttp.responseText);
-                        callbackMethod( res );
-                    }
-                }
-                xmlHttp.open("POST", Url, true); // true for asynchronous
-                //xmlHttp.setRequestHeader("Accept", "application/json");
-                xmlHttp.setRequestHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-                xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-                if (typeof csrfToken !== 'undefined' && csrfToken != null){
-                    xmlHttp.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-                    body = "_token=" + csrfToken + "&" + body;
-                }
-                xmlHttp.send( body);
+            changeDescription: function(event, id) {
+                this.data = this.data.map(item =>
+                    item.id === id ? { ...item, description: event.target.value } : item
+                );
+            },
+            changePage: function(currentPage) {
+                this.currentPage = currentPage;
+                const start = (currentPage - 1) * this.itemsPerPage;
+                const end = currentPage * this.itemsPerPage;
+                this.data = workingData.slice(start, end);
+            },
+
+            dtEditClick: function(props){
+                this.formData = {};
+                this.formData = props.rowData;
+                this.$bvModal.show( "edit-form-dialog" );
+            },
+            dtRemoveClick: function(props){
+                // alert("Click props:" + JSON.stringify(props) );
+                axios.delete('actor/' + props['rowData']['slug'] )
+                    .then(response => {
+                        const index = workingData.find(entry => entry.slug === props['rowData']['slug'] ) // find the post index
+                        if (~index) {// if the post exists in array
+                            workingData.splice(index, 1) //delete the row
+                            this.updateTableView(); // update the view
+                        }
+                    });
+            },
+            dtUpdateSort: function({ sortField, sort }) {
+                const sortedData = orderBy(workingData, [sortField], [sort]);
+                const start = (this.currentPage - 1) * this.itemsPerPage;
+                const end = this.currentPage * this.itemsPerPage;
+                this.data = sortedData.slice(start, end);
+            },
+            dialogCallback( formulaData ) {
+                console.log("running " + formulaData);
+                axios.put('actor/'+formulaData['slug'] , formulaData )
+                    .then( (response) => {
+                        this.dialogOkCallback()
+                    }).catch(  (error) => {
+                        this.dialogFailedCallback();
+                });
+            },
+            dialogOkCallback() {
+                this.updateUserInfo("info", "record has been updated");
+                this.serverDataGet('list/actor');
+            },
+            dialogFailedCallback() {
+                this.updateUserInfo("warning", "cannot update record");
+
             },
             processBackendResponse: function (response){
                 //document.getElementById("container1").insertAdjacentHTML('beforeend', '<div>'+ JSON.stringify(response) + '</div>');
-                // initialData = [];
                 var newData = [];
                 for (var key in response){
-                    //console.log("iterate over response " + response[key].id + " " + response[key].slug);
-                    //console.log("datatypes " + JSON.stringify(this.data) + " next " + JSON.stringify(this.newData) );
                     // dynamically change date when isDate is present
                     for (var hIndex in this.headerFields){
                         if (typeof this.headerFields[hIndex].isDate !== 'undefined' && this.headerFields[hIndex].isDate == true){
@@ -338,27 +366,32 @@
                     }
                     newData.push( response[key] );
                 }
+
                 // needed to rerender the page
                 workingData = newData;
                 this.updateTableView();
-                // this.totalItems = newData.length;
-                // this.data = newData;
+            },
+            serverDataGet: function (Url){
+                axios.get(Url).then( (res) => {
+                    this.processBackendResponse(res.data);
+                    this.updateUserInfo("info", "Updating...");
+                }).catch(  (error) => {
+                    this.updateUserInfo("warning", "Update failed");
+                });
 
             },
-            updateTableView: function(){
-                this.totalItems = workingData.length;
-                this.updateItemsPerPage(this.itemsPerPage);
-                this.changePage(1);
-            },
-            dtEditClick: props => alert("Click props:" + JSON.stringify(props)),
+            serverDataSearch: function (Url, body){
+                axios.post(Url, body).then( (res) => {
+                    this.processBackendResponse(res.data);
+                    this.updateUserInfo("info", "Updating...");
+                }).catch(  (error) => {
+                    this.updateUserInfo("warning", "Update failed");
+                });
 
-            dtUpdateSort: function({ sortField, sort }) {
-                const sortedData = orderBy(workingData, [sortField], [sort]);
-                const start = (this.currentPage - 1) * this.itemsPerPage;
-                const end = this.currentPage * this.itemsPerPage;
-                this.data = sortedData.slice(start, end);
             },
-
+            updateCurrentPage: function(currentPage) {
+                this.currentPage = currentPage;
+            },
             updateItemsPerPage: function(itemsPerPage) {
                 this.itemsPerPage = parseInt(itemsPerPage);
                 if (this.itemsPerPage >= workingData.length) {
@@ -367,43 +400,11 @@
                     this.data = workingData.slice(0, this.itemsPerPage );
                 }
             },
-
-            changePage: function(currentPage) {
-                this.currentPage = currentPage;
-                const start = (currentPage - 1) * this.itemsPerPage;
-                const end = currentPage * this.itemsPerPage;
-                this.data = workingData.slice(start, end);
-            },
-
-            updateCurrentPage: function(currentPage) {
-                this.currentPage = currentPage;
-            },
-
-            changeDescription: function(event, id) {
-                this.data = this.data.map(item =>
-                    item.id === id ? { ...item, description: event.target.value } : item
-                );
-            },
-
-            actionFirstClick: params => {
-                alert(JSON.stringify(params));
-            },
-            actionSearch: function (event){
-                var searchString = document.getElementById('input-search').value;
-                if (typeof searchString !== 'undefined' && searchString === ""){
-                    if ( event.type === "keyup" && searchString === "" ){
-                        this.updateUserInfo("info","Removing search filter.");
-                        this.httpGet("list/actor", this.processBackendResponse);
-                    } if ( event.type === "click" ){
-                        this.updateUserInfo("warning","The search string must not be empty! Reseting Filter.");
-                        this.httpGet("list/actor", this.processBackendResponse);
-                    }
-
-                } else {
-                    this.updateUserInfo("info","Updating...");
-                    this.httpPost("search/actor","q=" + searchString, this.processBackendResponse);
-                }
-                //document.getElementById('btn-search').addEventListener("click", this.actionSearch);
+            updateTableView: function(){
+                this.isLoading = false;
+                this.totalItems = workingData.length;
+                this.updateItemsPerPage(this.itemsPerPage);
+                this.changePage(1);
             },
             updateUserInfo: function (level, info){
                 var element = document.getElementById("userInfo");
@@ -430,10 +431,17 @@
             }
         },
         created() {
+            // reformat initial data
             this.processBackendResponse(workingData);
+            // get list for dropdowns
+            axios.get('list/film').then( (res) => {
+                // console.log(res)
+                this.dropdownListing = res.data
+            }).catch(  (error) => {
+                this.updateUserInfo("warn", "Failed to get films");
+            });
         },
         mounted() {
-            //this.httpGet("list/actor", this.processBackendResponse);
             document.getElementById('input-search').addEventListener("keyup", this.actionSearch);
             document.getElementById('btn-search').addEventListener("click", this.actionSearch);
 

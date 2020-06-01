@@ -2063,6 +2063,46 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
  // This imports <b-modal> as well as the v-b-modal directive as a plugin:
@@ -2116,6 +2156,7 @@ var workingData = [];
       required: false,
       "default": 10
     },
+    // unique column
     trackBy: {
       type: String,
       required: false,
@@ -2130,53 +2171,6 @@ var workingData = [];
   data: function data() {
     workingData = JSON.parse(this.initialData);
     return {
-      // access the csrf token from the view (meta information)
-      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-      //                 headerFields:
-      //                    [
-      //                     "__slot:checkboxes",
-      //                     {
-      //                         name: "slug",
-      //                         label: "Slug",
-      //                         sortable: true
-      //                     },
-      //                     {
-      //                         name: "name",
-      //                         label: "Name",
-      //                         sortable: true
-      //                     },
-      //                     {
-      //                         name: "description",
-      //                         label: "Description",
-      //                         sortable: true,
-      //                         customElement: "DescriptionNew"
-      //                     },
-      //                     {
-      //                         name: "film_id",
-      //                         label: "FilmNr",
-      //                         sortable: true
-      //                     },
-      // // print current date
-      // //                     {
-      // //                         name: "created",
-      // //                         customHeader: true,
-      // //                         label: "Created",
-      // //                         sortable: true,
-      // //                         format: formatDate
-      // //                     },
-      //                     {
-      //                         name: "created_at",
-      //                         label: "Created",
-      //                         sortable: false
-      //                     },
-      //                     {
-      //                         name: "updated_at",
-      //                         label: "Updated",
-      //                         sortable: false
-      //                     },
-      //                     "__slot:actions:actionFirst",
-      //                     "__slot:actions"
-      //                ],
       data: workingData.slice(0, this.initialItemsPerPage),
       datatableCss: {
         table: "table table-bordered table-hover table-striped table-center",
@@ -2205,59 +2199,98 @@ var workingData = [];
       listItemsPerPage: [5, 10, 20, 50, 100],
       itemsPerPage: this.initialItemsPerPage,
       currentPage: 1,
-      //totalItems: function() { return workingData.length },
       totalItems: workingData.length,
       description: null,
-      createHeaderName: "created:header"
+      createHeaderName: "created:header",
+      formData: {},
+      dropdownListing: []
     };
   },
   methods: {
-    httpGet: function httpGet(Url, callbackMethod, responseStorage) {
-      var xmlHttp = new XMLHttpRequest();
+    actionSearch: function actionSearch(event) {
+      var searchString = document.getElementById('input-search').value;
 
-      xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-          var res = JSON.parse(xmlHttp.responseText);
-          callbackMethod(res, responseStorage);
+      if (typeof searchString !== 'undefined' && searchString === "") {
+        if (event.type === "keyup" && searchString === "") {
+          this.updateUserInfo("info", "Removing search filter.");
+          this.serverDataGet("list/actor");
         }
-      };
 
-      xmlHttp.open("GET", Url, true); // true for asynchronous
-
-      xmlHttp.send(null);
-    },
-    httpPost: function httpPost(Url, body, callbackMethod) {
-      var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-      var xmlHttp = new XMLHttpRequest();
-
-      xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-          var res = JSON.parse(xmlHttp.responseText);
-          callbackMethod(res);
+        if (event.type === "click") {
+          this.updateUserInfo("warning", "The search string must not be empty! Reseting Filter.");
+          this.serverDataGet("list/actor");
         }
-      };
-
-      xmlHttp.open("POST", Url, true); // true for asynchronous
-      //xmlHttp.setRequestHeader("Accept", "application/json");
-
-      xmlHttp.setRequestHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-      xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-      if (typeof csrfToken !== 'undefined' && csrfToken != null) {
-        xmlHttp.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-        body = "_token=" + csrfToken + "&" + body;
+      } else {
+        this.updateUserInfo("info", "Updating...");
+        this.serverDataSearch("search/actor", "q=" + searchString);
       }
+    },
+    changeDescription: function changeDescription(event, id) {
+      this.data = this.data.map(function (item) {
+        return item.id === id ? _objectSpread({}, item, {
+          description: event.target.value
+        }) : item;
+      });
+    },
+    changePage: function changePage(currentPage) {
+      this.currentPage = currentPage;
+      var start = (currentPage - 1) * this.itemsPerPage;
+      var end = currentPage * this.itemsPerPage;
+      this.data = workingData.slice(start, end);
+    },
+    dtEditClick: function dtEditClick(props) {
+      this.formData = {};
+      this.formData = props.rowData;
+      this.$bvModal.show("edit-form-dialog");
+    },
+    dtRemoveClick: function dtRemoveClick(props) {
+      var _this = this;
 
-      xmlHttp.send(body);
+      // alert("Click props:" + JSON.stringify(props) );
+      axios["delete"]('actor/' + props['rowData']['slug']).then(function (response) {
+        var index = workingData.find(function (entry) {
+          return entry.slug === props['rowData']['slug'];
+        }); // find the post index
+
+        if (~index) {
+          // if the post exists in array
+          workingData.splice(index, 1); //delete the row
+
+          _this.updateTableView(); // update the view
+
+        }
+      });
+    },
+    dtUpdateSort: function dtUpdateSort(_ref) {
+      var sortField = _ref.sortField,
+          sort = _ref.sort;
+      var sortedData = lodash_orderby__WEBPACK_IMPORTED_MODULE_2___default()(workingData, [sortField], [sort]);
+      var start = (this.currentPage - 1) * this.itemsPerPage;
+      var end = this.currentPage * this.itemsPerPage;
+      this.data = sortedData.slice(start, end);
+    },
+    dialogCallback: function dialogCallback(formulaData) {
+      var _this2 = this;
+
+      console.log("running " + formulaData);
+      axios.put('actor/' + formulaData['slug'], formulaData).then(function (response) {
+        _this2.dialogOkCallback();
+      })["catch"](function (error) {
+        _this2.dialogFailedCallback();
+      });
+    },
+    dialogOkCallback: function dialogOkCallback() {
+      this.updateUserInfo("info", "record has been updated");
+      this.serverDataGet('list/actor');
+    },
+    dialogFailedCallback: function dialogFailedCallback() {
+      this.updateUserInfo("warning", "cannot update record");
     },
     processBackendResponse: function processBackendResponse(response) {
       //document.getElementById("container1").insertAdjacentHTML('beforeend', '<div>'+ JSON.stringify(response) + '</div>');
-      // initialData = [];
       var newData = [];
 
       for (var key in response) {
-        //console.log("iterate over response " + response[key].id + " " + response[key].slug);
-        //console.log("datatypes " + JSON.stringify(this.data) + " next " + JSON.stringify(this.newData) );
         // dynamically change date when isDate is present
         for (var hIndex in this.headerFields) {
           if (typeof this.headerFields[hIndex].isDate !== 'undefined' && this.headerFields[hIndex].isDate == true) {
@@ -2271,24 +2304,32 @@ var workingData = [];
 
 
       workingData = newData;
-      this.updateTableView(); // this.totalItems = newData.length;
-      // this.data = newData;
+      this.updateTableView();
     },
-    updateTableView: function updateTableView() {
-      this.totalItems = workingData.length;
-      this.updateItemsPerPage(this.itemsPerPage);
-      this.changePage(1);
+    serverDataGet: function serverDataGet(Url) {
+      var _this3 = this;
+
+      axios.get(Url).then(function (res) {
+        _this3.processBackendResponse(res.data);
+
+        _this3.updateUserInfo("info", "Updating...");
+      })["catch"](function (error) {
+        _this3.updateUserInfo("warning", "Update failed");
+      });
     },
-    dtEditClick: function dtEditClick(props) {
-      return alert("Click props:" + JSON.stringify(props));
+    serverDataSearch: function serverDataSearch(Url, body) {
+      var _this4 = this;
+
+      axios.post(Url, body).then(function (res) {
+        _this4.processBackendResponse(res.data);
+
+        _this4.updateUserInfo("info", "Updating...");
+      })["catch"](function (error) {
+        _this4.updateUserInfo("warning", "Update failed");
+      });
     },
-    dtUpdateSort: function dtUpdateSort(_ref) {
-      var sortField = _ref.sortField,
-          sort = _ref.sort;
-      var sortedData = lodash_orderby__WEBPACK_IMPORTED_MODULE_2___default()(workingData, [sortField], [sort]);
-      var start = (this.currentPage - 1) * this.itemsPerPage;
-      var end = this.currentPage * this.itemsPerPage;
-      this.data = sortedData.slice(start, end);
+    updateCurrentPage: function updateCurrentPage(currentPage) {
+      this.currentPage = currentPage;
     },
     updateItemsPerPage: function updateItemsPerPage(itemsPerPage) {
       this.itemsPerPage = parseInt(itemsPerPage);
@@ -2299,55 +2340,23 @@ var workingData = [];
         this.data = workingData.slice(0, this.itemsPerPage);
       }
     },
-    changePage: function changePage(currentPage) {
-      this.currentPage = currentPage;
-      var start = (currentPage - 1) * this.itemsPerPage;
-      var end = currentPage * this.itemsPerPage;
-      this.data = workingData.slice(start, end);
-    },
-    updateCurrentPage: function updateCurrentPage(currentPage) {
-      this.currentPage = currentPage;
-    },
-    changeDescription: function changeDescription(event, id) {
-      this.data = this.data.map(function (item) {
-        return item.id === id ? _objectSpread({}, item, {
-          description: event.target.value
-        }) : item;
-      });
-    },
-    actionFirstClick: function actionFirstClick(params) {
-      alert(JSON.stringify(params));
-    },
-    actionSearch: function actionSearch(event) {
-      var searchString = document.getElementById('input-search').value;
-
-      if (typeof searchString !== 'undefined' && searchString == "") {
-        if (event.type == "keyup" && searchString == "") {
-          this.updateUserInfo("info", "Removing search filter.");
-          this.httpGet("list/actor", this.processBackendResponse);
-        }
-
-        if (event.type == "click") {
-          this.updateUserInfo("warning", "The search string must not be empty! Reseting Filter.");
-          this.httpGet("list/actor", this.processBackendResponse);
-        }
-      } else {
-        this.updateUserInfo("info", "Updating...");
-        this.httpPost("search/actor", "q=" + searchString, this.processBackendResponse);
-      } //document.getElementById('btn-search').addEventListener("click", this.actionSearch);
-
+    updateTableView: function updateTableView() {
+      this.isLoading = false;
+      this.totalItems = workingData.length;
+      this.updateItemsPerPage(this.itemsPerPage);
+      this.changePage(1);
     },
     updateUserInfo: function updateUserInfo(level, info) {
       var element = document.getElementById("userInfo");
       element.innerHTML = info;
 
-      if (level == "success") {
+      if (level === "success") {
         element.classList.add("alert");
         element.classList.add("alert-success");
-      } else if (level == "info") {
+      } else if (level === "info") {
         element.classList.add("alert");
         element.classList.add("alert-info");
-      } else if (level == "warning") {
+      } else if (level === "warning") {
         element.classList.add("alert");
         element.classList.add("alert-warning");
       } else {
@@ -2364,10 +2373,19 @@ var workingData = [];
     }
   },
   created: function created() {
-    this.processBackendResponse(workingData);
+    var _this5 = this;
+
+    // reformat initial data
+    this.processBackendResponse(workingData); // get list for dropdowns
+
+    axios.get('list/film').then(function (res) {
+      // console.log(res)
+      _this5.dropdownListing = res.data;
+    })["catch"](function (error) {
+      _this5.updateUserInfo("warn", "Failed to get films");
+    });
   },
   mounted: function mounted() {
-    //this.httpGet("list/actor", this.processBackendResponse);
     document.getElementById('input-search').addEventListener("keyup", this.actionSearch);
     document.getElementById('btn-search').addEventListener("click", this.actionSearch);
   }
@@ -2375,10 +2393,271 @@ var workingData = [];
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogModal.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/DialogModal.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogCreate.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/DialogCreate.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["FormInputPlugin"]);
+vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["FormGroupPlugin"]);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "DialogCreate",
+  props: {
+    dialogTitle: {
+      type: String,
+      required: false,
+      "default": "MyDialog"
+    },
+    // the structure of the form
+    formDefinition: {
+      type: Array,
+      required: false,
+      "default": function _default() {
+        // layout of a form definition that must be provided
+        return [{
+          fieldName: "slug",
+          fieldLabel: "Slug",
+          fieldIsDisplayed: false,
+          isMandatory: true,
+          validationFailedMessage: "A Slug is required",
+          fieldType: "b-form-input",
+          // data field must be specified otherwise v-bind does not work
+          fieldData: ""
+        }, {
+          fieldName: "name",
+          fieldLabel: "Name",
+          fieldIsDisplayed: true,
+          isMandatory: true,
+          validationFailedMessage: "A Name is required",
+          fieldType: "b-form-input",
+          // data field must be specified otherwise v-bind does not work
+          fieldData: ""
+        }, {
+          fieldName: "description",
+          fieldLabel: "Description",
+          fieldIsDisplayed: true,
+          isMandatory: true,
+          validationFailedMessage: "A Description is required",
+          fieldType: "b-form-input",
+          fieldData: ""
+        }, {
+          fieldName: "film_id",
+          fieldLabel: "FilmId",
+          fieldIsDisplayed: true,
+          isMandatory: true,
+          validationFailedMessage: "A FilmId is required",
+          fieldType: "b-form-select",
+          fieldData: ""
+        }];
+      }
+    },
+    // where to get the available options for the select
+    optionsUrl: {
+      type: String,
+      required: false,
+      "default": function _default() {
+        return null;
+      }
+    },
+    // where to submit form data
+    createUrl: {
+      type: String,
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      selectableOptions: []
+    };
+  },
+  methods: {
+    dialogCallback: function dialogCallback(formulaData) {
+      var _this = this;
+
+      console.log("running " + formulaData);
+      axios.post(this.createUrl, formulaData).then(function (response) {
+        _this.dialogOkCallback();
+      })["catch"](function (error) {
+        _this.dialogFailedCallback();
+      });
+    },
+    dialogOkCallback: function dialogOkCallback() {
+      this.updateUserInfo("info", "record has been created");
+    },
+    dialogFailedCallback: function dialogFailedCallback() {
+      this.updateUserInfo("warning", "cannot create record");
+    },
+    getOptions: function getOptions(optionsUrl) {
+      var _this2 = this;
+
+      axios.get(optionsUrl).then(function (res) {
+        return (// console.log(res)
+          _this2.selectableOptions = res.data
+        );
+      });
+    },
+    updateUserInfo: function updateUserInfo(level, info) {
+      var element = document.getElementById("userInfo");
+      element.innerHTML = info;
+
+      if (level === "success") {
+        element.classList.add("alert");
+        element.classList.add("alert-success");
+      } else if (level === "info") {
+        element.classList.add("alert");
+        element.classList.add("alert-info");
+      } else if (level === "warning") {
+        element.classList.add("alert");
+        element.classList.add("alert-warning");
+      } else {
+        element.classList.add("alert");
+        element.classList.add("alert-danger");
+      }
+
+      element.classList.add("hidden");
+      setTimeout(function () {
+        // element.classList.remove("hidden");
+        element.className = 'userInfo';
+        element.innerHTML = '';
+      }, 10000);
+    }
+  },
+  created: function created() {
+    console.log(this.optionsUrl);
+
+    if (this.optionsUrl !== null) {
+      this.getOptions(this.optionsUrl);
+    }
+  },
+  mounted: function mounted() {
+    this.$bvModal.show("create-form-dialog");
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogFormInput.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/DialogFormInput.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["FormInputPlugin"]);
+vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["FormGroupPlugin"]);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "DialogFormInput",
+  props: {
+    fieldLabel: {
+      type: String,
+      required: true,
+      "default": "MyName"
+    },
+    fieldId: {
+      type: String,
+      required: false,
+      "default": "myname-input"
+    },
+    isMandatory: {
+      type: Boolean,
+      required: false,
+      "default": false
+    },
+    validationFailedMessage: {
+      type: String,
+      required: false,
+      "default": "This field must be not empty"
+    },
+    fieldData: {
+      type: String,
+      required: false,
+      "default": ""
+    }
+  },
+  data: function data() {
+    return {
+      fieldInput: this.fieldData
+    };
+  },
+  computed: {
+    fieldState: function fieldState() {
+      return this.fieldInput.length > 0 ? true : false;
+    }
+  },
+  watch: {
+    fieldData: {
+      handler: function handler(newData, oldData) {
+        console.log("fieldChanged " + newData);
+        this.fieldInput = newData;
+      },
+      deep: true
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogFormSelect.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/DialogFormSelect.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2444,6 +2723,143 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+
+vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["FormInputPlugin"]);
+vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["FormGroupPlugin"]);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "DialogFormSelect",
+  props: {
+    fieldLabel: {
+      type: String,
+      required: true,
+      "default": "MyName"
+    },
+    fieldId: {
+      type: String,
+      required: false,
+      "default": "myname-input"
+    },
+    isMandatory: {
+      type: Boolean,
+      required: false,
+      "default": false
+    },
+    isMultiple: {
+      type: Boolean,
+      required: false,
+      "default": false
+    },
+    validationFailedMessage: {
+      type: String,
+      required: false,
+      "default": "Choose an option"
+    },
+    fieldData: {
+      type: [Array, String],
+      required: false,
+      "default": []
+    },
+    // fieldData: {
+    //     type: String,
+    //     required: false,
+    //     default: ""
+    // },
+    // provides a list of options, such as
+    // [ { item: 'A', name: 'Option A' },
+    // { item: 'B', name: 'Option B' },
+    // { item: 'D', name: 'Option C', notEnabled: true },
+    // { item: { d: 1 }, name: 'Option D' } ]
+    fieldOptions: {
+      type: Array,
+      required: true
+    },
+    // the id field of the options provided. e.g. item in the above example
+    fieldOptionsId: {
+      required: true
+    },
+    // the displayed field of the options provided. e.g. name in the above example
+    fieldOptionsDisplayName: {
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      fieldInput: this.fieldData
+    };
+  },
+  computed: {
+    fieldState: function fieldState() {
+      console.log(JSON.stringify(this.fieldInput));
+
+      if (this.isMultiple === true && Array.isArray(this.fieldInput)) {
+        console.log("im on");
+
+        if (this.fieldInput.length === 0) {
+          return false;
+        } else {
+          return true;
+        } //(this.isMultiple === false ){
+
+      } else {
+        return typeof this.fieldOptions[this.fieldInput] !== 'undefined' ? true : false;
+      }
+    }
+  },
+  watch: {
+    fieldData: {
+      handler: function handler(newData, oldData) {
+        console.log("select fieldChanged " + newData);
+        this.fieldInput = newData;
+      },
+      deep: true
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogModal.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/DialogModal.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2467,65 +2883,159 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_M
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["FormInputPlugin"]);
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["FormGroupPlugin"]);
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["ButtonPlugin"]);
-vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["FormSelectPlugin"]); // import "bootstrap/dist/css/bootstrap.min.css";
-// import "bootstrap-vue/dist/bootstrap-vue.css";
-
+vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["FormSelectPlugin"]);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "DialogeModal",
+  name: "DialogModal",
+  props: {
+    // unique id in the event the dialog must be accessed
+    dialogId: {
+      type: String,
+      required: false,
+      "default": "MyDialog"
+    },
+    dialogTitle: {
+      type: String,
+      required: false,
+      "default": "MyDialog"
+    },
+    // function is called when form was submitted ( e.g. parent)
+    dialogCallback: {
+      type: Function,
+      required: false,
+      "default": function _default() {}
+    },
+    // selectable list of options for select items
+    dialogOptions: {
+      type: Array,
+      required: false,
+      "default": function _default() {
+        return [];
+      }
+    },
+    // the structure of the form
+    formDefinition: {
+      type: Array,
+      required: false,
+      "default": function _default() {
+        // layout of a form definition that must be provided
+        return [{
+          fieldName: "slug",
+          fieldLabel: "Slug",
+          fieldIsDisplayed: false,
+          isMandatory: true,
+          validationFailedMessage: "A Slug is required",
+          fieldType: "b-form-input",
+          // data field must be specified otherwise v-bind does not work
+          fieldData: ""
+        }, {
+          fieldName: "name",
+          fieldLabel: "Name",
+          fieldIsDisplayed: true,
+          isMandatory: true,
+          validationFailedMessage: "A Name is required",
+          fieldType: "b-form-input",
+          // data field must be specified otherwise v-bind does not work
+          fieldData: ""
+        }, {
+          fieldName: "description",
+          fieldLabel: "Description",
+          fieldIsDisplayed: true,
+          isMandatory: true,
+          validationFailedMessage: "A Description is required",
+          fieldType: "b-form-input",
+          fieldData: ""
+        }, {
+          fieldName: "film_id",
+          fieldLabel: "FilmId",
+          fieldIsDisplayed: true,
+          isMandatory: true,
+          validationFailedMessage: "A FilmId is required",
+          fieldType: "b-form-select",
+          fieldData: ""
+        }];
+      }
+    },
+    // data of the form. is supposed to be json. fields must match "fieldName"
+    // might be empty when the form is empty
+    formData: {
+      type: Object,
+      required: false,
+      "default": function _default() {
+        return {};
+      }
+    }
+  },
   data: function data() {
-    // descriptionState: null,
-    // nameState: null,
-    // filmidState: null,
     return {
-      name: '',
-      description: '',
-      filmid: '',
-      submittedNames: [],
-      selected: '-',
-      options: [{
-        item: 'A',
-        name: 'Option A'
-      }, {
-        item: 'B',
-        name: 'Option B'
-      }, {
-        item: 'D',
-        name: 'Option C',
-        notEnabled: true
-      }, {
-        item: {
-          d: 1
-        },
-        name: 'Option D'
-      }]
+      // using this bind both data sets together.
+      // changing workingFormData will change also formDefinition, pointer?
+      workingFormData: this.formDefinition
     };
   },
-  computed: {
-    nameState: function nameState() {
-      return this.name.length > 1 ? true : false;
-    },
-    descriptionState: function descriptionState() {
-      return this.description.length > 1 ? true : false;
-    },
-    filmidState: function filmidState() {
-      return this.filmid.length > 1 ? true : false;
+  computed: {},
+  watch: {
+    // runs when parent changes its data
+    formData: {
+      handler: function handler(newData, oldData) {
+        console.log("newdata " + JSON.stringify(newData));
+        var i; // console.log( "pre " + JSON.stringify(this.workingFormData) );
+        // push data to structure
+
+        for (var i = 0; i < this.workingFormData.length; i++) {
+          //console.log("working on fieldname: "+ this.workingFormData[i].fieldName);
+          if (typeof newData === 'undefined' || typeof newData[this.workingFormData[i].fieldName] === 'undefined') {// no change
+            //console.log("cannot set data, newData has no such array index");
+          } else {
+            this.workingFormData[i]['fieldData'] = newData[this.workingFormData[i].fieldName];
+          }
+        }
+      },
+      deep: true
     }
   },
   methods: {
-    checkFormValidity: function checkFormValidity() {
-      var valid = this.$refs.form.checkValidity(); // this.nameState = valid
-      // this.descriptionState = valid
-      // this.filmidState = valid
+    // unfortuanally variable binding is broken because in DialogFormInput we have to split prop / and data
+    collectFormData: function collectFormData() {
+      var submitData = {};
 
+      for (var i = 0; i < this.workingFormData.length; i++) {
+        var index = this.workingFormData[i].fieldName;
+        var data;
+        var dataElement = document.getElementById("form-input-" + index); // console.log(dataElement);
+
+        if (dataElement !== "undefined" && dataElement !== null) {
+          if (this.workingFormData[i].isMultiple === true) {
+            data = this.getMultiSelectOptions(dataElement);
+          } else {
+            data = dataElement.value;
+          }
+        } else {
+          data = this.workingFormData[i].fieldData;
+        } // console.log("index is: "+ index + " data is: " + data);
+
+
+        submitData[index] = data;
+      }
+
+      return submitData;
+    },
+    getMultiSelectOptions: function getMultiSelectOptions(documentElement) {
+      var selected1 = [];
+
+      for (var i = 0; i < documentElement.length; i++) {
+        if (documentElement.options[i].selected) selected1.push(documentElement.options[i].value);
+      }
+
+      console.log(selected1);
+      return selected1;
+    },
+    checkFormValidity: function checkFormValidity() {
+      var valid = this.$refs.form.checkValidity();
       return valid;
     },
-    resetModal: function resetModal() {
-      this.name = ''; // this.nameState = null
-
-      this.description = ''; // this.descriptionState = null
-
-      this.filmid = ''; // this.filmidState = null
+    resetModal: function resetModal() {// this.formData = null;
+      // this.dialogData = null;
     },
     handleOk: function handleOk(bvModalEvt) {
       // Prevent modal from closing
@@ -2539,14 +3049,13 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_M
       // Exit when the form isn't valid
       if (!this.checkFormValidity()) {
         return;
-      } // Push the name to submitted names
+      } // Hide the modal manually
 
-
-      this.submittedNames.push(this.name); // Hide the modal manually
 
       this.$nextTick(function () {
-        _this.$bvModal.hide('modal-prevent-closing');
+        _this.$bvModal.hide(_this.dialogId);
       });
+      this.dialogCallback(this.collectFormData());
     }
   }
 });
@@ -44722,7 +45231,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*\n default color was:\n    color: #337ab7;\n    instead of\n    color: #00d1b2;\n*/\n#datatable-light {\n    font-family: \"Avenir\", Helvetica, Arial, sans-serif;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n    text-align: center;\n    color: #00b89c;\n    margin-top: 60px;\n}\n#datatable-light .title {\n    margin-bottom: 30px;\n}\n#datatable-light .items-per-page {\n    height: 100%;\n    display: flex;\n    align-items: flex-start;\n    color: #00d1b2;\n}\n#datatable-light .items-per-page label {\n    margin: 0 15px;\n}\n\n/* Datatable CSS */\n.v-datatable-light .header-item {\n    cursor: pointer;\n    color: #00d1b2;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light .header-item:hover {\n    color: #ed9b19;\n}\n.v-datatable-light .header-item.no-sortable {\n    cursor: default;\n}\n.v-datatable-light .header-item.no-sortable:hover {\n    color: #00d1b2;\n}\n.v-datatable-light .header-item .th-wrapper {\n    display: flex;\n    width: 100%;\n    height: 100%;\n    font-weight: bold;\n    align-items: center;\n}\n.v-datatable-light .header-item .th-wrapper.checkboxes {\n    justify-content: center;\n}\n.v-datatable-light .header-item .th-wrapper .arrows-wrapper {\n    display: flex;\n    flex-direction: column;\n    margin-left: 10px;\n    justify-content: space-between;\n}\n.v-datatable-light .header-item .th-wrapper .arrows-wrapper.centralized {\n    justify-content: center;\n}\n.v-datatable-light .arrow {\n    transition: color 0.15s ease-in-out;\n    width: 0;\n    height: 0;\n    border-left: 8px solid transparent;\n    border-right: 8px solid transparent;\n}\n.v-datatable-light .arrow.up {\n    border-bottom: 8px solid #00d1b2;\n    margin-bottom: 5px;\n}\n.v-datatable-light .arrow.up:hover {\n    border-bottom: 8px solid #ed9b19;\n}\n.v-datatable-light .arrow.down {\n    border-top: 8px solid #00d1b2;\n}\n.v-datatable-light .arrow.down:hover {\n    border-top: 8px solid #ed9b19;\n}\n/* example colorization of cells / rows / columns\n#datatable-light .v-datatable-light .row-1 .column-2 {\n    color: green;\n}\n*/\n.v-datatable-light .datatable-footer {\n    display: flex;\n    justify-content: space-between;\n    width: 600px;\n}\n/* End Datatable CSS */\n\n/* Pagination CSS */\n.v-datatable-light-pagination {\n    list-style: none;\n    display: flex;\n    align-items: flex-end;\n    justify-content: flex-end;\n    margin: 0;\n    padding: 0;\n    width: 300px;\n    height: 30px;\n}\n.v-datatable-light-pagination .pagination-item {\n    width: 30px;\n    margin-right: 5px;\n    font-size: 16px;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light-pagination .pagination-item.selected {\n    color: #ed9b19;\n}\n.v-datatable-light-pagination .pagination-item .page-btn {\n    background-color: transparent;\n    outline: none;\n    border: none;\n    color: #00d1b2;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light-pagination .pagination-item .page-btn:hover {\n    color: #ed9b19;\n}\n.v-datatable-light-pagination .pagination-item .page-btn:disabled {\n    cursor: not-allowed;\n    box-shadow: none;\n    opacity: 0.65;\n}\n/* END PAGINATION CSS */\n\n/* ITEMS PER PAGE DROPDOWN CSS */\n.item-per-page-dropdown {\n    background-color: transparent;\n    min-height: 30px;\n    border: 1px solid #00d1b2;\n    border-radius: 5px;\n    color: #00d1b2;\n}\n.item-per-page-dropdown:hover {\n    cursor: pointer;\n}\n/* END ITEMS PER PAGE DROPDOWN CSS */\n#datatable-light .userInfo {\n    float: left;\n    padding: 6px;\n    font-size: 17px;\n}\n#datatable-light .hidden{\n    visibility: hidden;\n    opacity: 0;\n    transition: visibility 0s 10s, opacity 10s linear;\n}\n#datatable-light .search-container {\n    float: right;\n    box-sizing: border-box;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    background-position: 10px 10px;\n    background-repeat: no-repeat;\n    background-color: white;\n}\n#datatable-light .search-container input[type=text] {\n    padding: 6px;\n    font-size: 17px;\n    border: none;\n}\n#datatable-light .search-container button {\n    float: right;\n    padding: 6px 10px;\n    background: #ddd;\n    font-size: 17px;\n    border: none;\n    cursor: pointer;\n}\n#datatable-light .search-container button:hover {\n    background: #ccc;\n}\n@media screen and (max-width: 600px) {\n#datatable-light .search-container .search-container {\n        float: none;\n}\n#datatable-light a, #datatable-light .search-container input[type=text], #datatable-light .search-container button {\n        float: none;\n        display: block;\n        text-align: left;\n        width: 100%;\n        margin: 0;\n        padding: 14px;\n}\n#datatable-light .search-container input[type=text] {\n        border: 1px solid #ccc;\n}\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*\n default color was:\n    color: #337ab7;\n    instead of\n    color: #00d1b2;\n*/\n#datatable-light {\n    font-family: \"Avenir\", Helvetica, Arial, sans-serif;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n    text-align: center;\n    color: #00b89c;\n    margin-top: 60px;\n}\n#datatable-light .title {\n    margin-bottom: 30px;\n}\n#datatable-light .items-per-page {\n    height: 100%;\n    display: flex;\n    align-items: flex-start;\n    color: #00d1b2;\n}\n#datatable-light .items-per-page label {\n    margin: 0 15px;\n}\n\n/* Datatable CSS */\n.v-datatable-light .header-item {\n    cursor: pointer;\n    color: #00d1b2;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light .header-item:hover {\n    color: #ed9b19;\n}\n.v-datatable-light .header-item.no-sortable {\n    cursor: default;\n}\n.v-datatable-light .header-item.no-sortable:hover {\n    color: #00d1b2;\n}\n.v-datatable-light .header-item .th-wrapper {\n    display: flex;\n    width: 100%;\n    height: 100%;\n    font-weight: bold;\n    align-items: center;\n}\n.v-datatable-light .header-item .th-wrapper.checkboxes {\n    justify-content: center;\n}\n.v-datatable-light .header-item .th-wrapper .arrows-wrapper {\n    display: flex;\n    flex-direction: column;\n    margin-left: 10px;\n    justify-content: space-between;\n}\n.v-datatable-light .header-item .th-wrapper .arrows-wrapper.centralized {\n    justify-content: center;\n}\n.v-datatable-light .arrow {\n    transition: color 0.15s ease-in-out;\n    width: 0;\n    height: 0;\n    border-left: 8px solid transparent;\n    border-right: 8px solid transparent;\n}\n.v-datatable-light .arrow.up {\n    border-bottom: 8px solid #00d1b2;\n    margin-bottom: 5px;\n}\n.v-datatable-light .arrow.up:hover {\n    border-bottom: 8px solid #ed9b19;\n}\n.v-datatable-light .arrow.down {\n    border-top: 8px solid #00d1b2;\n}\n.v-datatable-light .arrow.down:hover {\n    border-top: 8px solid #ed9b19;\n}\n/* example colorization of cells / rows / columns\n#datatable-light .v-datatable-light .row-1 .column-2 {\n    color: green;\n}\n*/\n.v-datatable-light .datatable-footer {\n    display: flex;\n    justify-content: space-between;\n    width: 600px;\n}\n/* End Datatable CSS */\n\n/* Pagination CSS */\n.v-datatable-light-pagination {\n    list-style: none;\n    display: flex;\n    align-items: flex-end;\n    justify-content: flex-end;\n    margin: 0;\n    padding: 0;\n    width: 300px;\n    height: 30px;\n}\n.v-datatable-light-pagination .pagination-item {\n    width: 30px;\n    margin-right: 5px;\n    font-size: 16px;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light-pagination .pagination-item.selected {\n    color: #ed9b19;\n}\n.v-datatable-light-pagination .pagination-item .page-btn {\n    background-color: transparent;\n    outline: none;\n    border: none;\n    color: #00d1b2;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light-pagination .pagination-item .page-btn:hover {\n    color: #ed9b19;\n}\n.v-datatable-light-pagination .pagination-item .page-btn:disabled {\n    cursor: not-allowed;\n    box-shadow: none;\n    opacity: 0.65;\n}\n/* END PAGINATION CSS */\n\n/* ITEMS PER PAGE DROPDOWN CSS */\n.item-per-page-dropdown {\n    background-color: transparent;\n    min-height: 30px;\n    border: 1px solid #00d1b2;\n    border-radius: 5px;\n    color: #00d1b2;\n}\n.item-per-page-dropdown:hover {\n    cursor: pointer;\n}\n/* END ITEMS PER PAGE DROPDOWN CSS */\n#datatable-light .userInfo {\n    float: left;\n    padding: 6px;\n    font-size: 17px;\n}\n#datatable-light .hidden{\n    visibility: hidden;\n    opacity: 0;\n    transition: visibility 0s 10s, opacity 10s linear;\n}\n#datatable-light .search-container {\n    float: right;\n    box-sizing: border-box;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    background-position: 10px 10px;\n    background-repeat: no-repeat;\n    background-color: white;\n}\n#datatable-light .search-container input[type=text] {\n    padding: 6px;\n    font-size: 17px;\n    border: none;\n}\n#datatable-light .search-container button {\n    float: right;\n    padding: 6px 10px;\n    background: #ddd;\n    font-size: 17px;\n    border: none;\n    cursor: pointer;\n}\n#datatable-light .search-container button:hover {\n    background: #ccc;\n}\n@media screen and (max-width: 600px) {\n#datatable-light .search-container .search-container {\n        float: none;\n}\n#datatable-light a, #datatable-light .search-container input[type=text], #datatable-light .search-container button {\n        float: none;\n        display: block;\n        text-align: left;\n        width: 100%;\n        margin: 0;\n        padding: 14px;\n}\n#datatable-light .search-container input[type=text] {\n        border: 1px solid #ccc;\n}\n}\n", ""]);
 
 // exports
 
@@ -68744,78 +69253,61 @@ var render = function() {
     [
       _c("h3", { staticClass: "title" }, [_vm._v(_vm._s(_vm.tableTitle))]),
       _vm._v(" "),
-      _c(
-        "div",
-        [
-          _c(
-            "b-button",
+      _c("dialog-modal", {
+        attrs: {
+          "dialog-id": "edit-form-dialog",
+          "dialog-title": "Edit Record",
+          "form-definition": [
             {
-              attrs: { id: "show-btn" },
-              on: {
-                click: function($event) {
-                  return _vm.$bvModal.show("bv-modal-example")
-                }
-              }
+              fieldName: "slug",
+              fieldLabel: "Slug",
+              fieldIsDisplayed: false,
+              isMandatory: true,
+              validationFailedMessage: "A Slug is required",
+              fieldType: "b-form-input",
+              // data field must be specified otherwise v-bind does not work
+              fieldData: ""
             },
-            [_vm._v("Open Modal")]
-          ),
-          _vm._v(" "),
-          _c(
-            "b-modal",
             {
-              attrs: { id: "bv-modal-example", "hide-footer": "" },
-              scopedSlots: _vm._u([
-                {
-                  key: "modal-title",
-                  fn: function() {
-                    return [
-                      _vm._v("\n                Using "),
-                      _c("code", [_vm._v("$bvModal")]),
-                      _vm._v(" Methods\n            ")
-                    ]
-                  },
-                  proxy: true
-                }
-              ])
+              fieldName: "name",
+              fieldLabel: "Name",
+              fieldIsDisplayed: true,
+              isMandatory: true,
+              validationFailedMessage: "A super Name is required",
+              fieldType: "b-form-input",
+              // data field must be specified otherwise v-bind does not work
+              fieldData: ""
             },
-            [
-              _vm._v(" "),
-              _c("div", { staticClass: "d-block text-center" }, [
-                _c("h3", [_vm._v("Hello From This Modal!")])
-              ]),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                {
-                  staticClass: "mt-3",
-                  attrs: { block: "" },
-                  on: {
-                    click: function($event) {
-                      return _vm.$bvModal.hide("bv-modal-example")
-                    }
-                  }
-                },
-                [_vm._v("Close Me")]
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("dialog-modal"),
+            {
+              fieldName: "description",
+              fieldLabel: "Description",
+              fieldIsDisplayed: true,
+              isMandatory: true,
+              validationFailedMessage: "A Description is required",
+              fieldType: "b-form-input",
+              fieldData: ""
+            },
+            {
+              fieldName: "film_id",
+              fieldLabel: "FilmId",
+              fieldIsDisplayed: true,
+              isMandatory: true,
+              validationFailedMessage: "A FilmId is required",
+              fieldType: "b-form-select",
+              fieldData: ""
+            }
+          ],
+          "form-data": _vm.formData,
+          "dialog-options": _vm.dropdownListing,
+          dialogCallback: _vm.dialogCallback
+        }
+      }),
       _vm._v(" "),
       _c("div", [
         _c("div", { staticClass: "userInfo", attrs: { id: "userInfo" } }),
         _vm._v(" "),
         _c("div", { staticClass: "search-container" }, [
           _c("form"),
-          _vm._v(" "),
-          _c("input", {
-            attrs: { type: "hidden", name: "_token" },
-            domProps: { value: _vm.csrf }
-          }),
           _vm._v(" "),
           _c("input", {
             attrs: {
@@ -68882,7 +69374,7 @@ var render = function() {
                         attrs: { id: "edit-btn", variant: "primary" },
                         on: {
                           click: function($event) {
-                            return _vm.$bvModal.show("bv-modal-example")
+                            return _vm.dtEditClick(props)
                           }
                         }
                       },
@@ -68892,21 +69384,20 @@ var render = function() {
                 }
               },
               {
-                key: "actionFirst",
+                key: "actionRemove",
                 fn: function(props) {
                   return [
                     _c(
-                      "a",
+                      "b-button",
                       {
-                        attrs: { href: "#" },
+                        attrs: { id: "remove-btn", variant: "primary" },
                         on: {
                           click: function($event) {
-                            $event.preventDefault()
-                            return _vm.actionFirstClick(props)
+                            return _vm.dtRemoveClick(props)
                           }
                         }
                       },
-                      [_vm._v("Actions First")]
+                      [_vm._v("Remove")]
                     )
                   ]
                 }
@@ -69017,6 +69508,237 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogCreate.vue?vue&type=template&id=c4e3d362&scoped=true&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/DialogCreate.vue?vue&type=template&id=c4e3d362&scoped=true& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("dialog-modal", {
+        attrs: {
+          "dialog-id": "create-form-dialog",
+          "dialog-title": _vm.dialogTitle,
+          "form-definition": _vm.formDefinition,
+          "dialog-options": _vm.selectableOptions,
+          dialogCallback: _vm.dialogCallback
+        }
+      }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "userInfo", attrs: { id: "userInfo" } }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c(
+        "b-button",
+        {
+          attrs: { id: "create-btn", variant: "primary" },
+          on: {
+            click: function($event) {
+              return _vm.$bvModal.show("create-form-dialog")
+            }
+          }
+        },
+        [_vm._v(_vm._s(this.dialogTitle))]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogFormInput.vue?vue&type=template&id=1b74b33a&scoped=true&":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/DialogFormInput.vue?vue&type=template&id=1b74b33a&scoped=true& ***!
+  \******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "b-form-group",
+    {
+      attrs: {
+        state: _vm.fieldState,
+        label: _vm.fieldLabel,
+        "label-for": _vm.fieldId,
+        "invalid-feedback": _vm.validationFailedMessage
+      }
+    },
+    [
+      _vm.isMandatory
+        ? _c("b-form-input", {
+            attrs: { id: _vm.fieldId, state: _vm.fieldState, required: "" },
+            model: {
+              value: _vm.fieldInput,
+              callback: function($$v) {
+                _vm.fieldInput = $$v
+              },
+              expression: "fieldInput"
+            }
+          })
+        : _c("b-form-input", {
+            attrs: { id: _vm.fieldId, state: _vm.fieldState },
+            model: {
+              value: _vm.fieldInput,
+              callback: function($$v) {
+                _vm.fieldInput = $$v
+              },
+              expression: "fieldInput"
+            }
+          })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogFormSelect.vue?vue&type=template&id=b896ce9a&scoped=true&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/DialogFormSelect.vue?vue&type=template&id=b896ce9a&scoped=true& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "b-form-group",
+    {
+      attrs: {
+        state: _vm.fieldState,
+        label: _vm.fieldLabel,
+        "label-for": _vm.fieldId,
+        "invalid-feedback": _vm.validationFailedMessage
+      }
+    },
+    [
+      _vm.isMandatory && _vm.isMultiple
+        ? _c("b-form-select", {
+            staticClass: "mb-3",
+            attrs: {
+              id: _vm.fieldId,
+              options: _vm.fieldOptions,
+              state: _vm.fieldState,
+              "value-field": _vm.fieldOptionsId,
+              "text-field": _vm.fieldOptionsDisplayName,
+              "disabled-field": "notEnabled",
+              multiple: "",
+              required: ""
+            },
+            model: {
+              value: _vm.fieldInput,
+              callback: function($$v) {
+                _vm.fieldInput = $$v
+              },
+              expression: "fieldInput"
+            }
+          })
+        : _vm.isMandatory && !_vm.isMultiple
+        ? _c("b-form-select", {
+            staticClass: "mb-3",
+            attrs: {
+              id: _vm.fieldId,
+              options: _vm.fieldOptions,
+              state: _vm.fieldState,
+              "value-field": _vm.fieldOptionsId,
+              "text-field": _vm.fieldOptionsDisplayName,
+              "disabled-field": "notEnabled",
+              required: ""
+            },
+            model: {
+              value: _vm.fieldInput,
+              callback: function($$v) {
+                _vm.fieldInput = $$v
+              },
+              expression: "fieldInput"
+            }
+          })
+        : !_vm.isMandatory && _vm.isMultiple
+        ? _c("b-form-select", {
+            staticClass: "mb-3",
+            attrs: {
+              id: _vm.fieldId,
+              options: _vm.fieldOptions,
+              state: _vm.fieldState,
+              "value-field": _vm.fieldOptionsId,
+              "text-field": _vm.fieldOptionsDisplayName,
+              "disabled-field": "notEnabled",
+              multiple: ""
+            },
+            model: {
+              value: _vm.fieldInput,
+              callback: function($$v) {
+                _vm.fieldInput = $$v
+              },
+              expression: "fieldInput"
+            }
+          })
+        : _c("b-form-select", {
+            staticClass: "mb-3",
+            attrs: {
+              id: _vm.fieldId,
+              options: _vm.fieldOptions,
+              state: _vm.fieldState,
+              "value-field": _vm.fieldOptionsId,
+              "text-field": _vm.fieldOptionsDisplayName,
+              "disabled-field": "notEnabled"
+            },
+            model: {
+              value: _vm.fieldInput,
+              callback: function($$v) {
+                _vm.fieldInput = $$v
+              },
+              expression: "fieldInput"
+            }
+          })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogModal.vue?vue&type=template&id=185c6aaa&":
 /*!**************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/DialogModal.vue?vue&type=template&id=185c6aaa& ***!
@@ -69036,43 +69758,10 @@ var render = function() {
     "div",
     [
       _c(
-        "b-button",
-        {
-          directives: [
-            {
-              name: "b-modal",
-              rawName: "v-b-modal.modal-prevent-closing",
-              modifiers: { "modal-prevent-closing": true }
-            }
-          ]
-        },
-        [_vm._v("Open Dialog")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "mt-3" }, [
-        _vm._v("\n        Submitted Names:\n        "),
-        _vm.submittedNames.length === 0
-          ? _c("div", [_vm._v("--")])
-          : _c(
-              "ul",
-              { staticClass: "mb-0 pl-3" },
-              _vm._l(_vm.submittedNames, function(name) {
-                return _c("li", [_vm._v(_vm._s(name))])
-              }),
-              0
-            )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "mt-3" }, [
-        _vm._v("Selected: "),
-        _c("strong", [_vm._v(_vm._s(_vm.selected))])
-      ]),
-      _vm._v(" "),
-      _c(
         "b-modal",
         {
           ref: "modal",
-          attrs: { id: "modal-prevent-closing", title: "Submit Your Name" },
+          attrs: { id: _vm.dialogId, title: _vm.dialogTitle },
           on: { show: _vm.resetModal, hidden: _vm.resetModal, ok: _vm.handleOk }
         },
         [
@@ -69088,112 +69777,46 @@ var render = function() {
                 }
               }
             },
-            [
-              _c(
-                "b-form-group",
-                {
-                  attrs: {
-                    state: _vm.nameState,
-                    label: "Name",
-                    "label-for": "name-input",
-                    "invalid-feedback": "Name is required"
-                  }
-                },
+            _vm._l(_vm.formDefinition, function(field, i) {
+              return _c(
+                "div",
                 [
-                  _c("b-form-input", {
-                    attrs: {
-                      id: "name-input",
-                      state: _vm.nameState,
-                      required: ""
-                    },
-                    model: {
-                      value: _vm.name,
-                      callback: function($$v) {
-                        _vm.name = $$v
-                      },
-                      expression: "name"
-                    }
-                  })
+                  field.fieldIsDisplayed && field.fieldType === "b-form-input"
+                    ? _c("dialog-form-input", {
+                        key: field.fieldLabel + field.fieldData,
+                        attrs: {
+                          "field-label": field.fieldLabel,
+                          "field-id": "form-input-" + field.fieldName,
+                          "field-data": _vm.workingFormData[i].fieldData,
+                          "is-mandatory": field.isMandatory,
+                          "validation-failed-message":
+                            field.validationFailedMessage
+                        }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  field.fieldIsDisplayed && field.fieldType === "b-form-select"
+                    ? _c("dialog-form-select", {
+                        key: field.fieldLabel + field.fieldData,
+                        attrs: {
+                          "field-label": field.fieldLabel,
+                          "field-id": "form-input-" + field.fieldName,
+                          "field-data": _vm.workingFormData[i].fieldData,
+                          "is-multiple": field.isMultiple,
+                          "is-mandatory": field.isMandatory,
+                          "validation-failed-message":
+                            field.validationFailedMessage,
+                          "field-options-id": "id",
+                          "field-options-display-name": "name",
+                          "field-options": _vm.dialogOptions
+                        }
+                      })
+                    : _vm._e()
                 ],
                 1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-form-group",
-                {
-                  attrs: {
-                    state: _vm.descriptionState,
-                    label: "Description",
-                    "label-for": "description-input",
-                    "invalid-feedback": "Description is required"
-                  }
-                },
-                [
-                  _c("b-form-input", {
-                    attrs: {
-                      id: "description-input",
-                      state: _vm.descriptionState,
-                      required: ""
-                    },
-                    model: {
-                      value: _vm.description,
-                      callback: function($$v) {
-                        _vm.description = $$v
-                      },
-                      expression: "description"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-form-group",
-                {
-                  attrs: {
-                    state: _vm.filmidState,
-                    label: "FilmId",
-                    "label-for": "filmid-input",
-                    "invalid-feedback": "Filmid is required"
-                  }
-                },
-                [
-                  _c("b-form-input", {
-                    attrs: {
-                      id: "filmid-input",
-                      state: _vm.filmidState,
-                      required: ""
-                    },
-                    model: {
-                      value: _vm.filmid,
-                      callback: function($$v) {
-                        _vm.filmid = $$v
-                      },
-                      expression: "filmid"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("b-form-select", {
-                staticClass: "mb-3",
-                attrs: {
-                  options: _vm.options,
-                  "value-field": "item",
-                  "text-field": "name",
-                  "disabled-field": "notEnabled"
-                },
-                model: {
-                  value: _vm.selected,
-                  callback: function($$v) {
-                    _vm.selected = $$v
-                  },
-                  expression: "selected"
-                }
-              })
-            ],
-            1
+              )
+            }),
+            0
           )
         ]
       )
@@ -82165,6 +82788,9 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 Vue.component('query-message', __webpack_require__(/*! ./components/base/QueryMessage.vue */ "./resources/js/components/base/QueryMessage.vue")["default"]);
 Vue.component('datatable-light', __webpack_require__(/*! ./components/DatatableLight.vue */ "./resources/js/components/DatatableLight.vue")["default"]);
 Vue.component('dialog-modal', __webpack_require__(/*! ./components/DialogModal.vue */ "./resources/js/components/DialogModal.vue")["default"]);
+Vue.component('dialog-form-input', __webpack_require__(/*! ./components/DialogFormInput.vue */ "./resources/js/components/DialogFormInput.vue")["default"]);
+Vue.component('dialog-form-select', __webpack_require__(/*! ./components/DialogFormSelect.vue */ "./resources/js/components/DialogFormSelect.vue")["default"]);
+Vue.component('dialog-create', __webpack_require__(/*! ./components/DialogCreate.vue */ "./resources/js/components/DialogCreate.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -82172,21 +82798,18 @@ Vue.component('dialog-modal', __webpack_require__(/*! ./components/DialogModal.v
  */
 
 var app = new Vue({
-  el: '#app',
-  data: {
-    newName: '',
-    names: ['John', 'Mike'],
-    results: [{
-      id: 1,
-      slug: "thiel"
-    }]
-  },
-  methods: {
-    addName: function addName() {
-      this.names.push(this.newName);
-      this.newName = '';
-    }
-  }
+  el: '#app' // data: function() {
+  //     return {
+  //         allFilms: []
+  //     }
+  // },
+  // created() {
+  //     axios.get('/public/index.php/list/film').then(res => (
+  //         // console.log(res)
+  //         this.allFilms = res.data
+  //     ) );
+  // }
+
 });
 
 /***/ }),
@@ -82331,6 +82954,213 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DatatableLight_vue_vue_type_template_id_3e21af3d___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DatatableLight_vue_vue_type_template_id_3e21af3d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/DialogCreate.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/components/DialogCreate.vue ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DialogCreate_vue_vue_type_template_id_c4e3d362_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DialogCreate.vue?vue&type=template&id=c4e3d362&scoped=true& */ "./resources/js/components/DialogCreate.vue?vue&type=template&id=c4e3d362&scoped=true&");
+/* harmony import */ var _DialogCreate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DialogCreate.vue?vue&type=script&lang=js& */ "./resources/js/components/DialogCreate.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _DialogCreate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DialogCreate_vue_vue_type_template_id_c4e3d362_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _DialogCreate_vue_vue_type_template_id_c4e3d362_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "c4e3d362",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/DialogCreate.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/DialogCreate.vue?vue&type=script&lang=js&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/DialogCreate.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogCreate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./DialogCreate.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogCreate.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogCreate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/DialogCreate.vue?vue&type=template&id=c4e3d362&scoped=true&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/DialogCreate.vue?vue&type=template&id=c4e3d362&scoped=true& ***!
+  \*********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogCreate_vue_vue_type_template_id_c4e3d362_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./DialogCreate.vue?vue&type=template&id=c4e3d362&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogCreate.vue?vue&type=template&id=c4e3d362&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogCreate_vue_vue_type_template_id_c4e3d362_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogCreate_vue_vue_type_template_id_c4e3d362_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/DialogFormInput.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/DialogFormInput.vue ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DialogFormInput_vue_vue_type_template_id_1b74b33a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DialogFormInput.vue?vue&type=template&id=1b74b33a&scoped=true& */ "./resources/js/components/DialogFormInput.vue?vue&type=template&id=1b74b33a&scoped=true&");
+/* harmony import */ var _DialogFormInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DialogFormInput.vue?vue&type=script&lang=js& */ "./resources/js/components/DialogFormInput.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _DialogFormInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DialogFormInput_vue_vue_type_template_id_1b74b33a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _DialogFormInput_vue_vue_type_template_id_1b74b33a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "1b74b33a",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/DialogFormInput.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/DialogFormInput.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/DialogFormInput.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogFormInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./DialogFormInput.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogFormInput.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogFormInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/DialogFormInput.vue?vue&type=template&id=1b74b33a&scoped=true&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/DialogFormInput.vue?vue&type=template&id=1b74b33a&scoped=true& ***!
+  \************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogFormInput_vue_vue_type_template_id_1b74b33a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./DialogFormInput.vue?vue&type=template&id=1b74b33a&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogFormInput.vue?vue&type=template&id=1b74b33a&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogFormInput_vue_vue_type_template_id_1b74b33a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogFormInput_vue_vue_type_template_id_1b74b33a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/DialogFormSelect.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/DialogFormSelect.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DialogFormSelect_vue_vue_type_template_id_b896ce9a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DialogFormSelect.vue?vue&type=template&id=b896ce9a&scoped=true& */ "./resources/js/components/DialogFormSelect.vue?vue&type=template&id=b896ce9a&scoped=true&");
+/* harmony import */ var _DialogFormSelect_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DialogFormSelect.vue?vue&type=script&lang=js& */ "./resources/js/components/DialogFormSelect.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _DialogFormSelect_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DialogFormSelect_vue_vue_type_template_id_b896ce9a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _DialogFormSelect_vue_vue_type_template_id_b896ce9a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "b896ce9a",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/DialogFormSelect.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/DialogFormSelect.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/DialogFormSelect.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogFormSelect_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./DialogFormSelect.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogFormSelect.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogFormSelect_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/DialogFormSelect.vue?vue&type=template&id=b896ce9a&scoped=true&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/DialogFormSelect.vue?vue&type=template&id=b896ce9a&scoped=true& ***!
+  \*************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogFormSelect_vue_vue_type_template_id_b896ce9a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./DialogFormSelect.vue?vue&type=template&id=b896ce9a&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogFormSelect.vue?vue&type=template&id=b896ce9a&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogFormSelect_vue_vue_type_template_id_b896ce9a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogFormSelect_vue_vue_type_template_id_b896ce9a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

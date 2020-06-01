@@ -24,6 +24,9 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('query-message', require('./components/base/QueryMessage.vue').default);
 Vue.component('datatable-light', require('./components/DatatableLight.vue').default);
 Vue.component('dialog-modal', require('./components/DialogModal.vue').default);
+Vue.component('dialog-form-input', require('./components/DialogFormInput.vue').default);
+Vue.component('dialog-form-select', require('./components/DialogFormSelect.vue').default);
+Vue.component('dialog-create', require('./components/DialogCreate.vue').default);
 
 
 /**
@@ -34,17 +37,15 @@ Vue.component('dialog-modal', require('./components/DialogModal.vue').default);
 
 const app = new Vue({
     el: '#app',
-    data: {
-        newName: '',
-        names: ['John', 'Mike'],
-        results: [
-            {id: 1, slug: "thiel"}
-        ]
-    },
-    methods: {
-        addName() {
-            this.names.push(this.newName);
-            this.newName = '';
-        },
-    }
+    // data: function() {
+    //     return {
+    //         allFilms: []
+    //     }
+    // },
+    // created() {
+    //     axios.get('/public/index.php/list/film').then(res => (
+    //         // console.log(res)
+    //         this.allFilms = res.data
+    //     ) );
+    // }
 });
