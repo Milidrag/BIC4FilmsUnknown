@@ -34,6 +34,6 @@ class Actor extends BaseModel
 {
     public function film()
     {
-        return $this->belongsToMany(Film::class);
+        return $this->belongsTo(Film::class);
     }
 }

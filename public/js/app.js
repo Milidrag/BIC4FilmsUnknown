@@ -32776,8 +32776,8 @@ var Form = /*#__PURE__*/function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Milidrag\Documents\Universitaet-Technikum\4. Semester\Internet Engineering\projekt\projekt-gerüst\Films-Unknown\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Milidrag\Documents\Universitaet-Technikum\4. Semester\Internet Engineering\projekt\projekt-gerüst\Films-Unknown\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Milidrag\Documents\Universitaet-Technikum\4. Semester\Internet Engineering\projekt\projekt-gerüst\v2_films_unknown\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Milidrag\Documents\Universitaet-Technikum\4. Semester\Internet Engineering\projekt\projekt-gerüst\v2_films_unknown\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
