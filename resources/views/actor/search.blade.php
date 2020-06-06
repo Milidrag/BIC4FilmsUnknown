@@ -102,12 +102,12 @@ https://github.com/Egorvah/vudal
                                 ]'
                              :track-by="'slug'"
                              :initial-data="'{{ $actor }}'"
+                             :is-search-able="true"
                              :sort="'yes'"
                              :options-url="'../list/film'"
                              :get-table-data-url="'list/actor'"
                              :modify-entry-url="'actor/'"
                              :modify-identifier-of-entry="'slug'"
-                             :is-search-able="'true'";
             ></datatable-light>
 
 
