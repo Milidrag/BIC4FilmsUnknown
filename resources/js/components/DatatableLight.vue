@@ -152,8 +152,6 @@ s
     Vue.use(ButtonPlugin);
 
     import Vue from 'vue';
-    import VueRouter from 'vue-router';
-    Vue.use(VueRouter);
 
     const addZero = value => ("0" + value).slice(-2);
 
@@ -364,7 +362,7 @@ s
                 this.data = workingData.slice(start, end);
             },
             dtEditClick: function(props){
-                    
+
 
                 /*
                 window.location.href = "http://localhost:8000/public/actor/"+slug+"/edit";
