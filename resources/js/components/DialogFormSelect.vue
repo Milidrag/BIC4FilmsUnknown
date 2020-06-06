@@ -121,13 +121,13 @@
         data() {
             return {
                 fieldInput: this.fieldData
+
             }
         },
         computed: {
             fieldState(){
-                console.log( JSON.stringify (this.fieldInput) );
+                console.log( "dialog selected: computed field " + JSON.stringify (this.fieldInput) );
                 if (this.isMultiple === true && Array.isArray(this.fieldInput) ){
-                    console.log ("im on");
                     if ( this.fieldInput.length === 0 ) {
                         return false;
                     } else {
@@ -142,7 +142,7 @@
         watch: {
             fieldData: {
                 handler: function(newData, oldData){
-                    console.log("select fieldChanged " + newData)
+                    console.log("dialog selected: select fieldChanged " + JSON.stringify (newData) )
                     this.fieldInput = newData;
                 },
                 deep: true

@@ -5,7 +5,7 @@
     <section class="section">
         <div class="container">
             <h1><b>Create a new actor!</b></h1>
-            <dialog-create
+            <dialog-control
                 :dialog-id="'create-form-dialog'"
                 :dialog-title="'Create Actor'"
                 :form-definition='
@@ -50,12 +50,14 @@
                         }
                     ]
                     '
-                    :options-url="'../list/film'"
+                    :options-url="'../../list/film'"
                     :create-url="'.'"
+                    :edit-url="'.'"
+                    v-bind:dialog-mode="'create'"
 {{--                v-bind:form-data=formData--}}
 {{--                :dialogCallback=''--}}
             >
-            </dialog-create>
+            </dialog-control>
 
         </div>
     </section>

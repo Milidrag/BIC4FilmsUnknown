@@ -96,17 +96,21 @@ https://github.com/Egorvah/vudal
                                 sortable: false,
                                 isDate:    true
                                 },
+                                "__slot:actions:actionEditSeperat",
                                 "__slot:actions:actionShowDetails",
                                 "__slot:actions:actionRemove",
-                                "__slot:actions"
+                                "__slot:actions:actionsEditInline"
                                 ]'
                              :track-by="'slug'"
                              :initial-data="'{{ $actor }}'"
+                             :is-search-able="true"
+                             :search-table-data-url="'../../search/actor'"
                              :sort="'yes'"
                              :options-url="'list/film'"
                              :get-table-data-url="'list/actor'"
-                             :modify-entry-url="'actor/'"
-                             :modify-identifier-of-entry="'slug'"
+                             :entry-url="'actor/'"
+                             :identifier-of-entry="'slug'"
+                             :edit-success-action="'update'"
             ></datatable-light>
 
         </div>

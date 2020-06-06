@@ -66,7 +66,7 @@
             :track-by="trackBy"
         >
             <!-- Action button slot -->
-            <template v-slot:actions="props">
+            <template v-slot:actionsEditInline="props">
                 <!--
                 <input type="button" class="btn btn-primary" value="Edit" @click="dtEditClick(props);">
                 -->
@@ -76,6 +76,11 @@
                <b-button id="edit-btn" variant="primary"  @click="dtEditClick(props)">Edit</b-button>
             </template>
 
+            <template v-slot:actionEditSeperat="props">
+                <b-button id="edit-btn-seperat" variant="primary" v-bind:href="entryUrl + ''+ props.rowData[identifierOfEntry] + '/edit'">Edit extra</b-button>
+            </template>
+
+
             <!-- Action remove slot -->
             <template v-slot:actionRemove="props">
                 <b-button id="remove-btn" variant="danger"  @click="dtRemoveClick(props)">Remove</b-button>
@@ -84,7 +89,7 @@
 s
             <!-- Action "Show Details" slot -->
             <template v-slot:actionShowDetails="props">
-                <b-button id="details-btn" @click="dtDetailsClick(props)">Details</b-button>
+                <b-button id="details-btn" v-bind:href="entryUrl + ''+ props.rowData[identifierOfEntry]" variant="primary" @click="dtDetailsClick(props)">Details</b-button>
                 <!--                <a href="#" @click.prevent="actionFirstClick(props)">Actions First
                 </a>-->
             </template>
@@ -247,11 +252,18 @@ s
                             fieldIsDisplayed: true,
                             isMandatory: true,
                             validationFailedMessage: "A FilmId is required",
-                            label: "b-form-select",
+                            fieldType: "b-form-select",
                             fieldData: ""
                         }
                     ];
                 }
+            },
+            //when edit has finished what should happen? dialogOkCallback
+            // [ update, reload ] is supported
+            editSuccessAction: {
+                type: String,
+                required: true,
+                default: "update"
             },
             // where to get the available options for the select
             optionsUrl: {
@@ -266,13 +278,13 @@ s
                 default: "list/actor"
             },
             // url to use to update / delete a table entry
-            modifyEntryUrl:{
+            entryUrl:{
                 type: String,
                 required: true,
                 default: "actor/"
             },
             // table row contains multiple attributes which of them should be used to update an entry e.g. /actor/{slug}
-            modifyIdentifierOfEntry:{
+            identifierOfEntry:{
                 type: String,
                 required: true,
                 default: "slug"
@@ -361,24 +373,38 @@ s
                 const end = currentPage * this.itemsPerPage;
                 this.data = workingData.slice(start, end);
             },
+            dtDetailsClick: function(props){
+                // redirect to url via javascript
+                window.location.href = this.entryUrl + props.rowData[ this.identifierOfEntry ];
+            },
             dtEditClick: function(props){
-
-
                 /*
                 window.location.href = "http://localhost:8000/public/actor/"+slug+"/edit";
+                                 */
                 this.formData = {};
                 this.formData = props.rowData;
                 this.$bvModal.show( "edit-form-dialog" );
-                 */
-            },
-            dtRemoveClick: function(props){
-                this.formData = {};
-                this.formData = props.rowData;
-                this.$bvModal.show( "edit-form-dialog" );
-            },
-            dtDetailsClick: function(props){
 
             },
+            dtRemoveClick: function(props){
+                // alert("Click props:" + JSON.stringify(props) );
+
+
+                axios.delete(this.entryUrl + props['rowData'][this.identifierOfEntry] )
+                    .then(response => {
+                        const deletedItem = workingData.find( (entry) => {
+                            // find the deleted element
+                            return entry.slug === props['rowData'][this.identifierOfEntry];
+                        } )
+                        if (~deletedItem) {// if the item exists in array
+                            workingData.splice(workingData.indexOf(deletedItem), 1 ) //delete the row
+                            this.updateTableView(); // update the view
+                        }
+                    }).catch(  (error) => {
+                        this.dialogFailedCallback();
+                });
+            },
+
             dtUpdateSort: function({ sortField, sort }) {
                 const sortedData = orderBy(workingData, [sortField], [sort]);
                 const start = (this.currentPage - 1) * this.itemsPerPage;
@@ -386,8 +412,8 @@ s
                 this.data = sortedData.slice(start, end);
             },
             dialogCallback( formulaData ) {
-                console.log("running " + formulaData);
-                axios.put(this.modifyEntryUrl + formulaData[this.modifyIdentifierOfEntry] , formulaData )
+                console.log("running " + JSON.stringify(formulaData) );
+                axios.put(this.entryUrl + formulaData[this.identifierOfEntry] , formulaData )
                     .then( (response) => {
                         this.dialogOkCallback()
                     }).catch(  (error) => {
@@ -395,12 +421,19 @@ s
                 });
             },
             dialogOkCallback() {
-                this.updateUserInfo("info", "record has been updated");
-                this.serverDataGet( this.getTableDataUrl );
+
+                if (this.editSuccessAction === 'reload'){
+                    this.updateUserInfo("info", "record has been updated. reloading page");
+                    window.location.href = '';
+                } else if ( this.editSuccessAction === 'update'){
+                    this.updateUserInfo("info", "record has been updated.");
+                    this.serverDataGet( this.getTableDataUrl );
+                }
+
+
             },
             dialogFailedCallback() {
                 this.updateUserInfo("warning", "cannot update record");
-
             },
             processBackendResponse: function (response){
                 //document.getElementById("container1").insertAdjacentHTML('beforeend', '<div>'+ JSON.stringify(response) + '</div>');
@@ -487,7 +520,7 @@ s
                 // console.log(res)
                 this.dropdownListing = res.data
             }).catch(  (error) => {
-                this.updateUserInfo("warn", "Failed to get films");
+                this.updateUserInfo("warn", "Failed to get optionsdata");
             });
         },
         mounted() {

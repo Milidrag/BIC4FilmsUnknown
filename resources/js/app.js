@@ -26,7 +26,7 @@ Vue.component('datatable-light', require('./components/DatatableLight.vue').defa
 Vue.component('dialog-modal', require('./components/DialogModal.vue').default);
 Vue.component('dialog-form-input', require('./components/DialogFormInput.vue').default);
 Vue.component('dialog-form-select', require('./components/DialogFormSelect.vue').default);
-Vue.component('dialog-create', require('./components/DialogCreate.vue').default);
+Vue.component('dialog-control', require('./components/DialogControl.vue').default);
 
 
 /**

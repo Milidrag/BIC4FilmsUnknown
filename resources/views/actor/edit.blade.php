@@ -4,7 +4,7 @@
 @section('content')
     <section class="section">
         <div class="container">
-            <dialog-create
+            <dialog-control
                 :dialog-id="'edit-form-dialog'"
                 :dialog-title="'Edit Actor'"
                 :form-definition='
@@ -17,7 +17,7 @@
                             validationFailedMessage: "A Slug is required",
                             fieldType: "b-form-input",
                             // data field must be specified otherwise v-bind does not work
-                            fieldData: ""
+                            fieldData: "{{ $actor['slug'] }}"
                         },
                         {
                             fieldName: "name",
@@ -27,7 +27,7 @@
                             validationFailedMessage: "A super Name is required",
                             fieldType: "b-form-input",
                             // data field must be specified otherwise v-bind does not work
-                            fieldData: ""
+                            fieldData: "{{ $actor['name'] }}"
                         },
                         {
                             fieldName: "description",
@@ -36,7 +36,7 @@
                             isMandatory: true,
                             validationFailedMessage: "A Description is required",
                             fieldType: "b-form-input",
-                            fieldData: ""
+                            fieldData: "{{ $actor['description'] }}"
                         },
                         {
                             fieldName: "film_id",
@@ -45,16 +45,17 @@
                             isMandatory: true,
                             validationFailedMessage: "A FilmId is required",
                             fieldType: "b-form-select",
-                            fieldData: ""
+                            fieldData: "{{ $actor['film_id'] }}"
                         }
                     ]
                     '
-                :options-url="'../list/film'"
+                :options-url="'../../list/film'"
                 :create-url="'.'"
-                {{--                v-bind:form-data=formData--}}
+                :edit-url="'.'"
+                :dialog-mode="'edit'"
                 {{--                :dialogCallback=''--}}
             >
-            </dialog-create>
+            </dialog-control>
 
         </div>
     </section>

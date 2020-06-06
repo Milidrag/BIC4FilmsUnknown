@@ -1,9 +1,10 @@
 <template>
     <div>
     <dialog-modal
-        :dialog-id="'create-form-dialog'"
+        :dialog-id="this.dialogMode + '-form-dialog'"
         :dialog-title="dialogTitle"
         :form-definition="formDefinition"
+        v-bind:form-data="formData"
         v-bind:dialog-options="selectableOptions"
         :dialogCallback="dialogCallback"
 
@@ -13,7 +14,8 @@
     <div class="userInfo" id="userInfo">
     </div>
     <br>
-    <b-button id="create-btn" variant="primary" @click="$bvModal.show('create-form-dialog')">{{ this.dialogTitle }}</b-button>
+<!--    <b-button :id="this.dialogMode + '-btn'" variant="primary" @click="$bvModal.show( this.dialogMode + -form-dialog )">{{ this.dialogTitle }}</b-button>-->
+    <b-button :id="this.dialogMode + '-btn'" variant="primary" @click="buttonClick()">{{ this.dialogTitle }}</b-button>
     </div>
 </template>
 
@@ -25,7 +27,7 @@
     Vue.use(FormGroupPlugin);
 
     export default {
-        name: "DialogCreate",
+        name: "DialogControl",
         props : {
             dialogTitle: {
                 type: String,
@@ -80,6 +82,15 @@
                     ];
                 }
             },
+            // data of the form. is supposed to be json. fields must match "fieldName"
+            // might be empty when the form is empty
+            formData: {
+                type: Object,
+                required: false,
+                default: function (){
+                    return {};
+                }
+            },
             // where to get the available options for the select
             optionsUrl: {
                 type: String,
@@ -88,32 +99,63 @@
                     return null;
                 }
             },
+            // [edit, create] whether it is a create or edit dialog
+            dialogMode:{
+                type: String,
+                required: true,
+                default: "create"
+            },
             // where to submit form data
             createUrl: {
                 type: String,
-                required: true
+                required: false
+            },
+            // where to submit form data
+            editUrl: {
+                type: String,
+                required: false
             },
         },
         data: function(){
             return {
-                selectableOptions: []
+                selectableOptions: [],
+                workingFormData: this.formData
             }
         },
         methods: {
+            buttonClick: function(){
+                /*
+                window.location.href = "http://localhost:8000/public/actor/"+slug+"/edit";
+                                 */
+                this.$bvModal.show( this.dialogMode + "-form-dialog" );
+
+            },
             dialogCallback( formulaData ) {
                 console.log("running " + formulaData);
-                axios.post(this.createUrl , formulaData )
-                    .then( (response) => {
-                        this.dialogOkCallback()
-                    }).catch(  (error) => {
+                if ( (this.dialogMode === 'create') && (typeof this.createUrl !== 'undefined') ) {
+                    axios.post(this.createUrl , formulaData )
+                        .then( (response) => {
+                            this.dialogOkCallback()
+                        }).catch(  (error) => {
                         this.dialogFailedCallback();
-                });
+                    });
+                } else if ( (this.dialogMode === 'edit') && (typeof this.editUrl !== 'undefined') ) {
+                    axios.put(this.editUrl , formulaData )
+                        .then( (response) => {
+                            this.dialogOkCallback()
+                        }).catch(  (error) => {
+                        this.dialogFailedCallback();
+                    });
+                } else {
+                    this.updateUserInfo("warning", " mode is invalid");
+                }
+
             },
             dialogOkCallback() {
-                this.updateUserInfo("info", "record has been created");
+                this.updateUserInfo("info", this.dialogMode + " success");
             },
             dialogFailedCallback() {
-                this.updateUserInfo("warning", "cannot create record");
+                this.updateUserInfo("warning", this.dialogMode + " failed");
 
             },
             getOptions: function(optionsUrl){
@@ -148,14 +190,13 @@
         },
 
         created(){
-            console.log(this.optionsUrl);
             if ( this.optionsUrl !== null ){
                 this.getOptions(this.optionsUrl);
             }
 
         },
         mounted(){
-            this.$bvModal.show( "create-form-dialog" );
+            this.$bvModal.show( this.dialogMode + "-form-dialog" );
         }
     }
 </script>

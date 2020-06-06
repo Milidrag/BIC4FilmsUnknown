@@ -17,7 +17,7 @@ https://github.com/Egorvah/vudal
 @section('content')
     <section class="section">
         <div class="container">
-            <datatable-light :table-title="'All Actors'"
+            <datatable-light :table-title="'Search for Actors'"
                              :edit-form-definition='
                                  [
                                     {
@@ -96,53 +96,22 @@ https://github.com/Egorvah/vudal
                                 sortable: false,
                                 isDate:    true
                                 },
+                                "__slot:actions:actionEditSeperat",
                                 "__slot:actions:actionShowDetails",
                                 "__slot:actions:actionRemove",
-                                "__slot:actions"
+                                "__slot:actions:actionsEditInline"
                                 ]'
                              :track-by="'slug'"
                              :initial-data="'{{ $actor }}'"
                              :is-search-able="true"
+                             :search-table-data-url="'../../search/actor'"
                              :sort="'yes'"
                              :options-url="'../list/film'"
-                             :get-table-data-url="'list/actor'"
-                             :modify-entry-url="'actor/'"
-                             :modify-identifier-of-entry="'slug'"
+                             :get-table-data-url="'../list/actor'"
+                             :entry-url="'../actor/'"
+                             :identifier-of-entry="'slug'"
+                             :edit-success-action="'update'"
             ></datatable-light>
-
-
-
-            {{--            <br>--}}
-            {{--            <br>--}}
-            {{--            <div id="app">--}}
-            {{--                <div class="columns medium-3" v-for="(result, index) in results" :key="index">--}}
-            {{--                    <div class="card">--}}
-            {{--                        <div class="card-divider">--}}
-            {{--                            <p v-text="result.id"> </p>--}}
-            {{--                        </div>--}}
-            {{--                        <div class="card-section">--}}
-            {{--                            <p v-text="result.slug"> </p>--}}
-            {{--                            <p v-text="index"> </p>--}}
-            {{--                        </div>--}}
-            {{--                    </div>--}}
-            {{--                </div>--}}
-
-
-
-            {{--                <ul>--}}
-            {{--                    <li v-for="name in names" v-text="name"></li>--}}
-            {{--                </ul>--}}
-
-            {{--                <input type="text" v-model="newName">--}}
-            {{--                <button @click="addName">--}}
-            {{--                    Add Name--}}
-            {{--                </button>--}}
-            {{--            </div>--}}
-            {{--            <br>--}}
-            {{--            <br>--}}
-
-
-
 
             <div id="container1">
             </div>

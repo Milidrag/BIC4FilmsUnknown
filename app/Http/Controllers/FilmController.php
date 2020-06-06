@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actor;
 use App\Film;
 use Illuminate\Http\Request;
 
@@ -61,7 +62,17 @@ class FilmController extends Controller
      */
     public function show(Film $film)
     {
-        return view('film.show', compact('film'));
+//         original
+//        return view('film.show', compact('film'));
+        $slug = $film['slug'];
+        $actor =  Actor::query()
+            ->WhereHas('film', function ($q) use ($slug){
+                $q  ->where('slug', '=', "{$slug}");
+            })
+            ->with('film')
+            ->get();
+        // return actor as well as film
+        return view('film.show', compact('film', 'actor' ) );
     }
 
     /**
@@ -72,7 +83,9 @@ class FilmController extends Controller
      */
     public function edit(Film $film)
     {
-        return view('film.edit', compact('film'));
+        // original not working
+        //return view('film.edit', compact('film'));
+        return view('film.edit')->with('film', $film);
     }
 
     /**

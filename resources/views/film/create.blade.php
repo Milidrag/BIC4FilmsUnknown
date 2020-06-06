@@ -4,8 +4,8 @@
 @section('content')
     <section class="section">
         <div class="container">
-            <h1>Create film</h1>
-            <dialog-create
+            <h1><b>Create a new Film!</b></h1>
+            <dialog-control
                 :dialog-id="'create-form-dialog'"
                 :dialog-title="'Create Film'"
                 :form-definition='
@@ -43,10 +43,12 @@
                     '
                 :options-url="'../list/actor'"
                 :create-url="'.'"
+                :edit-url="'.'"
+                v-bind:dialog-mode="'create'"
                 {{--                v-bind:form-data=formData--}}
                 {{--                :dialogCallback=''--}}
             >
-            </dialog-create>
+            </dialog-control>
         </div>
     </section>
 @endsection

@@ -159,7 +159,7 @@
             // runs when parent changes its data
             formData: {
                 handler: function(newData, oldData){
-                    console.log("newdata " + JSON.stringify(newData) );
+                    console.log("Dialog Modal: new formdata " + JSON.stringify(newData) );
                     var i;
                     // console.log( "pre " + JSON.stringify(this.workingFormData) );
                     // push data to structure
@@ -169,7 +169,16 @@
                             // no change
                             //console.log("cannot set data, newData has no such array index");
                         } else {
-                            this.workingFormData[i]['fieldData'] = newData[ this.workingFormData[i].fieldName ];
+                            var dataField = newData[ this.workingFormData[i].fieldName ];
+                            if ( (this.workingFormData[i].fieldType === 'b-form-select') && (this.workingFormData[i].isMultiple === true ) ) {
+                                for ( var j in dataField ){
+                                    //todo move id selector to initialization
+                                    this.workingFormData[i]['fieldData'].push ( dataField[j]['id']);
+                                }
+                            } else {
+                                this.workingFormData[i]['fieldData'] = newData[ this.workingFormData[i].fieldName ];
+                            }
+
                         }
                     }
                 },
@@ -200,12 +209,11 @@
                 return submitData;
             },
             getMultiSelectOptions( documentElement ) {
-                var selected1 = [];
+                var selected = [];
                 for (var i = 0; i < documentElement.length; i++) {
-                    if (documentElement.options[i].selected) selected1.push(documentElement.options[i].value);
+                    if (documentElement.options[i].selected) selected.push(documentElement.options[i].value);
                 }
-                console.log(selected1);
-                return selected1;
+                return selected;
             },
             checkFormValidity() {
                 const valid = this.$refs.form.checkValidity()
@@ -233,6 +241,9 @@
                 })
                 this.dialogCallback( this.collectFormData() );
             }
+        },
+        created(){
+            console.log("dialog modal: formdata " + JSON.stringify(this.workingFormData));
         }
 
     }
