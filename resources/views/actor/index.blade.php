@@ -17,9 +17,50 @@ https://github.com/Egorvah/vudal
 @section('content')
     <section class="section">
         <div class="container">
-            <h1>List actors</h1>
-            <br>
             <datatable-light :table-title="'All Actors'"
+                             :edit-form-definition='
+                                 [
+                                    {
+                                        fieldName: "slug",
+                                        fieldLabel: "Slug",
+                                        fieldIsDisplayed: false,
+                                        isMandatory: true,
+                                        validationFailedMessage: "A Slug is required",
+                                        fieldType: "b-form-input",
+                                        // data field must be specified otherwise v-bind does not work
+                                        fieldData: ""
+
+                                    },
+                                    {
+                                        fieldName: "name",
+                                        fieldLabel: "Name",
+                                        fieldIsDisplayed: true,
+                                        isMandatory: true,
+                                        validationFailedMessage: "A super Name is required",
+                                        fieldType: "b-form-input",
+                                        // data field must be specified otherwise v-bind does not work
+                                        fieldData: ""
+                                    },
+                                    {
+                                        fieldName: "description",
+                                        fieldLabel: "Description",
+                                        fieldIsDisplayed: true,
+                                        isMandatory: true,
+                                        validationFailedMessage: "A Description is required",
+                                        fieldType: "b-form-input",
+                                        fieldData: ""
+                                    },
+                                    {
+                                        fieldName: "film_id",
+                                        fieldLabel: "FilmId",
+                                        fieldIsDisplayed: true,
+                                        isMandatory: true,
+                                        validationFailedMessage: "A FilmId is required",
+                                        fieldType: "b-form-select",
+                                        fieldData: ""
+                                    }
+                                ]
+                                '
                              :header-fields='[
                                 "__slot:checkboxes",
                                 {
@@ -55,51 +96,10 @@ https://github.com/Egorvah/vudal
                                 sortable: false,
                                 isDate:    true
                                 },
+                                "__slot:actions:actionShowDetails",
                                 "__slot:actions:actionRemove",
                                 "__slot:actions"
                                 ]'
-                             :edit-form-definition='
-                                 [
-                                    {
-                                        fieldName: "slug",
-                                        fieldLabel: "Slug",
-                                        fieldIsDisplayed: false,
-                                        isMandatory: true,
-                                        validationFailedMessage: "A Slug is required",
-                                        fieldType: "b-form-input",
-                                        // data field must be specified otherwise v-bind does not work
-                                        fieldData: ""
-                                    },
-                                    {
-                                        fieldName: "name",
-                                        fieldLabel: "Name",
-                                        fieldIsDisplayed: true,
-                                        isMandatory: true,
-                                        validationFailedMessage: "A super Name is required",
-                                        fieldType: "b-form-input",
-                                        // data field must be specified otherwise v-bind does not work
-                                        fieldData: ""
-                                    },
-                                    {
-                                        fieldName: "description",
-                                        fieldLabel: "Description",
-                                        fieldIsDisplayed: true,
-                                        isMandatory: true,
-                                        validationFailedMessage: "A Description is required",
-                                        fieldType: "b-form-input",
-                                        fieldData: ""
-                                    },
-                                    {
-                                        fieldName: "film_id",
-                                        fieldLabel: "FilmId",
-                                        fieldIsDisplayed: true,
-                                        isMandatory: true,
-                                        validationFailedMessage: "A FilmId is required",
-                                        fieldType: "b-form-select",
-                                        fieldData: ""
-                                    }
-                                ]
-                                '
                              :track-by="'slug'"
                              :initial-data="'{{ $actor }}'"
                              :sort="'yes'"
@@ -107,48 +107,7 @@ https://github.com/Egorvah/vudal
                              :get-table-data-url="'list/actor'"
                              :modify-entry-url="'actor/'"
                              :modify-identifier-of-entry="'slug'"
-                             :search-table-data-url="'search/actor'"
-                             :search-selector="'q='"
             ></datatable-light>
-
-
-
-{{--            <br>--}}
-{{--            <br>--}}
-{{--            <div id="app">--}}
-{{--                <div class="columns medium-3" v-for="(result, index) in results" :key="index">--}}
-{{--                    <div class="card">--}}
-{{--                        <div class="card-divider">--}}
-{{--                            <p v-text="result.id"> </p>--}}
-{{--                        </div>--}}
-{{--                        <div class="card-section">--}}
-{{--                            <p v-text="result.slug"> </p>--}}
-{{--                            <p v-text="index"> </p>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-
-
-
-{{--                <ul>--}}
-{{--                    <li v-for="name in names" v-text="name"></li>--}}
-{{--                </ul>--}}
-
-{{--                <input type="text" v-model="newName">--}}
-{{--                <button @click="addName">--}}
-{{--                    Add Name--}}
-{{--                </button>--}}
-{{--            </div>--}}
-{{--            <br>--}}
-{{--            <br>--}}
-
-
-
-
-            <div id="container1">
-            </div>
-
-
 
         </div>
     </section>

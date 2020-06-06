@@ -26,6 +26,7 @@
         "bootstrap-vue": "^2.15.0",
         "lodash.orderby": "^4.6.0",
         "v-datatable-light": "^0.8.1",
+        "vue-router": "^3.3.2",
         "vue-simple-spinner": "^1.2.10"
     }
 }

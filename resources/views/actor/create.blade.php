@@ -4,9 +4,7 @@
 @section('content')
     <section class="section">
         <div class="container">
-            <h1>Create actor</h1>
-
-
+            <h1><b>Create a new actor!</b></h1>
             <dialog-create
                 :dialog-id="'create-form-dialog'"
                 :dialog-title="'Create Actor'"

@@ -41,6 +41,7 @@
                                 sortable: false,
                                 isDate:    true
                                 },
+                                "__slot:actions:actionShowDetails",
                                 "__slot:actions:actionRemove",
                                 "__slot:actions"
                                 ]'

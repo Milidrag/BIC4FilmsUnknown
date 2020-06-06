@@ -111,7 +111,10 @@ class ActorController extends Controller
      */
     public function search()
     {
-        return view('actor.search');
+        /*return view('actor.search');*/
+        $actor = Actor::all()->load('film');
+
+        return view('actor.search', compact('actor'));
     }
 
 

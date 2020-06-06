@@ -17,14 +17,14 @@
     <div id="datatable-light">
         <h3 class="title">{{ tableTitle }}</h3>
 
+        <!-- Form Modal with edit funtion -->
         <dialog-modal
             :dialog-id="'edit-form-dialog'"
             :dialog-title="'Edit Record'"
             :form-definition="editFormDefinition"
             v-bind:form-data=formData
             v-bind:dialog-options="dropdownListing"
-            :dialogCallback="dialogCallback"
-        >
+            :dialogCallback="dialogCallback">
         </dialog-modal>
 
         <!-- Datatable -->
@@ -78,8 +78,15 @@
 
             <!-- Action remove slot -->
             <template v-slot:actionRemove="props">
-                <b-button id="remove-btn" variant="primary"  @click="dtRemoveClick(props)">Remove</b-button>
+                <b-button id="remove-btn" variant="danger"  @click="dtRemoveClick(props)">Remove</b-button>
 <!--                <a href="#" @click.prevent="actionFirstClick(props)">Actions First</a>-->
+            </template>
+s
+            <!-- Action "Show Details" slot -->
+            <template v-slot:actionShowDetails="props">
+                <b-button id="details-btn" @click="dtDetailsClick(props)">Details</b-button>
+                <!--                <a href="#" @click.prevent="actionFirstClick(props)">Actions First
+                </a>-->
             </template>
 
             <!-- custom header using boolean -->
@@ -145,6 +152,8 @@
     Vue.use(ButtonPlugin);
 
     import Vue from 'vue';
+    import VueRouter from 'vue-router';
+    Vue.use(VueRouter);
 
     const addZero = value => ("0" + value).slice(-2);
 
@@ -191,7 +200,7 @@
             isSearchAble: {
                 type: Boolean,
                 required: false,
-                default: true
+                default: false
             },
             // unique column
             trackBy: {
@@ -240,7 +249,7 @@
                             fieldIsDisplayed: true,
                             isMandatory: true,
                             validationFailedMessage: "A FilmId is required",
-                            fieldType: "b-form-select",
+                            label: "b-form-select",
                             fieldData: ""
                         }
                     ];
@@ -285,6 +294,7 @@
         },
         data: function() {
             workingData = JSON.parse(this.initialData);
+
             return {
                 data: workingData.slice(0, this.initialItemsPerPage),
                 datatableCss: {
@@ -353,22 +363,23 @@
                 const end = currentPage * this.itemsPerPage;
                 this.data = workingData.slice(start, end);
             },
-
             dtEditClick: function(props){
+                    
+
+                /*
+                window.location.href = "http://localhost:8000/public/actor/"+slug+"/edit";
+                this.formData = {};
+                this.formData = props.rowData;
+                this.$bvModal.show( "edit-form-dialog" );
+                 */
+            },
+            dtRemoveClick: function(props){
                 this.formData = {};
                 this.formData = props.rowData;
                 this.$bvModal.show( "edit-form-dialog" );
             },
-            dtRemoveClick: function(props){
-                // alert("Click props:" + JSON.stringify(props) );
-                axios.delete(this.modifyEntryUrl + props['rowData'][this.modifyIdentifierOfEntry] )
-                    .then(response => {
-                        const index = workingData.find(entry => entry.slug === props['rowData'][this.modifyIdentifierOfEntry] ) // find the post index
-                        if (~index) {// if the post exists in array
-                            workingData.splice(index, 1) //delete the row
-                            this.updateTableView(); // update the view
-                        }
-                    });
+            dtDetailsClick: function(props){
+
             },
             dtUpdateSort: function({ sortField, sort }) {
                 const sortedData = orderBy(workingData, [sortField], [sort]);
@@ -539,6 +550,12 @@
     }
     .v-datatable-light .header-item.no-sortable:hover {
         color: #00d1b2;
+    }
+
+    b {
+        font-family: Helvetica;
+        color: #222222;
+        padding: 0px;
     }
 
     .v-datatable-light .header-item .th-wrapper {
