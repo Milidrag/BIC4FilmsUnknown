@@ -7,7 +7,6 @@
             <!-- here's a table showing all films in database -->
             <datatable-light :table-title="'All Films'"
                              :header-fields='[
-                                "__slot:checkboxes",
                                 {
                                 name: "slug",
                                 label: "Slug",
