@@ -62,7 +62,6 @@ https://github.com/Egorvah/vudal
                                 ]
                                 '
                              :header-fields='[
-                                "__slot:checkboxes",
                                 {
                                 name: "slug",
                                 label: "Slug",
