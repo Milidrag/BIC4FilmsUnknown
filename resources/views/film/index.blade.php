@@ -50,7 +50,7 @@
                                 ]
                                 '
                              :header-fields='[
-                                "__slot:checkboxes",
+                                // "__slot:checkboxes",
                                 {
                                 name: "slug",
                                 label: "Slug",
