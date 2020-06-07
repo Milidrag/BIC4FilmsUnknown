@@ -22,11 +22,12 @@ window.Vue = vue;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('query-message', require('./components/base/QueryMessage.vue').default);
-Vue.component('datatable-light', require('./components/DatatableLight.vue').default);
-Vue.component('dialog-modal', require('./components/DialogModal.vue').default);
-Vue.component('dialog-form-input', require('./components/DialogFormInput.vue').default);
-Vue.component('dialog-form-select', require('./components/DialogFormSelect.vue').default);
+Vue.component('datatable-light', require('./components/base/DatatableLight.vue').default);
+Vue.component('dialog-modal', require('./components/base/DialogModal.vue').default);
+Vue.component('dialog-form-input', require('./components/base/DialogFormInput.vue').default);
+Vue.component('dialog-form-select', require('./components/base/DialogFormSelect.vue').default);
 Vue.component('dialog-control', require('./components/DialogControl.vue').default);
+Vue.component('table-control', require('./components/TableControl.vue').default);
 
 
 /**

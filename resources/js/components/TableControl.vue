@@ -14,7 +14,7 @@
 
 
 <template>
-    <div id="datatable-light">
+    <div id="datatable-control">
         <h3 class="title">{{ tableTitle }}</h3>
 
         <!-- Form Modal with edit funtion -->
@@ -47,111 +47,33 @@
             <br>
             <br>
         </div>
-
-
-        <!--            :header-fields="headerFields"-->
-        <!--:header-fields="pheaderfields"-->
-        <!-- :header-fields="headerFields" -->
-        <DataTable
-            :table-title="tableTitle"
+        <!--            @on-update="dtUpdateSort"-->
+        <!--            :is-loading="isLoading"-->
+        <!--            :css="datatableCss"-->
+        <!--            v-bind:identifier-of-entry="identifierOfEntry"-->
+        <!--            :sort-field="sortField"-->
+        <!--            :sort="sort"-->
+        <!--            :data="data || []"-->
+        <datatable-light
             :header-fields="headerFields"
-            :sort-field="sortField"
-            :sort="sort"
-            :data="data || []"
-            :initial-data="initialData"
-            :is-loading="isLoading"
-            :css="datatableCss"
+            :sort-field="'slug'"
+            :sort="'asc'"
+            v-bind:initial-data="workingData"
             not-found-msg="Items not found"
-            @on-update="dtUpdateSort"
             :track-by="trackBy"
+            v-bind:entry-url="entryUrl"
+            :dtButtonControl="dtButtonControl"
         >
-            <!-- Action button slot -->
-            <template v-slot:actionsEditInline="props">
-                <!--
-                <input type="button" class="btn btn-primary" value="Edit" @click="dtEditClick(props);">
-                -->
-                <!--
-                <b-button id="edit-btn" variant="primary" @click="$bvModal.show('bv-modal-example')">Edit</b-button>
-                -->
-               <b-button id="edit-btn" variant="primary"  @click="dtEditClick(props)">Edit</b-button>
-            </template>
+        </datatable-light>
 
-            <template v-slot:actionEditSeperat="props">
-                <b-button id="edit-btn-seperat" variant="primary" v-bind:href="entryUrl + ''+ props.rowData[identifierOfEntry] + '/edit'">Edit extra</b-button>
-            </template>
+        <br>
+        <br>
 
-
-            <!-- Action remove slot -->
-            <template v-slot:actionRemove="props">
-                <b-button id="remove-btn" variant="danger"  @click="dtRemoveClick(props)">Remove</b-button>
-<!--                <a href="#" @click.prevent="actionFirstClick(props)">Actions First</a>-->
-            </template>
-s
-            <!-- Action "Show Details" slot -->
-            <template v-slot:actionShowDetails="props">
-                <b-button id="details-btn" v-bind:href="entryUrl + ''+ props.rowData[identifierOfEntry]" variant="primary" @click="dtDetailsClick(props)">Details</b-button>
-                <!--                <a href="#" @click.prevent="actionFirstClick(props)">Actions First
-                </a>-->
-            </template>
-
-            <!-- custom header using boolean -->
-            <template v-slot:[createHeaderName]>
-                <span>Created Custom</span>
-            </template>
-
-            <!-- custom header usgin string -->
-            <template v-slot:UpdatedHeader>
-                <span>Updated Custom</span>
-            </template>
-
-            <!--
-              Pagination component as a slot, but could be drag out from Database element
-            -->
-            <template v-slot:pagination>
-                <Pagination
-                    :page="currentPage"
-                    :total-items="totalItems"
-                    :items-per-page="itemsPerPage"
-                    :css="paginationCss"
-                    @on-update="changePage"
-                    @update-current-page="updateCurrentPage"
-                />
-            </template>
-
-            <!--
-              ItemsPerPage component as a slot, but could be drag out from Database element
-            -->
-            <div class="items-per-page" slot="ItemsPerPage">
-                <label>Items per page</label>
-                <ItemsPerPageDropdown
-                    :list-items-per-page="listItemsPerPage"
-                    :items-per-page="itemsPerPage"
-                    :css="itemsPerPageCss"
-                    @on-update="updateItemsPerPage"
-                />
-            </div>
-
-            <!-- Spinner element as slot used when is-loading attribute is true -->
-            <Spinner slot="spinner"/>
-
-            <!-- Custom element for description -->
-            <div slot="DescriptionNew" slot-scope="props">
-                <input
-                    type="text"
-                    :value="props.rowData.description"
-                    @keyup="changeDescription($event, props.rowData.id)"
-                    class="form-control"
-                >
-            </div>
-        </DataTable>
     </div>
 </template>
 
 
 <script>
-    import Spinner from "vue-simple-spinner";
-    import { DataTable, ItemsPerPageDropdown, Pagination } from "v-datatable-light";
-    import orderBy from "lodash.orderby";
     // This imports <b-modal> as well as the v-b-modal directive as a plugin:
     import { ButtonPlugin }  from "bootstrap-vue";
     Vue.use(ButtonPlugin);
@@ -170,16 +92,8 @@ s
         return "";
     };
 
-    var workingData = [];
-
     export default {
-        name: "DatatableLight",
-        components: {
-            DataTable,
-            ItemsPerPageDropdown,
-            Pagination,
-            Spinner
-        },
+        name: "TableControl",
         props : {
             tableTitle: {
                 type: String,
@@ -191,15 +105,9 @@ s
                 required: true
             },
             initialData: {
-                type: String,
+                type: Array,
                 required: true
             },
-            initialItemsPerPage: {
-                type: Number,
-                required: false,
-                default: 10
-            },
-            // indicate whether a search function is provided
             isSearchAble: {
                 type: Boolean,
                 required: false,
@@ -303,40 +211,8 @@ s
             }
         },
         data: function() {
-            workingData = JSON.parse(this.initialData);
-
             return {
-                data: workingData.slice(0, this.initialItemsPerPage),
-                datatableCss: {
-                    table: "table table-bordered table-hover table-striped table-center",
-                    theadTh: "header-item",
-                    thWrapper: "th-wrapper",
-                    thWrapperCheckboxes: "th-wrapper checkboxes",
-                    arrowsWrapper: "arrows-wrapper",
-                    arrowUp: "arrow up",
-                    arrowDown: "arrow down",
-                    footer: "datatable-footer"
-                },
-                paginationCss: {
-                    paginationItem: "pagination-item",
-                    moveFirstPage: "move-first-page",
-                    movePreviousPage: "move-previous-page",
-                    moveNextPage: "move-next-page",
-                    moveLastPage: "move-last-page",
-                    pageBtn: "page-btn"
-                },
-                itemsPerPageCss: {
-                    select: "item-per-page-dropdown"
-                },
-                isLoading: false,
-                sort: "asc",
-                sortField: "slug",
-                listItemsPerPage: [5, 10, 20, 50, 100],
-                itemsPerPage: this.initialItemsPerPage,
-                currentPage: 1,
-                totalItems: workingData.length,
-                description: null,
-                createHeaderName: "created:header",
+                workingData: this.initialData,
                 formData: {},
                 dropdownListing: []
             };
@@ -362,54 +238,37 @@ s
                 }
 
             },
-            changeDescription: function(event, id) {
-                this.data = this.data.map(item =>
-                    item.id === id ? { ...item, description: event.target.value } : item
-                );
-            },
-            changePage: function(currentPage) {
-                this.currentPage = currentPage;
-                const start = (currentPage - 1) * this.itemsPerPage;
-                const end = currentPage * this.itemsPerPage;
-                this.data = workingData.slice(start, end);
-            },
-            dtDetailsClick: function(props){
-                // redirect to url via javascript
-                window.location.href = this.entryUrl + props.rowData[ this.identifierOfEntry ];
+            dtButtonControl: function(event, props){
+                if (event.target.id === 'edit-btn-seperate'){
+                    window.location.href = this.entryUrl + props.rowData[ this.identifierOfEntry ] + '/edit';
+                } else if (event.target.id === 'edit-btn'){
+                    this.dtEditClick(props);
+                } else if (event.target.id === 'remove-btn'){
+                    this.dtRemoveClick(props);
+                } else if (event.target.id === 'details-btn'){
+                    // href would be better but it introduces more coupling with the table
+                    window.location.href = this.entryUrl + props.rowData[ this.identifierOfEntry ];
+                }
             },
             dtEditClick: function(props){
-                /*
-                window.location.href = "http://localhost:8000/public/actor/"+slug+"/edit";
-                                 */
                 this.formData = {};
                 this.formData = props.rowData;
                 this.$bvModal.show( "edit-form-dialog" );
-
             },
             dtRemoveClick: function(props){
-                // alert("Click props:" + JSON.stringify(props) );
-
-
                 axios.delete(this.entryUrl + props['rowData'][this.identifierOfEntry] )
                     .then(response => {
-                        const deletedItem = workingData.find( (entry) => {
+                        const deletedItem = this.workingData.find( (entry) => {
                             // find the deleted element
                             return entry.slug === props['rowData'][this.identifierOfEntry];
                         } )
                         if (~deletedItem) {// if the item exists in array
-                            workingData.splice(workingData.indexOf(deletedItem), 1 ) //delete the row
-                            this.updateTableView(); // update the view
+                            this.workingData.splice(this.workingData.indexOf(deletedItem), 1 ) //delete the row
+                            // this.updateTableView(); // update the view
                         }
                     }).catch(  (error) => {
                         this.dialogFailedCallback();
                 });
-            },
-
-            dtUpdateSort: function({ sortField, sort }) {
-                const sortedData = orderBy(workingData, [sortField], [sort]);
-                const start = (this.currentPage - 1) * this.itemsPerPage;
-                const end = this.currentPage * this.itemsPerPage;
-                this.data = sortedData.slice(start, end);
             },
             dialogCallback( formulaData ) {
                 console.log("running " + JSON.stringify(formulaData) );
@@ -429,8 +288,6 @@ s
                     this.updateUserInfo("info", "record has been updated.");
                     this.serverDataGet( this.getTableDataUrl );
                 }
-
-
             },
             dialogFailedCallback() {
                 this.updateUserInfo("warning", "cannot update record");
@@ -448,10 +305,9 @@ s
                     }
                     newData.push( response[key] );
                 }
-
                 // needed to rerender the page
-                workingData = newData;
-                this.updateTableView();
+                this.workingData = newData;
+                // this.updateTableView();
             },
             serverDataGet: function (Url){
                 axios.get(Url).then( (res) => {
@@ -460,7 +316,6 @@ s
                 }).catch(  (error) => {
                     this.updateUserInfo("warning", "Update failed");
                 });
-
             },
             serverDataSearch: function (Url, body){
                 axios.post(Url, body).then( (res) => {
@@ -469,24 +324,6 @@ s
                 }).catch(  (error) => {
                     this.updateUserInfo("warning", "Update failed");
                 });
-
-            },
-            updateCurrentPage: function(currentPage) {
-                this.currentPage = currentPage;
-            },
-            updateItemsPerPage: function(itemsPerPage) {
-                this.itemsPerPage = parseInt(itemsPerPage);
-                if (this.itemsPerPage >= workingData.length) {
-                    this.data = workingData;
-                } else {
-                    this.data = workingData.slice(0, this.itemsPerPage );
-                }
-            },
-            updateTableView: function(){
-                this.isLoading = false;
-                this.totalItems = workingData.length;
-                this.updateItemsPerPage(this.itemsPerPage);
-                this.changePage(1);
             },
             updateUserInfo: function (level, info){
                 var element = document.getElementById("userInfo");
@@ -514,7 +351,7 @@ s
         },
         created() {
             // reformat initial data
-            this.processBackendResponse(workingData);
+            this.processBackendResponse(this.workingData);
             // get list for dropdowns
             axios.get( this.optionsUrl ).then( (res) => {
                 // console.log(res)
@@ -535,191 +372,19 @@ s
 
 <style>
 
-    /*
-     default color was:
-        color: #337ab7;
-        instead of
-        color: #00d1b2;
-    */
-    #datatable-light {
-        font-family: "Avenir", Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        color: #00b89c;
-        margin-top: 60px;
-    }
-
-    #datatable-light .title {
-        margin-bottom: 30px;
-    }
-
-    #datatable-light .items-per-page {
-        height: 100%;
-        display: flex;
-        align-items: flex-start;
-        color: #00d1b2;
-    }
-
-    #datatable-light .items-per-page label {
-        margin: 0 15px;
-    }
-
-    /* Datatable CSS */
-    .v-datatable-light .header-item {
-        cursor: pointer;
-        color: #00d1b2;
-        transition: color 0.15s ease-in-out;
-    }
-
-    .v-datatable-light .header-item:hover {
-        color: #ed9b19;
-    }
-
-    .v-datatable-light .header-item.no-sortable {
-        cursor: default;
-    }
-    .v-datatable-light .header-item.no-sortable:hover {
-        color: #00d1b2;
-    }
-
-    b {
-        font-family: Helvetica;
-        color: #222222;
-        padding: 0px;
-    }
-
-    .v-datatable-light .header-item .th-wrapper {
-        display: flex;
-        width: 100%;
-        height: 100%;
-        font-weight: bold;
-        align-items: center;
-    }
-
-    .v-datatable-light .header-item .th-wrapper.checkboxes {
-        justify-content: center;
-    }
-
-    .v-datatable-light .header-item .th-wrapper .arrows-wrapper {
-        display: flex;
-        flex-direction: column;
-        margin-left: 10px;
-        justify-content: space-between;
-    }
-
-    .v-datatable-light .header-item .th-wrapper .arrows-wrapper.centralized {
-        justify-content: center;
-    }
-
-    .v-datatable-light .arrow {
-        transition: color 0.15s ease-in-out;
-        width: 0;
-        height: 0;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-    }
-
-    .v-datatable-light .arrow.up {
-        border-bottom: 8px solid #00d1b2;
-        margin-bottom: 5px;
-    }
-
-    .v-datatable-light .arrow.up:hover {
-        border-bottom: 8px solid #ed9b19;
-    }
-
-    .v-datatable-light .arrow.down {
-        border-top: 8px solid #00d1b2;
-    }
-
-    .v-datatable-light .arrow.down:hover {
-        border-top: 8px solid #ed9b19;
-    }
-    /* example colorization of cells / rows / columns
-    #datatable-light .v-datatable-light .row-1 .column-2 {
-        color: green;
-    }
-    */
-
-
-    .v-datatable-light .datatable-footer {
-        display: flex;
-        justify-content: space-between;
-        width: 600px;
-    }
-    /* End Datatable CSS */
-
-    /* Pagination CSS */
-    .v-datatable-light-pagination {
-        list-style: none;
-        display: flex;
-        align-items: flex-end;
-        justify-content: flex-end;
-        margin: 0;
-        padding: 0;
-        width: 300px;
-        height: 30px;
-    }
-
-    .v-datatable-light-pagination .pagination-item {
-        width: 30px;
-        margin-right: 5px;
-        font-size: 16px;
-        transition: color 0.15s ease-in-out;
-    }
-
-    .v-datatable-light-pagination .pagination-item.selected {
-        color: #ed9b19;
-    }
-
-    .v-datatable-light-pagination .pagination-item .page-btn {
-        background-color: transparent;
-        outline: none;
-        border: none;
-        color: #00d1b2;
-        transition: color 0.15s ease-in-out;
-    }
-
-    .v-datatable-light-pagination .pagination-item .page-btn:hover {
-        color: #ed9b19;
-    }
-
-    .v-datatable-light-pagination .pagination-item .page-btn:disabled {
-        cursor: not-allowed;
-        box-shadow: none;
-        opacity: 0.65;
-    }
-    /* END PAGINATION CSS */
-
-    /* ITEMS PER PAGE DROPDOWN CSS */
-    .item-per-page-dropdown {
-        background-color: transparent;
-        min-height: 30px;
-        border: 1px solid #00d1b2;
-        border-radius: 5px;
-        color: #00d1b2;
-    }
-
-
-    .item-per-page-dropdown:hover {
-        cursor: pointer;
-    }
-    /* END ITEMS PER PAGE DROPDOWN CSS */
-
-    #datatable-light .userInfo {
+    #datatable-control .userInfo {
         float: left;
         padding: 6px;
         font-size: 17px;
     }
 
-    #datatable-light .hidden{
+    #datatable-control .hidden{
         visibility: hidden;
         opacity: 0;
         transition: visibility 0s 10s, opacity 10s linear;
     }
 
-    #datatable-light .search-container {
+    #datatable-control .search-container {
         float: right;
         box-sizing: border-box;
         border: 1px solid #ccc;
@@ -729,13 +394,13 @@ s
         background-color: white;
     }
 
-    #datatable-light .search-container input[type=text] {
+    #datatable-control .search-container input[type=text] {
         padding: 6px;
         font-size: 17px;
         border: none;
     }
 
-    #datatable-light .search-container button {
+    #datatable-control .search-container button {
         float: right;
         padding: 6px 10px;
         background: #ddd;
@@ -744,15 +409,15 @@ s
         cursor: pointer;
     }
 
-    #datatable-light .search-container button:hover {
+    #datatable-control .search-container button:hover {
         background: #ccc;
     }
 
     @media screen and (max-width: 600px) {
-        #datatable-light .search-container .search-container {
+        #datatable-control .search-container .search-container {
             float: none;
         }
-        #datatable-light a, #datatable-light .search-container input[type=text], #datatable-light .search-container button {
+        #datatable-control a, #datatable-control .search-container input[type=text], #datatable-control .search-container button {
             float: none;
             display: block;
             text-align: left;
@@ -760,7 +425,7 @@ s
             margin: 0;
             padding: 14px;
         }
-        #datatable-light .search-container input[type=text] {
+        #datatable-control .search-container input[type=text] {
             border: 1px solid #ccc;
         }
     }

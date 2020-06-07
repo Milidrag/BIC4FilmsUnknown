@@ -17,7 +17,7 @@ https://github.com/Egorvah/vudal
 @section('content')
     <section class="section">
         <div class="container">
-            <datatable-light :table-title="'All Actors'"
+            <table-control :table-title="'All Actors'"
                              :edit-form-definition='
                                  [
                                     {
@@ -102,8 +102,8 @@ https://github.com/Egorvah/vudal
                                 "__slot:actions:actionsEditInline"
                                 ]'
                              :track-by="'slug'"
-                             :initial-data="'{{ $actor }}'"
-                             :is-search-able="true"
+                             :initial-data="{{ $actor }}"
+                             :is-search-able="false"
                              :search-table-data-url="'../../search/actor'"
                              :sort="'yes'"
                              :options-url="'list/film'"
@@ -111,7 +111,7 @@ https://github.com/Egorvah/vudal
                              :entry-url="'actor/'"
                              :identifier-of-entry="'slug'"
                              :edit-success-action="'update'"
-            ></datatable-light>
+            ></table-control>
 
         </div>
     </section>

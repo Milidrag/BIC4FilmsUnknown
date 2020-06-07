@@ -26,6 +26,7 @@
     Vue.use(FormInputPlugin);
     Vue.use(FormGroupPlugin);
 
+
     export default {
         name: "DialogControl",
         props : {
@@ -115,6 +116,11 @@
                 type: String,
                 required: false
             },
+            ichMussVerwendetWerden: {
+                type: Boolean,
+                required: false,
+                default: false
+            },
         },
         data: function(){
             return {
@@ -131,18 +137,38 @@
 
             },
             dialogCallback( formulaData ) {
-                console.log("running " + formulaData);
+                console.log("running " + JSON.stringify(formulaData) );
                 if ( (this.dialogMode === 'create') && (typeof this.createUrl !== 'undefined') ) {
-                    axios.post(this.createUrl , formulaData )
-                        .then( (response) => {
-                            this.dialogOkCallback()
-                        }).catch(  (error) => {
-                        this.dialogFailedCallback();
-                    });
+                    if (this.ichMussVerwendetWerden == true){
+                        console.log('da ich zwingend bin, werde ich verwendet')
+                        let form = new Form({
+                            'film_id': '',
+                            'name': '',
+                            'description': ''
+                        });
+                        form.name = formulaData['name'];
+                        form.description = formulaData['description'];
+                        form.film_id = formulaData['film_id'];
+                        form.post(this.createUrl)
+                            .then((response) => {
+                                this.dialogOkCallback();
+                            }).catch(  (error) => {
+                            this.dialogFailedCallback();
+                        });
+                    } else {
+                        axios.post(this.createUrl , formulaData )
+                            .then( (response) => {
+                                this.dialogOkCallback()
+                            }).catch(  (error) => {
+                            this.dialogFailedCallback();
+                        });
+                    }
+
+
                 } else if ( (this.dialogMode === 'edit') && (typeof this.editUrl !== 'undefined') ) {
                     axios.put(this.editUrl , formulaData )
                         .then( (response) => {
-                            this.dialogOkCallback()
+                            this.dialogOkCallback();
                         }).catch(  (error) => {
                         this.dialogFailedCallback();
                     });

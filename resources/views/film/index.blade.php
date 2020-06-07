@@ -5,7 +5,7 @@
     <section class="section">
         <div class="container">
             <!-- here's a table showing all films in database -->
-            <datatable-light :table-title="'All Films'"
+            <table-control :table-title="'All Films'"
                              :edit-form-definition='
                                  [
                                     {
@@ -91,7 +91,7 @@
                                 ]'
 
                              :track-by="'slug'"
-                             :initial-data="'{{ $film }}'"
+                             :initial-data="{{ $film }}"
                              :is-search-able="false"
                              :search-table-data-url="'../../search/doesnotexist'"
                              :sort="'yes'"
@@ -101,7 +101,7 @@
                              :identifier-of-entry="'slug'"
                              :edit-success-action="'update'"
 
-            ></datatable-light>
+            ></table-control>
 
         </div>
     </section>

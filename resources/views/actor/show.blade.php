@@ -6,7 +6,7 @@
         <div class="container">
             <h1>Show actor</h1>
 
-            <datatable-light :table-title="'Film list of actor {{ $actor['name'] }}'"
+            <table-control :table-title="'Film list of actor: {{ $actor['name'] }}'"
                              :edit-form-definition='
                                  [
                                     {
@@ -87,7 +87,7 @@
                                 "__slot:actions:actionsEditInline"
                                 ]'
                              :track-by="'slug'"
-                             :initial-data="'{{ $film }}'"
+                             :initial-data="{{ $film }}"
                              :is-search-able="false"
                              :search-table-data-url="'../../search/actor'"
                              :sort="'yes'"
@@ -96,7 +96,7 @@
                              :entry-url="'../film/'"
                              :identifier-of-entry="'slug'"
                              :edit-success-action="'reload'"
-            ></datatable-light>
+            ></table-control>
 
 {{--{{ $film }}--}}
 

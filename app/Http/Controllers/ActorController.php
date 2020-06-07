@@ -48,6 +48,7 @@ class ActorController extends Controller
      */
     public function store(Request $request)
     {
+
         return Actor::create($request->validate([
             'name' => 'required',
             'description' => 'required',

@@ -17,7 +17,7 @@ https://github.com/Egorvah/vudal
 @section('content')
     <section class="section">
         <div class="container">
-            <datatable-light :table-title="'Search for Actors'"
+            <table-control :table-title="'Search for Actors'"
                              :edit-form-definition='
                                  [
                                     {
@@ -102,7 +102,7 @@ https://github.com/Egorvah/vudal
                                 "__slot:actions:actionsEditInline"
                                 ]'
                              :track-by="'slug'"
-                             :initial-data="'{{ $actor }}'"
+                             :initial-data="{{ $actor }}"
                              :is-search-able="true"
                              :search-table-data-url="'../../search/actor'"
                              :sort="'yes'"
@@ -111,7 +111,7 @@ https://github.com/Egorvah/vudal
                              :entry-url="'../actor/'"
                              :identifier-of-entry="'slug'"
                              :edit-success-action="'update'"
-            ></datatable-light>
+            ></table-control>
 
             <div id="container1">
             </div>

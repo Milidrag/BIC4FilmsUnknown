@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Actor;
 use App\Film;
+use App\Actor;
 use Illuminate\Http\Request;
 
 class FilmController extends Controller
@@ -20,8 +20,8 @@ class FilmController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * orig return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
@@ -32,8 +32,8 @@ class FilmController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * orig return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -42,7 +42,7 @@ class FilmController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
+     * orig return \Illuminate\Http\Response
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -58,7 +58,8 @@ class FilmController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Film  $film
-     * @return \Illuminate\Http\Response
+     * orig return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show(Film $film)
     {
@@ -79,7 +80,8 @@ class FilmController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Film  $film
-     * @return \Illuminate\Http\Response
+     * orig return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(Film $film)
     {
@@ -93,7 +95,8 @@ class FilmController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Film  $film
-     * @return \Illuminate\Http\Response
+     * orig return \Illuminate\Http\Response
+     * @return bool
      */
     public function update(Request $request, Film $film)
     {
@@ -105,9 +108,9 @@ class FilmController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
+     * orig return \Illuminate\Http\Response
      * @param  \App\Film  $film
-     * @return \Illuminate\Http\Response
+     * @return bool
      */
     public function destroy(Film $film)
     {
@@ -117,8 +120,8 @@ class FilmController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * orig return \Illuminate\Http\Response
+     * @return Film[]|\Illuminate\Database\Eloquent\Collection
      */
     public function list()
     {
