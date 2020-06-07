@@ -17,7 +17,7 @@ https://github.com/Egorvah/vudal
 @section('content')
     <section class="section">
         <div class="container">
-            <datatable-light :table-title="'All Actors'"
+            <datatable-light :table-title="'Search an actor'"
                              :edit-form-definition='
                                  [
                                     {
@@ -62,7 +62,6 @@ https://github.com/Egorvah/vudal
                                 ]
                                 '
                              :header-fields='[
-                                "__slot:checkboxes",
                                 {
                                 name: "slug",
                                 label: "Slug",
