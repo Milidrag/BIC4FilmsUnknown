@@ -25,9 +25,9 @@ class ActorController extends Controller
      */
     public function index()
     {
-        $actors = Actor::all()->load('film');
+        $actor = Actor::all()->load('film');
 
-        return view('actor.index', compact('actors'));
+        return view('actor.index', compact('actor'));
     }
 
     /**
