@@ -73,7 +73,8 @@ class ActorController extends Controller
      */
     public function edit(Actor $actor)
     {
-        return view('actor.edit', compact($actor));
+//        return view('actor.edit', compact($actor));
+        return view('actor.edit')->with('actor', $actor);
     }
 
     /**

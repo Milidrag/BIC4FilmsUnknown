@@ -9,6 +9,8 @@ import vue from 'vue';
 
 window.Vue = vue;
 
+Vue.use(require('vue-moment'));
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -22,7 +24,15 @@ window.Vue = vue;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('query-message', require('./components/base/QueryMessage.vue').default);
-Vue.component('create', require('./components/Create.vue').default);
+
+Vue.component('actors', require('./components/ActorsComponent.vue').default);
+Vue.component('actor', require('./components/ActorComponent.vue').default);
+Vue.component('actor-form', require('./components/ActorFormComponent.vue').default);
+
+Vue.component('film', require('./components/FilmComponent.vue').default);
+Vue.component('films', require('./components/FilmsComponent.vue').default);
+Vue.component('film-form', require('./components/FilmFormComponent.vue').default);
+Vue.component('hero', require('./components/base/HeroComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -2,9 +2,10 @@
 
 
 @section('content')
-    <section class="section">
+    <section class="section is-fullheight">
         <div class="container">
-            <Create></Create>
+            <h1 class="title">Create actor</h1>
+                <actor-form></actor-form>
         </div>
     </section>
 @endsection

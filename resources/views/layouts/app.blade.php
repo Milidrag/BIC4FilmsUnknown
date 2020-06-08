@@ -142,7 +142,7 @@
 
     <footer class="footer">
         <div class="content has-text-centered">
-            <small>Here comes some footer</small>
+            <small>Unknown Films BIC4 IE <b>::</b> Bretschneider – Ivkic – Rappl</small>
         </div>
     </footer>
 </div>

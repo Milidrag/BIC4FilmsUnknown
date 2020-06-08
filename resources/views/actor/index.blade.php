@@ -2,9 +2,11 @@
 
 
 @section('content')
-    <section class="section">
+    <section class="section is-fullwidth">
         <div class="container">
-            <h1>List actors</h1>
+            <h1 class="title">List actors</h1>
+                <actors :all-actors="{{ $actor }}" ></actors>
+{{--                <actors :all-actors="{{ $actor }}" :current-user="{{ Auth::user() }}"></actors>--}}
         </div>
     </section>
 @endsection

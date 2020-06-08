@@ -1,11 +1,16 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
+@import "~font-awesome/scss/font-awesome";
+
 // Variables
 @import 'variables';
 
 // Bulma
 @import "~bulma/bulma";
+
+// Markdown
+@import "markdown";
 
 // Custom
 @import "custom";

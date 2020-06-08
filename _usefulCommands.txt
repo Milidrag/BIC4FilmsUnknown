@@ -1,0 +1,40 @@
+# netstat -ban
+#php artisan key:generate
+#php artisan migrate
+#php artisan db:seed
+#H:\Priv\Dokumente.Arbeit\Technikum.Wien\Programmieren\s04_IEu01_unknownFilms>H:\Priv\Apps\PHP.v.7.3.10\php H:\Priv\Apps\PHP.v.7.3.10\composer.phar install
+# install table framework
+#H:\Priv\Apps\Node.v12.16.3.x64\npm --save-dev vue-jd-table
+#H:\Priv\Apps\Node.v12.16.3.x64\npm install --save-dev @fortawesome/fontawesome-free
+# run any time a component changes
+H:\Priv\Apps\Node.v12.16.3.x64\npm run dev --prefer-offline --no-audit --progress=false
+
+# install datatables-light
+H:\Priv\Apps\Node.v12.16.3.x64\npm install v-datatable-light
+H:\Priv\Apps\Node.v12.16.3.x64\npm install lodash.orderby
+H:\Priv\Apps\Node.v12.16.3.x64\npm install vue-simple-spinner
+
+# install modal plugin
+H:\Priv\Apps\Node.v12.16.3.x64\npm install vue bootstrap-vue bootstrap
+
+# bulma modals
+// dra preents bootstrap modals from working
+$modal-z: 1050 !default
+
+derived-variables
+//dra changed compile errors
+//$colors: mergeColorMaps(("white": ($white, $black), "black": ($black, $white), "light": ($light, $light-invert), "dark": ($dark, $dark-invert), "primary": ($primary, $primary-invert), "link": ($link, $link-invert), "info": ($info, $info-invert), "success": ($success, $success-invert), "warning": ($warning, $warning-invert), "danger": ($danger, $danger-invert)), $custom-colors) !default
+$colors-pre: mergeColorMaps(("white": ($white, $black), "black": ($black, $white), "light": ($light, $light-invert), "dark": ($dark, $dark-invert), "primary": ($primary, $primary-invert), "link": ($link, $link-invert), "info": ($info, $info-invert), "success": ($success, $success-invert), "warning": ($warning, $warning-invert), "danger": ($danger, $danger-invert)), $custom-colors) !default
+$colors: $colors-pre
+
+npm install vue-router
+
+
+
+# Infos fuer c&p von adnans projekt
+C:\Users\dra\Desktop\BIC4FilmsUnknown-master>H:\Priv\Apps\Node.v12.16.3.x64\npm install vue-moment
+
+add in package.json
+    "dependencies": {
+        "font-awesome": "^4.7.0"
+    }
