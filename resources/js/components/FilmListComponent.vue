@@ -5,7 +5,7 @@
             <tr class="title is-6">
                 <table-element element-type="th">Name</table-element>
                 <table-element element-type="th">Description</table-element>
-                <table-element element-type="th" text-class="has-text-centered">Actors</table-element>
+                <table-element element-type="th" text-class="has-text-centered has-extra-spacing">Actors</table-element>
                 <table-element element-type="th">Created</table-element>
                 <table-element element-type="th">Modified</table-element>
                 <table-element element-type="th"></table-element>

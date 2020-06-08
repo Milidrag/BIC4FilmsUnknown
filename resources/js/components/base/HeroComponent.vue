@@ -1,6 +1,7 @@
 <template>
     <div class="columns is-multiline">
-        <div class="column hero is-bold is-info is-three-fifths is-offset-one-fifth is-small blog-hero">
+<!--        <div class="column hero is-bold is-info is-three-fifths is-offset-one-fifth is-small blog-hero">-->
+        <div class="column hero is-bold is-info is-small blog-hero">
             <div class="hero-body has-text-centered">
                 <div class="container">
                     <h1 class="title" v-text="mainTitle" />

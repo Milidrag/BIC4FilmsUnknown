@@ -1,8 +1,9 @@
 <template>
     <div class="container">
-        <hero main-title="Actors"></hero>
+        <hero :main-title="currentTitle"></hero>
         <div class="columns is-multiline">
-            <div class="column is-three-fifths is-offset-one-fifth">
+<!--            <div class="column is-three-fifths is-offset-one-fifth">-->
+            <div class="column">
                 <success-box :message="successMessage" v-if="showSuccessMessage"></success-box>
                 <div class="box custom-box" v-if="hasActors">
 <!--                    <actor-list :actor-list="actors" :user="user" v-on:open-modal="setModal"></actor-list>-->
@@ -44,6 +45,11 @@
                 type: Array,
                 required: true
             },
+            currentTitle: {
+                type: String,
+                required: false,
+                default: "Actors"
+            }
             // currentUser: {
             //     type: Object,
             //     required: true

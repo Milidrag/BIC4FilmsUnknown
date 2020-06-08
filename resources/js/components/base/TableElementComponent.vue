@@ -31,5 +31,7 @@
 </script>
 
 <style scoped>
-
+    .has-extra-spacing {
+        min-width: 6em;
+    }
 </style>

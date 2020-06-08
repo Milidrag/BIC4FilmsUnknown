@@ -1,8 +1,9 @@
 <template>
     <div class="container">
-        <hero main-title="Films"></hero>
+        <hero :main-title="currentTitle"></hero>
         <div class="columns is-multiline">
-            <div class="column is-three-fifths is-offset-one-fifth">
+<!--            <div class="column is-three-fifths is-offset-one-fifth">-->
+            <div class="column">
                 <success-box :message="successMessage" v-if="showSuccessMessage"></success-box>
                 <div class="box custom-box" v-if="hasFilms">
                     <film-list :films="films" v-on:open-modal="setModal"></film-list>
@@ -38,6 +39,11 @@
             }
         },
         props: {
+            currentTitle:{
+                type: String,
+                required: false,
+                default: "Films"
+            },
             allFilms: {
                 type: Array,
                 required: true

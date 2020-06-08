@@ -33,6 +33,7 @@ Vue.component('film', require('./components/FilmComponent.vue').default);
 Vue.component('films', require('./components/FilmsComponent.vue').default);
 Vue.component('film-form', require('./components/FilmFormComponent.vue').default);
 Vue.component('hero', require('./components/base/HeroComponent.vue').default);
+Vue.component('search-form', require('./components/SearchFormComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

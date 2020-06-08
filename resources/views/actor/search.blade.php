@@ -2,9 +2,10 @@
 
 
 @section('content')
-    <section class="section">
+    <section class="section is-fullwidth">
         <div class="container">
-            <h1>Search actor</h1>
+            <h1 class="title">Search actor</h1>
+            <search-form></search-form>
         </div>
     </section>
 @endsection

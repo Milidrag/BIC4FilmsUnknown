@@ -2,7 +2,8 @@
     <div class="container">
         <hero :main-title="film.name" :sub-title="film.description" />
         <div class="columns is-multiline">
-            <div class="column is-three-fifths is-offset-one-fifth">
+<!--            <div class="column is-three-fifths is-offset-one-fifth">-->
+            <div class="column">
                 <div class="box custom-box" v-if="hasActors">
 <!--                    <actor-list :actor-list="this.filmActors" :user="user" :show-film="false" v-on:open-modal="setModal"></actor-list>-->
                     <actor-list :actor-list="this.filmActors" :show-film="false" v-on:open-modal="setModal"></actor-list>
