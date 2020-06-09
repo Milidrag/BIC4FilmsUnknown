@@ -2875,6 +2875,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 var form = new Form({
   'q': ''
 });
@@ -2890,22 +2894,27 @@ var form = new Form({
       url: '/search/actor',
       actors: [],
       hasSearched: false,
-      searchedFor: ''
+      searchedFor: '',
+      isLoading: false
     };
   },
   methods: {
     submit: function submit() {
       var _this = this;
 
+      this.isLoading = true;
       this.searchedFor = this.form.q;
+      this.actors = [];
       this.form.post(this.url).then(function (response) {
         _this.actors = response;
         _this.form.successMessage = 'The query returned ' + _this.actors.length + ' results';
+        _this.form.q = _this.searchedFor;
         _this.form.noReset = ['q'];
+        _this.isLoading = false;
       })["catch"](function (response) {
+        _this.form.q = _this.searchedFor;
         _this.searchedFor = '';
-        _this.actors = []; // alert(JSON.stringify(this.form.failMessage));
-        // this.form.failMessage = response.message;
+        _this.isLoading = false;
       });
     }
   },
@@ -21966,7 +21975,9 @@ var render = function() {
     "div",
     { staticClass: "container" },
     [
-      _c("hero", { attrs: { "main-title": _vm.currentTitle } }),
+      _vm.currentTitle !== ""
+        ? _c("hero", { attrs: { "main-title": _vm.currentTitle } })
+        : _vm._e(),
       _vm._v(" "),
       _c("div", { staticClass: "columns is-multiline" }, [
         _c(
@@ -22557,125 +22568,121 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container" },
-    [
-      _c("div", { staticClass: "columns is-multiline" }, [
-        _c(
-          "div",
-          {
-            staticClass: "card blog-card column is-half is-offset-one-quarter"
-          },
-          [
-            _c("header", { staticClass: "card-header" }, [
-              _c("h1", {
-                staticClass: "card-header-title is-centered",
-                domProps: { textContent: _vm._s("Search for actors") }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-content" }, [
-              _c(
-                "div",
-                { staticClass: "content" },
-                [
-                  _c("query-message", {
-                    attrs: {
-                      success: _vm.form.isSuccess(),
-                      fail: _vm.form.isFail(),
-                      message: _vm.form.failMessage || _vm.form.successMessage
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "form",
-                    {
-                      on: {
-                        submit: function($event) {
-                          $event.preventDefault()
-                          return _vm.submit($event)
-                        }
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "columns is-multiline" }, [
+      _c(
+        "div",
+        { staticClass: "card blog-card column is-half is-offset-one-quarter" },
+        [
+          _c("header", { staticClass: "card-header" }, [
+            _c("h1", {
+              staticClass: "card-header-title is-centered",
+              domProps: { textContent: _vm._s("Search for actors") }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-content" }, [
+            _c(
+              "div",
+              { staticClass: "content" },
+              [
+                _c("query-message", {
+                  attrs: {
+                    success: _vm.form.isSuccess(),
+                    fail: _vm.form.isFail(),
+                    message: _vm.form.failMessage || _vm.form.successMessage
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "form",
+                  {
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.submit($event)
                       }
-                    },
-                    [
-                      _c("div", { staticClass: "field" }, [
-                        _c(
-                          "label",
-                          { staticClass: "label", attrs: { for: "pattern" } },
-                          [_vm._v("Searchpattern")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "control" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.q,
-                                expression: "form.q"
-                              }
-                            ],
-                            staticClass: "input",
-                            class: { "is-danger": _vm.form.errors.has("q") },
-                            attrs: {
-                              id: "pattern",
-                              type: "text",
-                              autofocus: ""
-                            },
-                            domProps: { value: _vm.form.q },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(_vm.form, "q", $event.target.value)
-                              }
+                    }
+                  },
+                  [
+                    _c("div", { staticClass: "field" }, [
+                      _c(
+                        "label",
+                        { staticClass: "label", attrs: { for: "pattern" } },
+                        [_vm._v("Searchpattern")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "control" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.q,
+                              expression: "form.q"
                             }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _vm.form.errors.has("q")
-                          ? _c("p", {
-                              staticClass: "help is-danger",
-                              domProps: {
-                                textContent: _vm._s(_vm.form.errors.get("q"))
+                          ],
+                          staticClass: "input",
+                          class: { "is-danger": _vm.form.errors.has("q") },
+                          attrs: { id: "pattern", type: "text", autofocus: "" },
+                          domProps: { value: _vm.form.q },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
                               }
-                            })
-                          : _vm._e()
+                              _vm.$set(_vm.form, "q", $event.target.value)
+                            }
+                          }
+                        })
                       ]),
                       _vm._v(" "),
-                      _c("button", {
-                        staticClass:
-                          "button is-large is-primary is-outlined is-fullwidth",
-                        attrs: { type: "submit" },
-                        domProps: { textContent: _vm._s("Search") }
-                      })
-                    ]
-                  )
-                ],
-                1
-              )
-            ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _vm.actors.length > 0
-        ? _c("actors", {
-            attrs: {
-              "current-title": "search result for " + _vm.searchedFor,
-              "all-actors": _vm.actors
-            }
-          })
-        : _vm._e()
-    ],
-    1
-  )
+                      _vm.form.errors.has("q")
+                        ? _c("p", {
+                            staticClass: "help is-danger",
+                            domProps: {
+                              textContent: _vm._s(_vm.form.errors.get("q"))
+                            }
+                          })
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _vm.isLoading
+                      ? _c("button", {
+                          staticClass:
+                            "button is-loading is-large is-primary is-outlined is-fullwidth",
+                          domProps: { textContent: _vm._s("Loading") }
+                        })
+                      : _c("button", {
+                          staticClass:
+                            "button is-large is-primary is-outlined is-fullwidth",
+                          attrs: { type: "submit" },
+                          domProps: { textContent: _vm._s("Search") }
+                        })
+                  ]
+                )
+              ],
+              1
+            )
+          ])
+        ]
+      )
+    ]),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c(
+      "div",
+      [
+        _vm.actors.length > 0
+          ? _c("actors", {
+              attrs: { "current-title": "", "all-actors": _vm.actors }
+            })
+          : _vm._e()
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <hero :main-title="currentTitle"></hero>
+        <hero v-if="currentTitle!==''" :main-title="currentTitle"></hero>
         <div class="columns is-multiline">
 <!--            <div class="column is-three-fifths is-offset-one-fifth">-->
             <div class="column">

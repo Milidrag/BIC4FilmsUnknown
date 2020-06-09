@@ -2,10 +2,13 @@
 
 
 @section('content')
-    <section class="section is-fullheight">
+    <div class="container section">
+{{--        <h1 class="title">Create film</h1>--}}
+        <hero :main-title="'Create a Film'"></hero>
+    </div>
+    <section class="section">
         <div class="container">
-            <h1 class="title">Create film</h1>
-                <film-form></film-form>
+            <film-form></film-form>
         </div>
     </section>
 @endsection
