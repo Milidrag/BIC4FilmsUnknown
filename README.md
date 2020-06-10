@@ -2,7 +2,9 @@
 # BIC4 Information Engineering ProjectThe films about the unknown
 **Autoren:** 
 > D. Bretschneider
+
 > M. Ivkic
+
 > D. Rappl
 
 
@@ -40,7 +42,9 @@ Nähere Information kann [hier](https://github.com/aquilesb/v-datatable-light) g
 #### Dialog Modal
 Das Dialog Modal repräsentiert ein Popup-Fenster, welches für verschiedene Anlässe verwendet werden kann und wird. Prominentestes Beispiel ist Bearbeitung eines Datensatzes (Zeile) in der Tabelle. Dies kann man sich, wie auf folgender Abbildung gezeigt vorstellen.
 
-**BILD EINFÜGEN**
+<img src="http://blog.ppedv.de/image.axd?picture=image_1653.png" height="230" width="600">
+Beispiel Dialog Modal
+
 
 #### Query Message
 blah blah
