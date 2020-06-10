@@ -4,9 +4,7 @@
 @section('content')
     <section class="section is-fullwidth">
         <div class="container">
-            <h1 class="title">Show actor</h1>
-            <actor :current-actor="{{ $actor->load('film') }}" :current-film="{{ $film }}"
-                   ></actor>
+            <films :all-films="{{ $film }}" :current-title="'{{ $actor['name'] }} participates in the following film:'" > </films>
         </div>
     </section>
 @endsection

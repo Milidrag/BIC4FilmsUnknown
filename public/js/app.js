@@ -2154,8 +2154,7 @@ var form = new Form({
         _this.form.noReset = ['id', 'name', 'description', 'film_id'];
         _this.edit = true;
         window.history.pushState("", "", _this.url);
-      })["catch"](function (response) {
-        _this.form.failMessage = 'Could not create actor';
+      })["catch"](function (response) {// this.form.failMessage = 'Could not create actor'
       });
     }
   },
@@ -22094,8 +22093,9 @@ var render = function() {
     [
       _c("hero", {
         attrs: {
-          "main-title": _vm.film.name,
-          "sub-title": _vm.film.description
+          "main-title":
+            "The Film " + _vm.film.name + " has the following actors:",
+          "sub-title": ""
         }
       }),
       _vm._v(" "),

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <hero :main-title="film.name" :sub-title="film.description" />
+        <hero :main-title="'The Film ' + film.name + ' has the following actors:'" :sub-title="''" />
         <div class="columns is-multiline">
 <!--            <div class="column is-three-fifths is-offset-one-fifth">-->
             <div class="column">

@@ -125,7 +125,7 @@
 
                             window.history.pushState("", "", this.url);
                         }).catch((response) => {
-                            this.form.failMessage = 'Could not create actor'
+                            // this.form.failMessage = 'Could not create actor'
                         });
             }
         },
