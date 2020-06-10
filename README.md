@@ -20,7 +20,7 @@ Die Website ist dafür geschaffen Daten zu Filmen und den dazugehörigen Schausp
 
 ## Technologischer Hintergrund  
 ### Allgemein
-edit 
+Immanenter Bestandteil dieser Website ist [Bootstrap](https://getbootstrap.com/). Bootstrap ist ein HTML, CSS und JS Framework und enthält etliche – einfach zu implementierende – Oberflächenelemente, sowie eine Reihe an JS-Erweiterung, von deren Gebrauch wir hier jedenfalls abgesehen haben. 
 
 Da wir hauptsächlich in [Vue.js](https://vuejs.org/) gearbeitet haben, war es naheliegende [BootstrapVue](https://bootstrap-vue.org/) für das Projekt in Gebrauch zu nehmen.
 
@@ -31,7 +31,23 @@ Die folgenden Komponenten wurden für die Implementierung der gewünschten Funkt
 
 Die Komponenten sind im Projekt unter folgendem Pfad zu finden: ```/resources/js/components/base/```
 
-edit
+#### Datatable Light
+Datatable Light ist unsere Komponente zur Darstellung von Daten aus der Datenbank – konkret handelt es sich hier um eine Tabelle. Die Tabelle erfüllt einige für uns notwendige Funktionen:
+* Auflistung der Datensätze in ihrer gespeicherten Form
+* Funktionen zum Editieren, Löschen oder anzeigen zusätzlicher Information
+* Suchfunktion (nur auf vorgesehener Seite verwendbar)
+
+Nähere Information kann [hier](https://github.com/aquilesb/v-datatable-light) gefunden werden.
+
+#### Dialog Modal
+Das Dialog Modal repräsentiert ein Popup-Fenster, welches für verschiedene Anlässe verwendet werden kann und wird. Prominentestes Beispiel ist Bearbeitung eines Datensatzes (Zeile) in der Tabelle. Dies kann man sich, wie auf folgender Abbildung gezeigt vorstellen.
+
+<img src="http://blog.ppedv.de/image.axd?picture=image_1653.png" height="230" width="600">
+Beispiel Dialog Modal
+
+
+#### Query Message
+blah blah
 
 ### Views 
 Views können in unserem Projekt unter folgendem Pfad gefunden werden: ```/resources/views```.
@@ -77,9 +93,10 @@ Folgende Routen waren schon zu Beginn des Projekts gegeben. Die "Verkabelung" im
  * **GET** ```/film/{slug}/edit``` &rarr; Edit film
 
 #### CSS (SCSS)
-Für das Design der Website wurde zum einen [Bulma](https://bulma.io) verwendet.
+Für das Design der Website wurde zum einen [Bulma](https://bulma.io) verwendet, da hier auch etliche Bootstrap-Elemente im Einsatz sind wird auch das Bootstrap eigenene CSS (unter ```/resources/sass/bootstrap.scss``` zu finden) verwendet.
 
 Defaul-Style-Parameter können in  ```/resources/sass/_variables.scss```  oder in ```/resources/sass/_custom.scss``` gefunden und manipuliert werden.
+Also it is possible to write custom styles in .
 
 ### Installationsanleitung
 
