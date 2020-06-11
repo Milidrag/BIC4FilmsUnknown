@@ -43,10 +43,6 @@
                 </form>
             </div>
         </div>
-        <div>
-            <br>
-            <br>
-        </div>
         <!--            @on-update="dtUpdateSort"-->
         <!--            :is-loading="isLoading"-->
         <!--            :css="datatableCss"-->
@@ -65,11 +61,8 @@
             :dtButtonControl="dtButtonControl"
         >
         </datatable-light>
-
-        <br>
-        <br>
-
-    </div>
+       <br>
+   </div>
 </template>
 
 
@@ -271,7 +264,7 @@
                 });
             },
             dialogCallback( formulaData ) {
-                console.log("running " + JSON.stringify(formulaData) );
+                // console.log("running " + JSON.stringify(formulaData) );
                 axios.put(this.entryUrl + formulaData[this.identifierOfEntry] , formulaData )
                     .then( (response) => {
                         this.dialogOkCallback()

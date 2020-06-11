@@ -126,7 +126,7 @@
         },
         computed: {
             fieldState(){
-                console.log( "dialog selected: computed field " + JSON.stringify (this.fieldInput) );
+                // console.log( "dialog selected: computed field " + JSON.stringify (this.fieldInput) );
                 if (this.isMultiple === true && Array.isArray(this.fieldInput) ){
                     if ( this.fieldInput.length === 0 ) {
                         return false;
@@ -142,7 +142,7 @@
         watch: {
             fieldData: {
                 handler: function(newData, oldData){
-                    console.log("dialog selected: select fieldChanged " + JSON.stringify (newData) )
+                    // console.log("dialog selected: select fieldChanged " + JSON.stringify (newData) )
                     this.fieldInput = newData;
                 },
                 deep: true

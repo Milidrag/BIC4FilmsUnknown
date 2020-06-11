@@ -21,7 +21,6 @@
     export default {
         props: ['title'],
         mounted() {
-            console.log('Component mounted.')
         }
     }
 </script>

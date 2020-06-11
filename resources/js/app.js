@@ -8,6 +8,9 @@ require('./bootstrap');
 import vue from 'vue';
 
 window.Vue = vue;
+import { NavbarPlugin } from 'bootstrap-vue';
+Vue.use(NavbarPlugin);
+
 
 /**
  * The following block of code may be used to automatically register your

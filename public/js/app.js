@@ -2042,11 +2042,10 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_M
     dialogCallback: function dialogCallback(formulaData) {
       var _this = this;
 
-      console.log("running " + JSON.stringify(formulaData));
-
+      // console.log("running " + JSON.stringify(formulaData) );
       if (this.dialogMode === 'create' && typeof this.createUrl !== 'undefined') {
         if (this.ichMussVerwendetWerden == true) {
-          console.log('da ich zwingend bin, werde ich verwendet');
+          // console.log('verwendung von form.js')
           var form = new Form({
             'film_id': '',
             'name': '',
@@ -2160,9 +2159,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['title'],
-  mounted: function mounted() {
-    console.log('Component mounted.');
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -2179,13 +2176,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2454,7 +2444,7 @@ var formatDate = function formatDate(value) {
     dialogCallback: function dialogCallback(formulaData) {
       var _this2 = this;
 
-      console.log("running " + JSON.stringify(formulaData));
+      // console.log("running " + JSON.stringify(formulaData) );
       axios.put(this.entryUrl + formulaData[this.identifierOfEntry], formulaData).then(function (response) {
         _this2.dialogOkCallback();
       })["catch"](function (error) {
@@ -2939,7 +2929,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_M
   watch: {
     fieldData: {
       handler: function handler(newData, oldData) {
-        console.log("fieldChanged " + newData);
+        // console.log("fieldChanged " + newData)
         this.fieldInput = newData;
       },
       deep: true
@@ -3085,8 +3075,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_M
   },
   computed: {
     fieldState: function fieldState() {
-      console.log("dialog selected: computed field " + JSON.stringify(this.fieldInput));
-
+      // console.log( "dialog selected: computed field " + JSON.stringify (this.fieldInput) );
       if (this.isMultiple === true && Array.isArray(this.fieldInput)) {
         if (this.fieldInput.length === 0) {
           return false;
@@ -3102,7 +3091,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_M
   watch: {
     fieldData: {
       handler: function handler(newData, oldData) {
-        console.log("dialog selected: select fieldChanged " + JSON.stringify(newData));
+        // console.log("dialog selected: select fieldChanged " + JSON.stringify (newData) )
         this.fieldInput = newData;
       },
       deep: true
@@ -3271,7 +3260,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_M
     // runs when parent changes its data
     formData: {
       handler: function handler(newData, oldData) {
-        console.log("Dialog Modal: new formdata " + JSON.stringify(newData));
+        // console.log("Dialog Modal: new formdata " + JSON.stringify(newData) );
         var i; // console.log( "pre " + JSON.stringify(this.workingFormData) );
         // push data to structure
 
@@ -3359,8 +3348,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_M
       this.dialogCallback(this.collectFormData());
     }
   },
-  created: function created() {
-    console.log("dialog modal: formdata " + JSON.stringify(this.workingFormData));
+  created: function created() {// console.log("dialog modal: formdata " + JSON.stringify(this.workingFormData));
   }
 });
 
@@ -45486,6 +45474,25 @@ var warnNoMutationObserverSupport = function warnNoMutationObserverSupport(sourc
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogControl.vue?vue&type=style&index=0&id=63f8cfcc&scoped=true&lang=css&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/DialogControl.vue?vue&type=style&index=0&id=63f8cfcc&scoped=true&lang=css& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n#dialog-control .hidden[data-v-63f8cfcc]{\n    visibility: hidden;\n    opacity: 0;\n    transition: visibility 0s 10s, opacity 10s linear;\n}\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TableControl.vue?vue&type=style&index=0&lang=css&":
 /*!******************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TableControl.vue?vue&type=style&index=0&lang=css& ***!
@@ -45517,7 +45524,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*\n default color was:\n    color: #337ab7;\n    instead of\n    color: #00d1b2;\n*/\n#datatable-light {\n    font-family: \"Avenir\", Helvetica, Arial, sans-serif;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n    text-align: center;\n    color: #00b89c;\n    margin-top: 60px;\n}\n#datatable-light .title {\n    margin-bottom: 30px;\n}\n#datatable-light .items-per-page {\n    height: 100%;\n    display: flex;\n    align-items: flex-start;\n    color: #00d1b2;\n}\n#datatable-light .items-per-page label {\n    margin: 0 15px;\n}\n\n/* Datatable CSS */\n.v-datatable-light .header-item {\n    cursor: pointer;\n    color: #00d1b2;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light .header-item:hover {\n    color: #ed9b19;\n}\n.v-datatable-light .header-item.no-sortable {\n    cursor: default;\n}\n.v-datatable-light .header-item.no-sortable:hover {\n    color: #00d1b2;\n}\nb {\n    font-family: Helvetica;\n    color: #222222;\n    padding: 0px;\n}\n.v-datatable-light .header-item .th-wrapper {\n    display: flex;\n    width: 100%;\n    height: 100%;\n    font-weight: bold;\n    align-items: center;\n}\n.v-datatable-light .header-item .th-wrapper.checkboxes {\n    justify-content: center;\n}\n.v-datatable-light .header-item .th-wrapper .arrows-wrapper {\n    display: flex;\n    flex-direction: column;\n    margin-left: 10px;\n    justify-content: space-between;\n}\n.v-datatable-light .header-item .th-wrapper .arrows-wrapper.centralized {\n    justify-content: center;\n}\n.v-datatable-light .arrow {\n    transition: color 0.15s ease-in-out;\n    width: 0;\n    height: 0;\n    border-left: 8px solid transparent;\n    border-right: 8px solid transparent;\n}\n.v-datatable-light .arrow.up {\n    border-bottom: 8px solid #00d1b2;\n    margin-bottom: 5px;\n}\n.v-datatable-light .arrow.up:hover {\n    border-bottom: 8px solid #ed9b19;\n}\n.v-datatable-light .arrow.down {\n    border-top: 8px solid #00d1b2;\n}\n.v-datatable-light .arrow.down:hover {\n    border-top: 8px solid #ed9b19;\n}\n/* example colorization of cells / rows / columns\n#datatable-light .v-datatable-light .row-1 .column-2 {\n    color: green;\n}\n*/\n.v-datatable-light .datatable-footer {\n    display: flex;\n    justify-content: space-between;\n    width: 600px;\n}\n/* End Datatable CSS */\n\n/* Pagination CSS */\n.v-datatable-light-pagination {\n    list-style: none;\n    display: flex;\n    align-items: flex-end;\n    justify-content: flex-end;\n    margin: 0;\n    padding: 0;\n    width: 300px;\n    height: 30px;\n}\n.v-datatable-light-pagination .pagination-item {\n    width: 30px;\n    margin-right: 5px;\n    font-size: 16px;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light-pagination .pagination-item.selected {\n    color: #ed9b19;\n}\n.v-datatable-light-pagination .pagination-item .page-btn {\n    background-color: transparent;\n    outline: none;\n    border: none;\n    color: #00d1b2;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light-pagination .pagination-item .page-btn:hover {\n    color: #ed9b19;\n}\n.v-datatable-light-pagination .pagination-item .page-btn:disabled {\n    cursor: not-allowed;\n    box-shadow: none;\n    opacity: 0.65;\n}\n/* END PAGINATION CSS */\n\n/* ITEMS PER PAGE DROPDOWN CSS */\n.item-per-page-dropdown {\n    background-color: transparent;\n    min-height: 30px;\n    border: 1px solid #00d1b2;\n    border-radius: 5px;\n    color: #00d1b2;\n}\n.item-per-page-dropdown:hover {\n    cursor: pointer;\n}\n/* END ITEMS PER PAGE DROPDOWN CSS */\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*\n default color was:\n    color: #337ab7;\n    instead of\n    color: #00d1b2;\n*/\n#datatable-light {\n    /*font-family: \"Avenir\", Helvetica, Arial, sans-serif;*/\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n    text-align: center;\n    color: #00b89c;\n    margin-top: 60px;\n}\n#datatable-light .title {\n    margin-bottom: 30px;\n}\n#datatable-light .items-per-page {\n    height: 100%;\n    display: flex;\n    align-items: flex-start;\n    color: #00d1b2;\n}\n#datatable-light .items-per-page label {\n    margin: 0 15px;\n}\n\n/* Datatable CSS */\n.v-datatable-light .header-item {\n    cursor: pointer;\n    color: #00d1b2;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light .header-item:hover {\n    color: #ed9b19;\n}\n.v-datatable-light .header-item.no-sortable {\n    cursor: default;\n}\n.v-datatable-light .header-item.no-sortable:hover {\n    color: #00d1b2;\n}\nb {\n    /*font-family: Helvetica;*/\n    color: #222222;\n    padding: 0px;\n}\n.v-datatable-light .header-item .th-wrapper {\n    display: flex;\n    width: 100%;\n    height: 100%;\n    font-weight: bold;\n    align-items: center;\n}\n.v-datatable-light .header-item .th-wrapper.checkboxes {\n    justify-content: center;\n}\n.v-datatable-light .header-item .th-wrapper .arrows-wrapper {\n    display: flex;\n    flex-direction: column;\n    margin-left: 10px;\n    justify-content: space-between;\n}\n.v-datatable-light .header-item .th-wrapper .arrows-wrapper.centralized {\n    justify-content: center;\n}\n.v-datatable-light .arrow {\n    transition: color 0.15s ease-in-out;\n    width: 0;\n    height: 0;\n    border-left: 8px solid transparent;\n    border-right: 8px solid transparent;\n}\n.v-datatable-light .arrow.up {\n    border-bottom: 8px solid #00d1b2;\n    margin-bottom: 5px;\n}\n.v-datatable-light .arrow.up:hover {\n    border-bottom: 8px solid #ed9b19;\n}\n.v-datatable-light .arrow.down {\n    border-top: 8px solid #00d1b2;\n}\n.v-datatable-light .arrow.down:hover {\n    border-top: 8px solid #ed9b19;\n}\n/* example colorization of cells / rows / columns\n#datatable-light .v-datatable-light .row-1 .column-2 {\n    color: green;\n}\n*/\n.v-datatable-light .datatable-footer {\n    display: flex;\n    justify-content: space-between;\n    width: 600px;\n}\n/* End Datatable CSS */\n\n/* Pagination CSS */\n.v-datatable-light-pagination {\n    list-style: none;\n    display: flex;\n    align-items: flex-end;\n    justify-content: flex-end;\n    margin: 0;\n    padding: 0;\n    width: 300px;\n    height: 30px;\n}\n.v-datatable-light-pagination .pagination-item {\n    width: 30px;\n    margin-right: 5px;\n    font-size: 16px;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light-pagination .pagination-item.selected {\n    color: #ed9b19;\n}\n.v-datatable-light-pagination .pagination-item .page-btn {\n    background-color: transparent;\n    outline: none;\n    border: none;\n    color: #00d1b2;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light-pagination .pagination-item .page-btn:hover {\n    color: #ed9b19;\n}\n.v-datatable-light-pagination .pagination-item .page-btn:disabled {\n    cursor: not-allowed;\n    box-shadow: none;\n    opacity: 0.65;\n}\n/* END PAGINATION CSS */\n\n/* ITEMS PER PAGE DROPDOWN CSS */\n.item-per-page-dropdown {\n    background-color: transparent;\n    min-height: 30px;\n    border: 1px solid #00d1b2;\n    border-radius: 5px;\n    color: #00d1b2;\n}\n.item-per-page-dropdown:hover {\n    cursor: pointer;\n}\n/* END ITEMS PER PAGE DROPDOWN CSS */\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -68876,6 +68883,36 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogControl.vue?vue&type=style&index=0&id=63f8cfcc&scoped=true&lang=css&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/DialogControl.vue?vue&type=style&index=0&id=63f8cfcc&scoped=true&lang=css& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./DialogControl.vue?vue&type=style&index=0&id=63f8cfcc&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogControl.vue?vue&type=style&index=0&id=63f8cfcc&scoped=true&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TableControl.vue?vue&type=style&index=0&lang=css&":
 /*!**********************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TableControl.vue?vue&type=style&index=0&lang=css& ***!
@@ -69565,6 +69602,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { attrs: { id: "dialog-control" } },
     [
       _c("dialog-modal", {
         attrs: {
@@ -69576,8 +69614,6 @@ var render = function() {
           dialogCallback: _vm.dialogCallback
         }
       }),
-      _vm._v(" "),
-      _c("br"),
       _vm._v(" "),
       _c("div", { staticClass: "userInfo", attrs: { id: "userInfo" } }),
       _vm._v(" "),
@@ -69593,7 +69629,7 @@ var render = function() {
             }
           }
         },
-        [_vm._v(_vm._s(this.dialogTitle))]
+        [_vm._v(_vm._s(this.dialogTitle) + "\n    ")]
       )
     ],
     1
@@ -69723,8 +69759,6 @@ var render = function() {
           : _vm._e()
       ]),
       _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
       _c("datatable-light", {
         attrs: {
           "header-fields": _vm.headerFields,
@@ -69738,21 +69772,12 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
       _c("br")
     ],
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("br"), _vm._v(" "), _c("br")])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -83131,6 +83156,7 @@ module.exports = function(module) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -83140,6 +83166,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 window.Vue = vue__WEBPACK_IMPORTED_MODULE_0___default.a;
+
+Vue.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_1__["NavbarPlugin"]);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -83250,7 +83278,9 @@ document.addEventListener('DOMContentLoaded', function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _DialogControl_vue_vue_type_template_id_63f8cfcc_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DialogControl.vue?vue&type=template&id=63f8cfcc&scoped=true& */ "./resources/js/components/DialogControl.vue?vue&type=template&id=63f8cfcc&scoped=true&");
 /* harmony import */ var _DialogControl_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DialogControl.vue?vue&type=script&lang=js& */ "./resources/js/components/DialogControl.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _DialogControl_vue_vue_type_style_index_0_id_63f8cfcc_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DialogControl.vue?vue&type=style&index=0&id=63f8cfcc&scoped=true&lang=css& */ "./resources/js/components/DialogControl.vue?vue&type=style&index=0&id=63f8cfcc&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -83258,7 +83288,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _DialogControl_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _DialogControl_vue_vue_type_template_id_63f8cfcc_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
   _DialogControl_vue_vue_type_template_id_63f8cfcc_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -83287,6 +83317,22 @@ component.options.__file = "resources/js/components/DialogControl.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogControl_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./DialogControl.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogControl.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogControl_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/DialogControl.vue?vue&type=style&index=0&id=63f8cfcc&scoped=true&lang=css&":
+/*!************************************************************************************************************!*\
+  !*** ./resources/js/components/DialogControl.vue?vue&type=style&index=0&id=63f8cfcc&scoped=true&lang=css& ***!
+  \************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogControl_vue_vue_type_style_index_0_id_63f8cfcc_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./DialogControl.vue?vue&type=style&index=0&id=63f8cfcc&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/DialogControl.vue?vue&type=style&index=0&id=63f8cfcc&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogControl_vue_vue_type_style_index_0_id_63f8cfcc_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogControl_vue_vue_type_style_index_0_id_63f8cfcc_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogControl_vue_vue_type_style_index_0_id_63f8cfcc_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogControl_vue_vue_type_style_index_0_id_63f8cfcc_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_DialogControl_vue_vue_type_style_index_0_id_63f8cfcc_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 

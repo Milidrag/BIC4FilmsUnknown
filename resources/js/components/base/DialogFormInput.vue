@@ -69,7 +69,7 @@
         watch: {
             fieldData: {
                 handler: function(newData, oldData){
-                    console.log("fieldChanged " + newData)
+                    // console.log("fieldChanged " + newData)
                     this.fieldInput = newData;
                 },
                 deep: true

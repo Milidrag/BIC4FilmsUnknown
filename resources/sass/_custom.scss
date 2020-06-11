@@ -3,7 +3,7 @@
 }
 
 .is-fullheight.columns {
-    min-height: calc(100vh - 6.75rem);
+    min-height: calc(100vh - 10.75rem);
 }
 
 .is-fullwidth.columns {
@@ -11,11 +11,11 @@
 }
 
 .is-fullheight.main {
-    min-height: calc(100vh - 6.75rem);
+    min-height: calc(100vh - 10.75rem);
 }
 
 .is-fullheight.section {
-    min-height: calc(100vh - 6.75rem);
+    min-height: calc(100vh - 10.75rem);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -32,6 +32,7 @@
 
     .card-header {
         .card-header-title {
+            color: $white;
             font-size: 1.2rem;
             font-weight: lighter;
         }
@@ -42,6 +43,135 @@
     height: 5vh;
 }
 
-.hero.is-fullheight-with-navbar{
-    min-height: calc(100vh - 6.75rem);
+.section.is-fullheight-with-navbar{
+    min-height: calc(100vh - 10.75rem);
+}
+
+
+// fixes for missing bulma navbar
+
+.navbar{
+    background-color: $white;
+}
+
+input.navbar-burger-btn, input[type=checkbox].navbar-burger-btn ~ .navbar-collapse {
+    display: none
+}
+
+input[type=checkbox]:checked.navbar-burger-btn ~ .navbar-collapse {
+    display: block
+}
+
+label.navbar-burger-btn {
+    color: #959595;
+    cursor: pointer;
+    display: block;
+    padding: 16px 32px
+}
+
+label.navbar-burger-btn:hover {
+    color: #fff
+}
+
+.b-nav-dropdown:hover ul {
+    display: block
+}
+
+.b-nav-dropdown ul {
+    //background: #fff;
+    padding: 0
+}
+
+.b-nav-dropdown ul a, .b-nav-dropdown:hover ul a {
+    //color: #0072bc
+}
+
+.b-nav-dropdown ul a:hover, .b-nav-dropdown:hover ul a:hover {
+    //color: #000
+}
+
+.b-nav-dropdown ul ul {
+    //border-bottom: 1px #ccc solid;
+    //border-top: 1px #ccc solid;
+    box-shadow: none;
+    margin-bottom: 16px;
+    max-width: 100%;
+    position: relative
+}
+
+.navbar-burger-icon::before {
+    content: '\2630'
+}
+
+.nav-item .is-active {
+    background-color: transparent;
+    color: #3490dc;
+}
+
+@media (min-width: 768px) {
+    .navbar li {
+        display: inline-block
+    }
+    .navbar a {
+        padding: 16px
+    }
+
+    .b-nav-dropdown {
+        position: relative
+    }
+    .b-nav-dropdown li a {
+        display: block;
+        padding: 8px 16px;
+        white-space: nowrap
+    }
+    .b-nav-dropdown ul {
+        //box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, .5);
+        padding: 8px 0;
+        position: absolute;
+        min-width: 100%
+    }
+    input.navbar-burger-btn, label.navbar-burger-btn {
+        display: none
+    }
+    .navbar-collapse, input[type=checkbox].navbar-burger-btn ~ .navbar-collapse {
+        display: block
+    }
+    .nav-item .is-active {
+        background-color: transparent;
+        color: #3490dc;
+    }
+}
+
+
+// fixes for missing bulma classes
+
+.help {
+    display: block;
+    font-size: .75rem;
+}
+
+.help.is-danger {
+    color: #ff3860
+}
+
+.columns.is-multiline {
+    flex-wrap: wrap;
+}
+.message.is-success{
+    background-color:#f6fef9
+}
+
+.message-body {
+    border-color: #23d160;
+    color: #0e301a
+}
+
+.title {
+    color: $black;
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.125;
+    word-break: break-word;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }

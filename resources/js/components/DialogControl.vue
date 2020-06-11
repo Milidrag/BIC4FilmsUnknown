@@ -1,21 +1,21 @@
 <template>
-    <div>
-    <dialog-modal
-        :dialog-id="this.dialogMode + '-form-dialog'"
-        :dialog-title="dialogTitle"
-        :form-definition="formDefinition"
-        v-bind:form-data="formData"
-        v-bind:dialog-options="selectableOptions"
-        :dialogCallback="dialogCallback"
+    <div id="dialog-control">
+        <dialog-modal
+            :dialog-id="this.dialogMode + '-form-dialog'"
+            :dialog-title="dialogTitle"
+            :form-definition="formDefinition"
+            v-bind:form-data="formData"
+            v-bind:dialog-options="selectableOptions"
+            :dialogCallback="dialogCallback"
 
-    >
-    </dialog-modal>
-    <br>
-    <div class="userInfo" id="userInfo">
-    </div>
-    <br>
-<!--    <b-button :id="this.dialogMode + '-btn'" variant="primary" @click="$bvModal.show( this.dialogMode + -form-dialog )">{{ this.dialogTitle }}</b-button>-->
-    <b-button :id="this.dialogMode + '-btn'" variant="primary" @click="buttonClick()">{{ this.dialogTitle }}</b-button>
+        >
+        </dialog-modal>
+        <div class="userInfo" id="userInfo">
+        </div>
+        <br>
+
+        <b-button :id="this.dialogMode + '-btn'" variant="primary" @click="buttonClick()">{{ this.dialogTitle }}
+        </b-button>
     </div>
 </template>
 
@@ -137,10 +137,10 @@
 
             },
             dialogCallback( formulaData ) {
-                console.log("running " + JSON.stringify(formulaData) );
+                // console.log("running " + JSON.stringify(formulaData) );
                 if ( (this.dialogMode === 'create') && (typeof this.createUrl !== 'undefined') ) {
                     if (this.ichMussVerwendetWerden == true){
-                        console.log('da ich zwingend bin, werde ich verwendet')
+                        // console.log('verwendung von form.js')
                         let form = new Form({
                             'film_id': '',
                             'name': '',
@@ -228,5 +228,11 @@
 </script>
 
 <style scoped>
+
+    #dialog-control .hidden{
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s 10s, opacity 10s linear;
+    }
 
 </style>

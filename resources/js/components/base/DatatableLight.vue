@@ -36,7 +36,7 @@
             s
             <!-- Action "Show Details" slot -->
             <template v-slot:actionShowDetails="props">
-    <!--            <b-button id="details-btn" v-bind:href="entryUrl + ''+ props.rowData[identifierOfEntry]" variant="primary" @click="dtButtonControl($event, props)">Details</b-button>-->
+    <!--            <b-button id="details-btn" v-bindef:hr="entryUrl + ''+ props.rowData[identifierOfEntry]" variant="primary" @click="dtButtonControl($event, props)">Details</b-button>-->
                 <b-button id="details-btn" variant="primary" @click="dtButtonControl($event, props)">Details</b-button>
             </template>
 
@@ -284,7 +284,7 @@
         color: #00d1b2;
     */
     #datatable-light {
-        font-family: "Avenir", Helvetica, Arial, sans-serif;
+        /*font-family: "Avenir", Helvetica, Arial, sans-serif;*/
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
@@ -326,7 +326,7 @@
     }
 
     b {
-        font-family: Helvetica;
+        /*font-family: Helvetica;*/
         color: #222222;
         padding: 0px;
     }

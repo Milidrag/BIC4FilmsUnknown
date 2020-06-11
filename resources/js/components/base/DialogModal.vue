@@ -159,7 +159,7 @@
             // runs when parent changes its data
             formData: {
                 handler: function(newData, oldData){
-                    console.log("Dialog Modal: new formdata " + JSON.stringify(newData) );
+                    // console.log("Dialog Modal: new formdata " + JSON.stringify(newData) );
                     var i;
                     // console.log( "pre " + JSON.stringify(this.workingFormData) );
                     // push data to structure
@@ -243,7 +243,7 @@
             }
         },
         created(){
-            console.log("dialog modal: formdata " + JSON.stringify(this.workingFormData));
+            // console.log("dialog modal: formdata " + JSON.stringify(this.workingFormData));
         }
 
     }

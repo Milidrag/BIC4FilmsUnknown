@@ -34,114 +34,118 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
 <div id="app">
-    <nav class="navbar" role="navigation" aria-label="main navigation">
+
+    <nav class="navbar navbar-primary navbar-expand-md">
+
+        <label for="menu-btn" class="navbar-burger-btn navbar-burger-icon"></label>
+        <input type="checkbox" id="menu-btn" class="navbar-burger-btn">
+
+        <button type="button" aria-label="Toggle navigation" class="navbar-toggler collapsed" aria-expanded="false"
+                aria-controls="nav-collapse"><span class="navbar-toggler-icon"></span></button>
         <div class="navbar-brand">
-            <a class="navbar-item" href="{{ route('welcome') }}">
+            <a class="nav-item" href="{{ route('welcome') }}">
                 <img src="{{asset('img/Logo.png')}}" width="130" height="50">
             </a>
-
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
-               data-target="navbarMain">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
         </div>
-
-        <div id="navbarMain" class="navbar-menu">
-            @auth
-                <div class="navbar-start">
-                    <a class="navbar-item {{ request()->routeIs('home') ? 'is-active' : '' }}"
-                       href="{{ route('home') }}">
-                        Home
-                    </a>
-
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link {{ request()->routeIs('actor.index') || request()->routeIs('actor.create') || request()->routeIs('actor.search') ? 'is-active' : '' }}">
-                            Actors
+{{--        <div id="nav-collapse" class="navbar-collapse collapse" style="display: none;">--}}
+            <ul class="navbar-collapse navbar-nav">
+                @auth
+                    <li class="nav-item ">
+                        <a href="{{ route('home') }}" class="nav-link nav-item {{ request()->routeIs('home') ? 'is-active' : '' }}">Home</a>
+                    </li>
+                    <li class="nav-item b-nav-dropdown dropdown " left="">
+                        <a role="button" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle {{ request()->routeIs('actor.index') || request()->routeIs('actor.create') || request()->routeIs('actor.search') ? 'is-active' : '' }}" href="#">
+                            <span>Actors</span>
                         </a>
-
-                        <div class="navbar-dropdown">
-                            <a class="navbar-item {{ request()->routeIs('actor.index') ? 'is-active' : '' }}"
-                               href="{{ route('actor.index') }}">
-                                List
-                            </a>
-                            <a class="navbar-item {{ request()->routeIs('actor.create') ? 'is-active' : '' }}"
-                               href="{{ route('actor.create') }}">
-                                Create
-                            </a>
-                            <hr class="navbar-divider">
-                            <a class="navbar-item {{ request()->routeIs('actor.search') ? 'is-active' : '' }}"
-                               href="{{ route('actor.search') }}">
-                                Search
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link {{ request()->routeIs('film.index') || request()->routeIs('film.create') ? 'is-active' : '' }}">
-                            Films
+                        <ul tabindex="-1" class="dropdown-menu">
+                            <li role="presentation" class="nav-item dropdown-item">
+                                <a role="menuitem" class="nav-item dropdown-item {{ request()->routeIs('actor.index') ? 'is-active' : '' }}"
+                                   href="{{ route('actor.index') }}">
+                                    List
+                                </a>
+                            </li>
+                            <li role="presentation" class="nav-item dropdown-item">
+                                <a role="menuitem" class="nav-item dropdown-item {{ request()->routeIs('actor.create') ? 'is-active' : '' }}"
+                                   href="{{ route('actor.create') }}">
+                                    Create
+                                </a>
+                            </li>
+                            <li role="presentation" class="nav-item dropdown-item">
+                                <a role="menuitem" class="nav-item dropdown-item {{ request()->routeIs('actor.search') ? 'is-active' : '' }}"
+                                   href="{{ route('actor.search') }}">
+                                    Search
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item b-nav-dropdown dropdown" left="" >
+                        <a role="button" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle {{ request()->routeIs('film.index') || request()->routeIs('film.create') ? 'is-active' : '' }}" href="#">
+                            <span>Films</span>
                         </a>
-
-                        <div class="navbar-dropdown">
-                            <a class="navbar-item {{ request()->routeIs('film.index') ? 'is-active' : '' }}"
-                               href="{{ route('film.index') }}">
-                                List
-                            </a>
-                            <a class="navbar-item {{ request()->routeIs('film.create') ? 'is-active' : '' }}"
-                               href="{{ route('film.create') }}">
-                                Create
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            @endauth
-
-            <div class="navbar-end">
+                        <ul tabindex="-1" class="dropdown-menu">
+                            <li role="presentation" class="nav-item dropdown-item">
+                                <a role="menuitem" class="nav-item dropdown-item {{ request()->routeIs('film.index') ? 'is-active' : '' }}"
+                                   href="{{ route('film.index') }}">
+                                    List
+                                </a>
+                            </li>
+                            <li role="presentation" class="nav-item dropdown-item">
+                                <a role="menuitem" class="nav-item dropdown-item {{ request()->routeIs('film.create') ? 'is-active' : '' }}"
+                                   href="{{ route('film.create') }}">
+                                    Create
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endauth
+            </ul>
+            <ul class="navbar-collapse navbar-nav ml-auto">
                 @guest
-                    <div class="navbar-item">
-                        <div class="buttons">
-                            <a class="button is-primary" href="{{ route('login') }}">{{ __('Login') }}</a>
+                    <li class="nav-item">
+                        <div class="btn">
+                            <a class="btn btn-primary" href="{{ route('login') }}">{{ __('Login') }}</a>
                             @if (Route::has('register'))
-                                <a class="button is-light" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                <a class="btn btn-light" href="{{ route('register') }}">{{ __('Register') }}</a>
                             @endif
                         </div>
-                    </div>
+                    </li>
                 @else
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link">
-                            {{ Auth::user()->name }}
+                    <li class="nav-item b-nav-dropdown dropdown">
+                        <a role="button" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle" href="#">
+                            <span> {{ Auth::user()->name }} </span>
                         </a>
-
-                        <div class="navbar-dropdown is-right">
-                            <a class="navbar-item" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                  style="display: none;">
-                                @csrf
-                            </form>
-                        </div>
-                    </div>
+                        <ul tabindex="-1" class="dropdown-menu dropdown-menu-right">
+                            <li role="presentation" class="nav-item dropdown-item">
+                                <a role="menuitem" class="nav-item dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                          style="display: none;">
+                                        @csrf
+                                    </form>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 @endguest
-            </div>
-        </div>
+            </ul>
+{{--        </div>--}}
     </nav>
+
 
     <div class="main is-fullheight">
         @yield('content')
     </div>
 
+
+
+
     <footer class="footer">
-        <div class="content has-text-centered">
+        <div class="content text-center">
             <small>Unknown Films BIC4 IE <b>::</b> Bretschneider – Ivkic – Rappl</small>
         </div>
     </footer>

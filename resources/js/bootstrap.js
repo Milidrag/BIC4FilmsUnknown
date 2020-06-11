@@ -12,6 +12,10 @@ import axios from 'axios';
 import Form from './utilities/Form';
 import QueryMessage from './components/base/QueryMessage';
 
+
+
+
+
 window._ = lodash;
 window.axios = axios;
 window.QueryMessage = QueryMessage;
