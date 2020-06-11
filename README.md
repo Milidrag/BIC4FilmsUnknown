@@ -95,10 +95,11 @@ Folgende Routen waren schon zu Beginn des Projekts gegeben. Die "Verkabelung" im
  * **GET** ```/film/{slug}/edit``` &rarr; Edit film
 
 #### CSS (SCSS)
-Das in dem Projekt standardmaessig vorgesehende [Bulma](https://bulma.io) Design wurde aus dem Projekt entfernt. Soweit moeglich wurden die Bulma Classes durch Bootstrap Classes ersetzt. Wo dies nicht moeglich war wie z.b. der Navbar wurde eine eigene Implementierung realisiert. Die Bootstrap eigenen SCSS sind unter ```/resources/sass/bootstrap.scss``` zu finden. Der Grossteil kann jedoch durch Variablen (```/resources/sass/_variables.scss```) gesteuert werden.
+Das in dem Projekt standardmaessig vorgesehende [Bulma](https://bulma.io) Design wurde aus dem Projekt entfernt. Soweit moeglich wurden die Bulma Classes durch Bootstrap Classes ersetzt. Wo dies nicht moeglich war wie z.b. der Navbar wurde eine eigene Implementierung realisiert. Die Bootstrap eigenen SCSS sind unter ```/resources/sass/bootstrap.scss``` zu finden. 
 
-Defaul-Style-Parameter können in  ```/resources/sass/_variables.scss```  oder in ```/resources/sass/_custom.scss``` gefunden und manipuliert werden.
-Also it is possible to write custom styles in .
+Defaul-Style-Parameter können in  ```/resources/sass/_variables.scss```  gefunden und manipuliert werden.
+Eigene Stylings sind in ```/resources/sass/_custom.scss``` zu finden.
+
 
 ### Installationsanleitung
 
