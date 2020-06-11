@@ -102,7 +102,7 @@ https://github.com/Egorvah/vudal
                                 "__slot:actions:actionsEditInline"
                                 ]'
                              :track-by="'slug'"
-                             :initial-data="{{ $actor }}"
+                             :initial-data="{{ $actors }}"
                              :is-search-able="false"
                              :search-table-data-url="'../../search/actor'"
                              :sort="'yes'"

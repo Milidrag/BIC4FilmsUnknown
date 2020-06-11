@@ -91,7 +91,7 @@
                                 ]'
 
                              :track-by="'slug'"
-                             :initial-data="{{ $film }}"
+                             :initial-data="{{ $films }}"
                              :is-search-able="false"
                              :search-table-data-url="'../../search/doesnotexist'"
                              :sort="'yes'"
