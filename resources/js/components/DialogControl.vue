@@ -116,11 +116,6 @@
                 type: String,
                 required: false
             },
-            ichMussVerwendetWerden: {
-                type: Boolean,
-                required: false,
-                default: false
-            },
         },
         data: function(){
             return {
@@ -136,40 +131,20 @@
                 this.$bvModal.show( this.dialogMode + "-form-dialog" );
 
             },
-            dialogCallback( formulaData ) {
+            dialogCallback(formulaData) {
                 // console.log("running " + JSON.stringify(formulaData) );
-                if ( (this.dialogMode === 'create') && (typeof this.createUrl !== 'undefined') ) {
-                    if (this.ichMussVerwendetWerden == true){
-                        // console.log('verwendung von form.js')
-                        let form = new Form({
-                            'film_id': '',
-                            'name': '',
-                            'description': ''
-                        });
-                        form.name = formulaData['name'];
-                        form.description = formulaData['description'];
-                        form.film_id = formulaData['film_id'];
-                        form.post(this.createUrl)
-                            .then((response) => {
-                                this.dialogOkCallback();
-                            }).catch(  (error) => {
-                            this.dialogFailedCallback();
-                        });
-                    } else {
-                        axios.post(this.createUrl , formulaData )
-                            .then( (response) => {
-                                this.dialogOkCallback()
-                            }).catch(  (error) => {
-                            this.dialogFailedCallback();
-                        });
-                    }
-
-
-                } else if ( (this.dialogMode === 'edit') && (typeof this.editUrl !== 'undefined') ) {
-                    axios.put(this.editUrl , formulaData )
-                        .then( (response) => {
+                if ((this.dialogMode === 'create') && (typeof this.createUrl !== 'undefined')) {
+                    axios.post(this.createUrl, formulaData)
+                        .then((response) => {
+                            this.dialogOkCallback()
+                        }).catch((error) => {
+                        this.dialogFailedCallback();
+                    });
+                } else if ((this.dialogMode === 'edit') && (typeof this.editUrl !== 'undefined')) {
+                    axios.put(this.editUrl, formulaData)
+                        .then((response) => {
                             this.dialogOkCallback();
-                        }).catch(  (error) => {
+                        }).catch((error) => {
                         this.dialogFailedCallback();
                     });
                 } else {
@@ -184,22 +159,22 @@
                 this.updateUserInfo("warning", this.dialogMode + " failed");
 
             },
-            getOptions: function(optionsUrl){
+            getOptions: function (optionsUrl) {
                 axios.get(optionsUrl).then(res => (
                     // console.log(res)
                     this.selectableOptions = res.data
-                ) );
+                ));
             },
-            updateUserInfo: function (level, info){
+            updateUserInfo: function (level, info) {
                 var element = document.getElementById("userInfo");
                 element.innerHTML = info;
-                if (level === "success" ){
+                if (level === "success") {
                     element.classList.add("alert");
                     element.classList.add("alert-success");
-                } else if (level === "info" ){
+                } else if (level === "info") {
                     element.classList.add("alert");
                     element.classList.add("alert-info");
-                } else if ( level === "warning" ){
+                } else if (level === "warning") {
                     element.classList.add("alert");
                     element.classList.add("alert-warning");
                 } else {
@@ -207,7 +182,7 @@
                     element.classList.add("alert-danger");
                 }
                 element.classList.add("hidden");
-                setTimeout(function(){
+                setTimeout(function () {
                     // element.classList.remove("hidden");
                     element.className = 'userInfo';
                     element.innerHTML = '';
@@ -215,8 +190,8 @@
             }
         },
 
-        created(){
-            if ( this.optionsUrl !== null ){
+        created() {
+            if (this.optionsUrl !== null) {
                 this.getOptions(this.optionsUrl);
             }
 

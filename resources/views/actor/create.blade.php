@@ -54,7 +54,6 @@
                     :create-url="'.'"
                     :edit-url="'.'"
                     v-bind:dialog-mode="'create'"
-                    :ich-muss-verwendet-werden="true"
 {{--                v-bind:form-data=formData--}}
 {{--                :dialogCallback=''--}}
             >

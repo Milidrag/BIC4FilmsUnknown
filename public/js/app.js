@@ -2019,11 +2019,6 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_M
     editUrl: {
       type: String,
       required: false
-    },
-    ichMussVerwendetWerden: {
-      type: Boolean,
-      required: false,
-      "default": false
     }
   },
   data: function data() {
@@ -2044,28 +2039,11 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_M
 
       // console.log("running " + JSON.stringify(formulaData) );
       if (this.dialogMode === 'create' && typeof this.createUrl !== 'undefined') {
-        if (this.ichMussVerwendetWerden == true) {
-          // console.log('verwendung von form.js')
-          var form = new Form({
-            'film_id': '',
-            'name': '',
-            'description': ''
-          });
-          form.name = formulaData['name'];
-          form.description = formulaData['description'];
-          form.film_id = formulaData['film_id'];
-          form.post(this.createUrl).then(function (response) {
-            _this.dialogOkCallback();
-          })["catch"](function (error) {
-            _this.dialogFailedCallback();
-          });
-        } else {
-          axios.post(this.createUrl, formulaData).then(function (response) {
-            _this.dialogOkCallback();
-          })["catch"](function (error) {
-            _this.dialogFailedCallback();
-          });
-        }
+        axios.post(this.createUrl, formulaData).then(function (response) {
+          _this.dialogOkCallback();
+        })["catch"](function (error) {
+          _this.dialogFailedCallback();
+        });
       } else if (this.dialogMode === 'edit' && typeof this.editUrl !== 'undefined') {
         axios.put(this.editUrl, formulaData).then(function (response) {
           _this.dialogOkCallback();
@@ -2238,12 +2216,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 // This imports <b-modal> as well as the v-b-modal directive as a plugin:
 
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["ButtonPlugin"]);
@@ -2262,6 +2234,9 @@ var formatDate = function formatDate(value) {
   return "";
 };
 
+var formJs = new Form({
+  'q': ''
+});
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TableControl",
   props: {
@@ -2379,28 +2354,32 @@ var formatDate = function formatDate(value) {
     return {
       workingData: this.initialData,
       formData: {},
-      dropdownListing: []
+      dropdownListing: [],
+      form: formJs
     };
   },
   methods: {
     actionSearch: function actionSearch(event) {
+      var _this = this;
+
       if (this.isSearchAble === true) {
-        var searchString = document.getElementById('input-search').value;
+        // var searchString = document.getElementById('input-search').value;
+        var searchString = this.form.q;
+        this.form.post(this.searchTableDataUrl).then(function (response) {
+          _this.processBackendResponse(response);
 
-        if (typeof searchString !== 'undefined' && searchString === "") {
-          if (event.type === "keyup" && searchString === "") {
-            this.updateUserInfo("info", "Removing search filter.");
-            this.serverDataGet(this.getTableDataUrl);
-          }
+          _this.form.successMessage = 'The query returned ' + _this.workingData.length + ' results';
 
-          if (event.type === "click") {
-            this.updateUserInfo("warning", "The search string must not be empty! Reseting Filter.");
-            this.serverDataGet(this.getTableDataUrl);
-          }
-        } else {
-          this.updateUserInfo("info", "Updating...");
-          this.serverDataSearch(this.searchTableDataUrl, this.searchSelector + searchString);
-        }
+          _this.updateUserInfo("info", _this.form.successMessage);
+
+          _this.form.q = searchString; // this.dialogOkCallback();
+        })["catch"](function (error) {
+          _this.updateUserInfo("alert", _this.form.failMessage + " Reset filter...");
+
+          _this.form.q = searchString;
+
+          _this.serverDataGet(_this.getTableDataUrl);
+        });
       } else {
         this.updateUserInfo("warning", "Searching is not supported.");
       }
@@ -2423,32 +2402,32 @@ var formatDate = function formatDate(value) {
       this.$bvModal.show("edit-form-dialog");
     },
     dtRemoveClick: function dtRemoveClick(props) {
-      var _this = this;
+      var _this2 = this;
 
       axios["delete"](this.entryUrl + props['rowData'][this.identifierOfEntry]).then(function (response) {
-        var deletedItem = _this.workingData.find(function (entry) {
+        var deletedItem = _this2.workingData.find(function (entry) {
           // find the deleted element
-          return entry.slug === props['rowData'][_this.identifierOfEntry];
+          return entry.slug === props['rowData'][_this2.identifierOfEntry];
         });
 
         if (~deletedItem) {
           // if the item exists in array
-          _this.workingData.splice(_this.workingData.indexOf(deletedItem), 1); //delete the row
+          _this2.workingData.splice(_this2.workingData.indexOf(deletedItem), 1); //delete the row
           // this.updateTableView(); // update the view
 
         }
       })["catch"](function (error) {
-        _this.dialogFailedCallback();
+        _this2.dialogFailedCallback();
       });
     },
     dialogCallback: function dialogCallback(formulaData) {
-      var _this2 = this;
+      var _this3 = this;
 
       // console.log("running " + JSON.stringify(formulaData) );
       axios.put(this.entryUrl + formulaData[this.identifierOfEntry], formulaData).then(function (response) {
-        _this2.dialogOkCallback();
+        _this3.dialogOkCallback();
       })["catch"](function (error) {
-        _this2.dialogFailedCallback();
+        _this3.dialogFailedCallback();
       });
     },
     dialogOkCallback: function dialogOkCallback() {
@@ -2483,29 +2462,34 @@ var formatDate = function formatDate(value) {
       this.workingData = newData; // this.updateTableView();
     },
     serverDataGet: function serverDataGet(Url) {
-      var _this3 = this;
-
-      axios.get(Url).then(function (res) {
-        _this3.processBackendResponse(res.data);
-
-        _this3.updateUserInfo("info", "Updating...");
-      })["catch"](function (error) {
-        _this3.updateUserInfo("warning", "Update failed");
-      });
-    },
-    serverDataSearch: function serverDataSearch(Url, body) {
       var _this4 = this;
 
-      axios.post(Url, body).then(function (res) {
+      axios.get(Url).then(function (res) {
         _this4.processBackendResponse(res.data);
 
         _this4.updateUserInfo("info", "Updating...");
       })["catch"](function (error) {
-        _this4.updateUserInfo("warning", "Update failed");
+        _this4.updateUserInfo("warning", "Getupdate failed");
+      });
+    },
+    serverDataSearch: function serverDataSearch(Url, body) {
+      var _this5 = this;
+
+      axios.post(Url, body).then(function (res) {
+        _this5.processBackendResponse(res.data);
+
+        _this5.updateUserInfo("info", "Updating...");
+      })["catch"](function (error) {
+        _this5.updateUserInfo("warning", "Searchupdate failed");
       });
     },
     updateUserInfo: function updateUserInfo(level, info) {
       var element = document.getElementById("userInfo");
+      element.classList.remove("alert");
+      element.classList.remove("alert-success");
+      element.classList.remove("alert-info");
+      element.classList.remove("alert-warning");
+      element.classList.remove("alert-danger");
       element.innerHTML = info;
 
       if (level === "success") {
@@ -2531,22 +2515,21 @@ var formatDate = function formatDate(value) {
     }
   },
   created: function created() {
-    var _this5 = this;
+    var _this6 = this;
 
     // reformat initial data
     this.processBackendResponse(this.workingData); // get list for dropdowns
 
     axios.get(this.optionsUrl).then(function (res) {
       // console.log(res)
-      _this5.dropdownListing = res.data;
+      _this6.dropdownListing = res.data;
     })["catch"](function (error) {
-      _this5.updateUserInfo("warn", "Failed to get optionsdata");
+      _this6.updateUserInfo("warn", "Failed to get optionsdata");
     });
   },
   mounted: function mounted() {
     if (this.isSearchAble) {
-      document.getElementById('input-search').addEventListener("keyup", this.actionSearch);
-      document.getElementById('btn-search').addEventListener("click", this.actionSearch);
+      document.getElementById('input-search').addEventListener("keyup", this.actionSearch); // document.getElementById('btn-search').addEventListener("click", this.actionSearch);
     }
   }
 });
@@ -69721,40 +69704,72 @@ var render = function() {
         _vm._v(" "),
         _vm.isSearchAble
           ? _c("div", { staticClass: "search-container" }, [
-              _c("form", [
-                _c("input", {
-                  attrs: {
-                    id: "input-search",
-                    type: "text",
-                    placeholder: "Search..",
-                    name: "q"
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.actionSearch($event)
+                    }
                   }
-                }),
-                _vm._v(" "),
-                _c("button", { attrs: { id: "btn-search", type: "submit" } }, [
-                  _c(
-                    "svg",
-                    {
-                      staticClass:
-                        "s-input-icon s-input-icon__search svg-icon iconSearch",
-                      attrs: {
-                        "aria-hidden": "true",
-                        width: "18",
-                        height: "18",
-                        viewBox: "0 0 18 18"
+                },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.q,
+                        expression: "form.q"
                       }
+                    ],
+                    attrs: {
+                      id: "input-search",
+                      type: "text",
+                      placeholder: "Search..",
+                      name: "q"
                     },
-                    [
-                      _c("path", {
-                        attrs: {
-                          d:
-                            "M18 16.5l-5.14-5.18h-.35a7 7 0 10-1.19 1.19v.35L16.5 18l1.5-1.5zM12 7A5 5 0 112 7a5 5 0 0110 0z"
+                    domProps: { value: _vm.form.q },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
                         }
-                      })
+                        _vm.$set(_vm.form, "q", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    { attrs: { id: "btn-search", type: "submit" } },
+                    [
+                      _c(
+                        "svg",
+                        {
+                          staticClass:
+                            "s-input-icon s-input-icon__search svg-icon iconSearch",
+                          attrs: {
+                            "aria-hidden": "true",
+                            width: "18",
+                            height: "18",
+                            viewBox: "0 0 18 18"
+                          }
+                        },
+                        [
+                          _c("path", {
+                            attrs: {
+                              d:
+                                "M18 16.5l-5.14-5.18h-.35a7 7 0 10-1.19 1.19v.35L16.5 18l1.5-1.5zM12 7A5 5 0 112 7a5 5 0 0110 0z"
+                            }
+                          })
+                        ]
+                      )
                     ]
                   )
-                ])
-              ])
+                ]
+              )
             ])
           : _vm._e()
       ]),

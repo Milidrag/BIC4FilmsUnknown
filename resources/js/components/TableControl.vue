@@ -35,21 +35,15 @@
                 <!--
                 <form action="search/actor" method="post">
                 -->
-                <form>
-                    <input id="input-search" type="text" placeholder="Search.." name="q">
+                <form @submit.prevent="actionSearch">
+                    <input id="input-search" type="text" placeholder="Search.." name="q" v-model="form.q">
                     <button id="btn-search" type="submit">
                     <svg aria-hidden="true" class="s-input-icon s-input-icon__search svg-icon iconSearch" width="18" height="18" viewBox="0 0 18 18"><path d="M18 16.5l-5.14-5.18h-.35a7 7 0 10-1.19 1.19v.35L16.5 18l1.5-1.5zM12 7A5 5 0 112 7a5 5 0 0110 0z"></path></svg>
                     </button>
                 </form>
             </div>
         </div>
-        <!--            @on-update="dtUpdateSort"-->
-        <!--            :is-loading="isLoading"-->
-        <!--            :css="datatableCss"-->
-        <!--            v-bind:identifier-of-entry="identifierOfEntry"-->
-        <!--            :sort-field="sortField"-->
-        <!--            :sort="sort"-->
-        <!--            :data="data || []"-->
+
         <datatable-light
             :header-fields="headerFields"
             :sort-field="'slug'"
@@ -84,6 +78,10 @@
         }
         return "";
     };
+
+    let formJs = new Form({
+        'q': '',
+    });
 
     export default {
         name: "TableControl",
@@ -207,25 +205,28 @@
             return {
                 workingData: this.initialData,
                 formData: {},
-                dropdownListing: []
+                dropdownListing: [],
+                form: formJs,
             };
         },
         methods: {
             actionSearch: function (event){
                 if ( this.isSearchAble === true ){
-                    var searchString = document.getElementById('input-search').value;
-                    if (typeof searchString !== 'undefined' && searchString === ""){
-                        if ( event.type === "keyup" && searchString === "" ){
-                            this.updateUserInfo("info","Removing search filter.");
+                    // var searchString = document.getElementById('input-search').value;
+                    var searchString = this.form.q;
+                    this.form
+                        .post(this.searchTableDataUrl)
+                        .then((response) => {
+                            this.processBackendResponse(response);
+                            this.form.successMessage = 'The query returned ' + this.workingData.length + ' results';
+                            this.updateUserInfo("info",this.form.successMessage);
+                            this.form.q = searchString;
+                            // this.dialogOkCallback();
+                        }).catch(  (error) => {
+                            this.updateUserInfo("alert",this.form.failMessage + " Reset filter...");
+                            this.form.q = searchString;
                             this.serverDataGet( this.getTableDataUrl );
-                        } if ( event.type === "click" ){
-                            this.updateUserInfo("warning","The search string must not be empty! Reseting Filter.");
-                            this.serverDataGet( this.getTableDataUrl );
-                        }
-                    } else {
-                        this.updateUserInfo("info","Updating...");
-                        this.serverDataSearch(this.searchTableDataUrl,this.searchSelector + searchString);
-                    }
+                        });
                 } else {
                     this.updateUserInfo("warning","Searching is not supported.");
                 }
@@ -307,7 +308,7 @@
                     this.processBackendResponse(res.data);
                     this.updateUserInfo("info", "Updating...");
                 }).catch(  (error) => {
-                    this.updateUserInfo("warning", "Update failed");
+                    this.updateUserInfo("warning", "Getupdate failed");
                 });
             },
             serverDataSearch: function (Url, body){
@@ -315,11 +316,16 @@
                     this.processBackendResponse(res.data);
                     this.updateUserInfo("info", "Updating...");
                 }).catch(  (error) => {
-                    this.updateUserInfo("warning", "Update failed");
+                    this.updateUserInfo("warning", "Searchupdate failed");
                 });
             },
             updateUserInfo: function (level, info){
                 var element = document.getElementById("userInfo");
+                    element.classList.remove("alert");
+                    element.classList.remove("alert-success");
+                    element.classList.remove("alert-info");
+                    element.classList.remove("alert-warning");
+                    element.classList.remove("alert-danger");
                 element.innerHTML = info;
                 if (level === "success" ){
                     element.classList.add("alert");
@@ -356,7 +362,7 @@
         mounted() {
             if (this.isSearchAble){
                 document.getElementById('input-search').addEventListener("keyup", this.actionSearch);
-                document.getElementById('btn-search').addEventListener("click", this.actionSearch);
+                // document.getElementById('btn-search').addEventListener("click", this.actionSearch);
             }
         }
     };
