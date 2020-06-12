@@ -4,7 +4,12 @@ class Errors {
     }
 
     has(field){
-        return this.errors.hasOwnProperty(field);
+        // bugfix sometimes this.erros is undefined
+        if ( typeof this.errors !== 'undefined' ){
+            return this.errors.hasOwnProperty(field);
+        } else {
+            return null;
+        }
     }
 
     any(){

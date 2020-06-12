@@ -2070,7 +2070,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_M
       });
     },
     updateUserInfo: function updateUserInfo(level, info) {
-      var element = document.getElementById("userInfo");
+      var element = document.getElementById("user-info");
       element.innerHTML = info;
 
       if (level === "success") {
@@ -2090,7 +2090,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_M
       element.classList.add("hidden");
       setTimeout(function () {
         // element.classList.remove("hidden");
-        element.className = 'userInfo';
+        element.className = 'user-info';
         element.innerHTML = '';
       }, 10000);
     }
@@ -2154,6 +2154,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2484,7 +2493,7 @@ var formJs = new Form({
       });
     },
     updateUserInfo: function updateUserInfo(level, info) {
-      var element = document.getElementById("userInfo");
+      var element = document.getElementById("user-info");
       element.classList.remove("alert");
       element.classList.remove("alert-success");
       element.classList.remove("alert-info");
@@ -2509,7 +2518,7 @@ var formJs = new Form({
       element.classList.add("hidden");
       setTimeout(function () {
         // element.classList.remove("hidden");
-        element.className = 'userInfo';
+        element.className = 'user-info';
         element.innerHTML = '';
       }, 10000);
     }
@@ -45488,7 +45497,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n#datatable-control .userInfo {\n    float: left;\n    padding: 6px;\n    font-size: 17px;\n}\n#datatable-control .hidden{\n    visibility: hidden;\n    opacity: 0;\n    transition: visibility 0s 10s, opacity 10s linear;\n}\n#datatable-control .search-container {\n    float: right;\n    box-sizing: border-box;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    background-position: 10px 10px;\n    background-repeat: no-repeat;\n    background-color: white;\n}\n#datatable-control .search-container input[type=text] {\n    padding: 6px;\n    font-size: 17px;\n    border: none;\n}\n#datatable-control .search-container button {\n    float: right;\n    padding: 6px 10px;\n    background: #ddd;\n    font-size: 17px;\n    border: none;\n    cursor: pointer;\n}\n#datatable-control .search-container button:hover {\n    background: #ccc;\n}\n@media screen and (max-width: 600px) {\n#datatable-control .search-container .search-container {\n        float: none;\n}\n#datatable-control a, #datatable-control .search-container input[type=text], #datatable-control .search-container button {\n        float: none;\n        display: block;\n        text-align: left;\n        width: 100%;\n        margin: 0;\n        padding: 14px;\n}\n#datatable-control .search-container input[type=text] {\n        border: 1px solid #ccc;\n}\n}\n", ""]);
+exports.push([module.i, "\n#datatable-control .user-info {\n    float: left;\n    padding: 6px;\n    font-size: 17px;\n}\n#datatable-control .hidden{\n    visibility: hidden;\n    opacity: 0;\n    transition: visibility 0s 10s, opacity 10s linear;\n}\n#datatable-control .search-container {\n    float: right;\n}\n#datatable-control .search-form {\n    box-sizing: border-box;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    background-position: 10px 10px;\n    background-repeat: no-repeat;\n    background-color: white;\n}\n#datatable-control .search-form input[type=text] {\n    padding: 6px;\n    font-size: 17px;\n    border: none;\n}\n#datatable-control .search-form button {\n    float: right;\n    padding: 6px 10px;\n    background: #ddd;\n    font-size: 17px;\n    border: none;\n    cursor: pointer;\n}\n#datatable-control .search-form button:hover {\n    background: #ccc;\n}\n@media screen and (max-width: 600px) {\n#datatable-control .search-form {\n        float: none;\n}\n#datatable-control a, #datatable-control .search-form input[type=text], #datatable-control .search-form button {\n        float: none;\n        display: block;\n        text-align: left;\n        width: 100%;\n        margin: 0;\n        padding: 14px;\n}\n#datatable-control .search-form input[type=text] {\n        border: 1px solid #ccc;\n}\n}\n", ""]);
 
 // exports
 
@@ -69598,7 +69607,7 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c("div", { staticClass: "userInfo", attrs: { id: "userInfo" } }),
+      _c("div", { staticClass: "user-info", attrs: { id: "user-info" } }),
       _vm._v(" "),
       _c("br"),
       _vm._v(" "),
@@ -69700,76 +69709,91 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("div", [
-        _c("div", { staticClass: "userInfo", attrs: { id: "userInfo" } }),
+        _c("div", { staticClass: "user-info", attrs: { id: "user-info" } }),
         _vm._v(" "),
         _vm.isSearchAble
-          ? _c("div", { staticClass: "search-container" }, [
-              _c(
-                "form",
-                {
-                  on: {
-                    submit: function($event) {
-                      $event.preventDefault()
-                      return _vm.actionSearch($event)
-                    }
-                  }
-                },
-                [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.form.q,
-                        expression: "form.q"
-                      }
-                    ],
-                    attrs: {
-                      id: "input-search",
-                      type: "text",
-                      placeholder: "Search..",
-                      name: "q"
-                    },
-                    domProps: { value: _vm.form.q },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.form, "q", $event.target.value)
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
+          ? _c("div", [
+              _c("div", { staticClass: "search-container" }, [
+                _c("div", { staticClass: "search-form" }, [
                   _c(
-                    "button",
-                    { attrs: { id: "btn-search", type: "submit" } },
+                    "form",
+                    {
+                      on: {
+                        submit: function($event) {
+                          $event.preventDefault()
+                          return _vm.actionSearch($event)
+                        }
+                      }
+                    },
                     [
-                      _c(
-                        "svg",
-                        {
-                          staticClass:
-                            "s-input-icon s-input-icon__search svg-icon iconSearch",
-                          attrs: {
-                            "aria-hidden": "true",
-                            width: "18",
-                            height: "18",
-                            viewBox: "0 0 18 18"
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.q,
+                            expression: "form.q"
                           }
+                        ],
+                        attrs: {
+                          id: "input-search",
+                          type: "text",
+                          placeholder: "Search..",
+                          name: "q"
                         },
-                        [
-                          _c("path", {
-                            attrs: {
-                              d:
-                                "M18 16.5l-5.14-5.18h-.35a7 7 0 10-1.19 1.19v.35L16.5 18l1.5-1.5zM12 7A5 5 0 112 7a5 5 0 0110 0z"
+                        domProps: { value: _vm.form.q },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
                             }
-                          })
+                            _vm.$set(_vm.form, "q", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        { attrs: { id: "btn-search", type: "submit" } },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticClass:
+                                "s-input-icon s-input-icon__search svg-icon iconSearch",
+                              attrs: {
+                                "aria-hidden": "true",
+                                width: "18",
+                                height: "18",
+                                viewBox: "0 0 18 18"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M18 16.5l-5.14-5.18h-.35a7 7 0 10-1.19 1.19v.35L16.5 18l1.5-1.5zM12 7A5 5 0 112 7a5 5 0 0110 0z"
+                                }
+                              })
+                            ]
+                          )
                         ]
                       )
                     ]
                   )
-                ]
-              )
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _vm.form.errors.has("q")
+                    ? _c("a", {
+                        staticClass: "help is-danger",
+                        domProps: {
+                          textContent: _vm._s(_vm.form.errors.get("q"))
+                        }
+                      })
+                    : _vm._e()
+                ])
+              ])
             ])
           : _vm._e()
       ]),

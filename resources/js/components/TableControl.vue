@@ -27,23 +27,32 @@
             :dialogCallback="dialogCallback">
         </dialog-modal>
 
-        <!-- Datatable -->
+
         <div>
-            <div class="userInfo" id="userInfo">
+            <div class="user-info" id="user-info">
             </div>
-            <div class="search-container" v-if="isSearchAble">
-                <!--
-                <form action="search/actor" method="post">
-                -->
-                <form @submit.prevent="actionSearch">
-                    <input id="input-search" type="text" placeholder="Search.." name="q" v-model="form.q">
-                    <button id="btn-search" type="submit">
-                    <svg aria-hidden="true" class="s-input-icon s-input-icon__search svg-icon iconSearch" width="18" height="18" viewBox="0 0 18 18"><path d="M18 16.5l-5.14-5.18h-.35a7 7 0 10-1.19 1.19v.35L16.5 18l1.5-1.5zM12 7A5 5 0 112 7a5 5 0 0110 0z"></path></svg>
-                    </button>
-                </form>
+            <div v-if="isSearchAble">
+                <div class="search-container">
+                    <div class="search-form">
+                        <form @submit.prevent="actionSearch">
+                            <input id="input-search" type="text" placeholder="Search.." name="q" v-model="form.q">
+                            <button id="btn-search" type="submit">
+                                <svg aria-hidden="true" class="s-input-icon s-input-icon__search svg-icon iconSearch"
+                                     width="18" height="18" viewBox="0 0 18 18">
+                                    <path d="M18 16.5l-5.14-5.18h-.35a7 7 0 10-1.19 1.19v.35L16.5 18l1.5-1.5zM12 7A5 5 0 112 7a5 5 0 0110 0z"></path>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                    <div>
+                        <a class="help is-danger" v-if="form.errors.has('q')"
+                           v-text="form.errors.get('q')"/>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <!-- Datatable -->
         <datatable-light
             :header-fields="headerFields"
             :sort-field="'slug'"
@@ -320,7 +329,7 @@
                 });
             },
             updateUserInfo: function (level, info){
-                var element = document.getElementById("userInfo");
+                var element = document.getElementById("user-info");
                     element.classList.remove("alert");
                     element.classList.remove("alert-success");
                     element.classList.remove("alert-info");
@@ -343,7 +352,7 @@
                 element.classList.add("hidden");
                 setTimeout(function(){
                     // element.classList.remove("hidden");
-                    element.className = 'userInfo';
+                    element.className = 'user-info';
                     element.innerHTML = '';
                 }, 10000);
             }
@@ -371,7 +380,7 @@
 
 <style>
 
-    #datatable-control .userInfo {
+    #datatable-control .user-info {
         float: left;
         padding: 6px;
         font-size: 17px;
@@ -385,6 +394,9 @@
 
     #datatable-control .search-container {
         float: right;
+    }
+
+    #datatable-control .search-form {
         box-sizing: border-box;
         border: 1px solid #ccc;
         border-radius: 4px;
@@ -393,13 +405,13 @@
         background-color: white;
     }
 
-    #datatable-control .search-container input[type=text] {
+    #datatable-control .search-form input[type=text] {
         padding: 6px;
         font-size: 17px;
         border: none;
     }
 
-    #datatable-control .search-container button {
+    #datatable-control .search-form button {
         float: right;
         padding: 6px 10px;
         background: #ddd;
@@ -408,15 +420,15 @@
         cursor: pointer;
     }
 
-    #datatable-control .search-container button:hover {
+    #datatable-control .search-form button:hover {
         background: #ccc;
     }
 
     @media screen and (max-width: 600px) {
-        #datatable-control .search-container .search-container {
+        #datatable-control .search-form {
             float: none;
         }
-        #datatable-control a, #datatable-control .search-container input[type=text], #datatable-control .search-container button {
+        #datatable-control a, #datatable-control .search-form input[type=text], #datatable-control .search-form button {
             float: none;
             display: block;
             text-align: left;
@@ -424,7 +436,7 @@
             margin: 0;
             padding: 14px;
         }
-        #datatable-control .search-container input[type=text] {
+        #datatable-control .search-form input[type=text] {
             border: 1px solid #ccc;
         }
     }

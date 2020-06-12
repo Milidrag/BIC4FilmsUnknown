@@ -10,7 +10,7 @@
 
         >
         </dialog-modal>
-        <div class="userInfo" id="userInfo">
+        <div class="user-info" id="user-info">
         </div>
         <br>
 
@@ -166,7 +166,7 @@
                 ));
             },
             updateUserInfo: function (level, info) {
-                var element = document.getElementById("userInfo");
+                var element = document.getElementById("user-info");
                 element.innerHTML = info;
                 if (level === "success") {
                     element.classList.add("alert");
@@ -184,7 +184,7 @@
                 element.classList.add("hidden");
                 setTimeout(function () {
                     // element.classList.remove("hidden");
-                    element.className = 'userInfo';
+                    element.className = 'user-info';
                     element.innerHTML = '';
                 }, 10000);
             }
