@@ -105,7 +105,7 @@
                         .then((response) => {
                             this.form.successMessage = 'Updated successfully'
                         }).catch((response) => {
-                            this.form.failMessage = 'Could not update'
+                            // this.form.failMessage = 'Could not update'
                         });
                 else
                     this.form

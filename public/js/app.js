@@ -2142,8 +2142,7 @@ var form = new Form({
 
       if (this.edit) this.form.put(this.url).then(function (response) {
         _this.form.successMessage = 'Updated successfully';
-      })["catch"](function (response) {
-        _this.form.failMessage = 'Could not update';
+      })["catch"](function (response) {// this.form.failMessage = 'Could not update'
       });else this.form.post(this.url).then(function (response) {
         _this.url = '/actor/' + response.slug;
         _this.form.id = response.id;
@@ -2620,8 +2619,7 @@ var form = new Form({
 
       if (this.edit) this.form.put(this.url).then(function (response) {
         _this.form.successMessage = 'Updated successfully';
-      })["catch"](function (response) {
-        _this.form.failMessage = 'Could not update';
+      })["catch"](function (response) {// this.form.failMessage = 'Could not update'
       });else this.form.post(this.url).then(function (response) {
         _this.url = '/film/' + response.slug;
         _this.form.film_id = response.film_id;
@@ -2631,8 +2629,7 @@ var form = new Form({
         _this.form.noReset = ['film_id', 'name', 'description'];
         _this.edit = true;
         window.history.pushState("", "", _this.url);
-      })["catch"](function (response) {
-        _this.form.failMessage = 'Could not create film';
+      })["catch"](function (response) {// this.form.failMessage = 'Could not create film'
       });
     }
   },
@@ -41284,7 +41281,12 @@ var Errors = /*#__PURE__*/function () {
   _createClass(Errors, [{
     key: "has",
     value: function has(field) {
-      return this.errors.hasOwnProperty(field);
+      // bugfix sometimes this.erros is undefined
+      if (typeof this.errors !== 'undefined') {
+        return this.errors.hasOwnProperty(field);
+      } else {
+        return null;
+      }
     }
   }, {
     key: "any",
