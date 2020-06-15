@@ -22,7 +22,13 @@ window.Vue = vue;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('query-message', require('./components/base/QueryMessage.vue').default);
-Vue.component('create', require('./components/Create.vue').default);
+Vue.component('create-actor', require('./components/CreateActor.vue').default);
+Vue.component('create-film', require('./components/CreateFilm.vue').default);
+Vue.component('actors', require('./components/ActorsComponent.vue').default);
+Vue.component('hero', require('./components/base/HeroComponent.vue').default);
+
+
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
