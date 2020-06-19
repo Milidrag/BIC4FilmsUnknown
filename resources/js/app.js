@@ -26,7 +26,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('query-message', require('./components/base/QueryMessage.vue').default);
 
 Vue.component('actors', require('./components/ActorsComponent.vue').default);
-Vue.component('actor', require('./components/ActorComponent.vue').default);
+// Vue.component('actor', require('./components/ActorComponent.vue').default);
 Vue.component('actor-form', require('./components/ActorFormComponent.vue').default);
 
 Vue.component('film', require('./components/FilmComponent.vue').default);
