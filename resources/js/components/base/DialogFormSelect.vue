@@ -7,56 +7,54 @@
     >
 
         <b-form-select v-if="isMandatory && isMultiple"
-            v-bind:id="fieldId"
-            v-model="fieldInput"
-            :options="fieldOptions"
-            :state="fieldState"
-            class="mb-3"
-            :value-field="fieldOptionsId"
-            :text-field="fieldOptionsDisplayName"
-            disabled-field="notEnabled"
-            multiple
-            required
+                       v-bind:id="fieldId"
+                       v-model="fieldInput"
+                       :options="fieldOptions"
+                       :state="fieldState"
+                       class="mb-3"
+                       :value-field="fieldOptionsId"
+                       :text-field="fieldOptionsDisplayName"
+                       disabled-field="notEnabled"
+                       multiple
+                       required
         ></b-form-select>
-        <b-form-select
-            v-else-if="isMandatory && !isMultiple"
-            v-bind:id="fieldId"
-            v-model="fieldInput"
-            :options="fieldOptions"
-            :state="fieldState"
-            class="mb-3"
-            :value-field="fieldOptionsId"
-            :text-field="fieldOptionsDisplayName"
-            disabled-field="notEnabled"
-            required
+        <b-form-select v-else-if="isMandatory && !isMultiple"
+                       v-bind:id="fieldId"
+                       v-model="fieldInput"
+                       :options="fieldOptions"
+                       :state="fieldState"
+                       class="mb-3"
+                       :value-field="fieldOptionsId"
+                       :text-field="fieldOptionsDisplayName"
+                       disabled-field="notEnabled"
+                       required
         ></b-form-select>
-        <b-form-select
-            v-else-if="!isMandatory && isMultiple"
-            v-bind:id="fieldId"
-            v-model="fieldInput"
-            :options="fieldOptions"
-            :state="fieldState"
-            class="mb-3"
-            :value-field="fieldOptionsId"
-            :text-field="fieldOptionsDisplayName"
-            disabled-field="notEnabled"
-            multiple
+        <b-form-select v-else-if="!isMandatory && isMultiple"
+                       v-bind:id="fieldId"
+                       v-model="fieldInput"
+                       :options="fieldOptions"
+                       :state="fieldState"
+                       class="mb-3"
+                       :value-field="fieldOptionsId"
+                       :text-field="fieldOptionsDisplayName"
+                       disabled-field="notEnabled"
+                       multiple
         ></b-form-select>
         <b-form-select v-else
-            v-bind:id="fieldId"
-            v-model="fieldInput"
-            :options="fieldOptions"
-            :state="fieldState"
-            class="mb-3"
-            :value-field="fieldOptionsId"
-            :text-field="fieldOptionsDisplayName"
-            disabled-field="notEnabled"
+                       v-bind:id="fieldId"
+                       v-model="fieldInput"
+                       :options="fieldOptions"
+                       :state="fieldState"
+                       class="mb-3"
+                       :value-field="fieldOptionsId"
+                       :text-field="fieldOptionsDisplayName"
+                       disabled-field="notEnabled"
         ></b-form-select>
     </b-form-group>
 </template>
 
 <script>
-    import { FormInputPlugin, FormGroupPlugin }  from "bootstrap-vue";
+    import {FormInputPlugin, FormGroupPlugin} from "bootstrap-vue";
     import Vue from "vue";
 
     Vue.use(FormInputPlugin);
@@ -64,7 +62,7 @@
 
     export default {
         name: "DialogFormSelect",
-        props : {
+        props: {
             fieldLabel: {
                 type: String,
                 required: true,
@@ -91,7 +89,7 @@
                 default: "Choose an option"
             },
             fieldData: {
-                type: [ Array, String ],
+                type: [Array, String],
                 required: false,
                 default: []
             },
@@ -125,15 +123,15 @@
             }
         },
         computed: {
-            fieldState(){
+            fieldState() {
                 // console.log( "dialog selected: computed field " + JSON.stringify (this.fieldInput) );
-                if (this.isMultiple === true && Array.isArray(this.fieldInput) ){
-                    if ( this.fieldInput.length === 0 ) {
+                if (this.isMultiple === true && Array.isArray(this.fieldInput)) {
+                    if (this.fieldInput.length === 0) {
                         return false;
                     } else {
                         return true;
                     }
-                //(this.isMultiple === false ){
+                    //(this.isMultiple === false ){
                 } else {
                     return typeof this.fieldOptions[this.fieldInput] !== 'undefined' ? true : false
                 }
@@ -141,7 +139,7 @@
         },
         watch: {
             fieldData: {
-                handler: function(newData, oldData){
+                handler: function (newData, oldData) {
                     // console.log("dialog selected: select fieldChanged " + JSON.stringify (newData) )
                     this.fieldInput = newData;
                 },

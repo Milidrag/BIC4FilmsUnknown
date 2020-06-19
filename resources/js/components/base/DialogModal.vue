@@ -45,7 +45,15 @@
 </template>
 
 <script>
-    import { ModalPlugin, FormPlugin, FormInputPlugin, FormSelectPlugin, FormGroupPlugin, ButtonPlugin }  from "bootstrap-vue";
+    import {
+        ModalPlugin,
+        FormPlugin,
+        FormInputPlugin,
+        FormSelectPlugin,
+        FormGroupPlugin,
+        ButtonPlugin
+    } from "bootstrap-vue";
+
     Vue.use(ModalPlugin);
     Vue.use(FormPlugin);
     Vue.use(FormInputPlugin);
@@ -57,7 +65,7 @@
 
     export default {
         name: "DialogModal",
-        props : {
+        props: {
             // unique id in the event the dialog must be accessed
             dialogId: {
                 type: String,
@@ -73,7 +81,7 @@
             dialogCallback: {
                 type: Function,
                 required: false,
-                default: function  (){
+                default: function () {
 
                 }
             },
@@ -81,7 +89,7 @@
             dialogOptions: {
                 type: Array,
                 required: false,
-                default: function  (){
+                default: function () {
                     return [];
                 }
             },
@@ -138,7 +146,7 @@
             formData: {
                 type: Object,
                 required: false,
-                default: function (){
+                default: function () {
                     return {};
                 }
             }
@@ -152,31 +160,29 @@
 
             }
         },
-        computed: {
-
-        },
+        computed: {},
         watch: {
             // runs when parent changes its data
             formData: {
-                handler: function(newData, oldData){
+                handler: function (newData, oldData) {
                     // console.log("Dialog Modal: new formdata " + JSON.stringify(newData) );
                     var i;
                     // console.log( "pre " + JSON.stringify(this.workingFormData) );
                     // push data to structure
                     for (var i = 0; i < this.workingFormData.length; i++) {
                         //console.log("working on fieldname: "+ this.workingFormData[i].fieldName);
-                        if ( typeof newData === 'undefined' || typeof newData[ this.workingFormData[i].fieldName ] === 'undefined' ){
+                        if (typeof newData === 'undefined' || typeof newData[this.workingFormData[i].fieldName] === 'undefined') {
                             // no change
                             //console.log("cannot set data, newData has no such array index");
                         } else {
-                            var dataField = newData[ this.workingFormData[i].fieldName ];
-                            if ( (this.workingFormData[i].fieldType === 'b-form-select') && (this.workingFormData[i].isMultiple === true ) ) {
-                                for ( var j in dataField ){
+                            var dataField = newData[this.workingFormData[i].fieldName];
+                            if ((this.workingFormData[i].fieldType === 'b-form-select') && (this.workingFormData[i].isMultiple === true)) {
+                                for (var j in dataField) {
                                     //todo move id selector to initialization
-                                    this.workingFormData[i]['fieldData'].push ( dataField[j]['id']);
+                                    this.workingFormData[i]['fieldData'].push(dataField[j]['id']);
                                 }
                             } else {
-                                this.workingFormData[i]['fieldData'] = newData[ this.workingFormData[i].fieldName ];
+                                this.workingFormData[i]['fieldData'] = newData[this.workingFormData[i].fieldName];
                             }
 
                         }
@@ -192,10 +198,10 @@
                 for (var i = 0; i < this.workingFormData.length; i++) {
                     var index = this.workingFormData[i].fieldName;
                     var data;
-                    var dataElement = document.getElementById( "form-input-" + index);
+                    var dataElement = document.getElementById("form-input-" + index);
                     // console.log(dataElement);
-                    if ( dataElement !== "undefined" && dataElement !== null ){
-                        if (this.workingFormData[i].isMultiple === true ){
+                    if (dataElement !== "undefined" && dataElement !== null) {
+                        if (this.workingFormData[i].isMultiple === true) {
                             data = this.getMultiSelectOptions(dataElement);
                         } else {
                             data = dataElement.value;
@@ -208,7 +214,7 @@
                 }
                 return submitData;
             },
-            getMultiSelectOptions( documentElement ) {
+            getMultiSelectOptions(documentElement) {
                 var selected = [];
                 for (var i = 0; i < documentElement.length; i++) {
                     if (documentElement.options[i].selected) selected.push(documentElement.options[i].value);
@@ -237,12 +243,12 @@
                 }
                 // Hide the modal manually
                 this.$nextTick(() => {
-                    this.$bvModal.hide( this.dialogId )
+                    this.$bvModal.hide(this.dialogId)
                 })
-                this.dialogCallback( this.collectFormData() );
+                this.dialogCallback(this.collectFormData());
             }
         },
-        created(){
+        created() {
             // console.log("dialog modal: formdata " + JSON.stringify(this.workingFormData));
         }
 

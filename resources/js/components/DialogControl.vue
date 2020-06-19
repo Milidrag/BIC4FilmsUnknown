@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import { FormInputPlugin, FormGroupPlugin }  from "bootstrap-vue";
+    import {FormInputPlugin, FormGroupPlugin} from "bootstrap-vue";
     import Vue from "vue";
 
     Vue.use(FormInputPlugin);
@@ -29,7 +29,7 @@
 
     export default {
         name: "DialogControl",
-        props : {
+        props: {
             dialogTitle: {
                 type: String,
                 required: false,
@@ -88,7 +88,7 @@
             formData: {
                 type: Object,
                 required: false,
-                default: function (){
+                default: function () {
                     return {};
                 }
             },
@@ -96,12 +96,12 @@
             optionsUrl: {
                 type: String,
                 required: false,
-                default: function(){
+                default: function () {
                     return null;
                 }
             },
             // [edit, create] whether it is a create or edit dialog
-            dialogMode:{
+            dialogMode: {
                 type: String,
                 required: true,
                 default: "create"
@@ -117,18 +117,18 @@
                 required: false
             },
         },
-        data: function(){
+        data: function () {
             return {
                 selectableOptions: [],
                 workingFormData: this.formData
             }
         },
         methods: {
-            buttonClick: function(){
+            buttonClick: function () {
                 /*
                 window.location.href = "http://localhost:8000/public/actor/"+slug+"/edit";
                                  */
-                this.$bvModal.show( this.dialogMode + "-form-dialog" );
+                this.$bvModal.show(this.dialogMode + "-form-dialog");
 
             },
             dialogCallback(formulaData) {
@@ -196,15 +196,15 @@
             }
 
         },
-        mounted(){
-            this.$bvModal.show( this.dialogMode + "-form-dialog" );
+        mounted() {
+            this.$bvModal.show(this.dialogMode + "-form-dialog");
         }
     }
 </script>
 
 <style scoped>
 
-    #dialog-control .hidden{
+    #dialog-control .hidden {
         visibility: hidden;
         opacity: 0;
         transition: visibility 0s 10s, opacity 10s linear;

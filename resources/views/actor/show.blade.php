@@ -7,7 +7,7 @@
             <h1>Show actor</h1>
 
             <table-control :table-title="'Film list of actor: {{ $actor['name'] }}'"
-                             :edit-form-definition='
+                           :edit-form-definition='
                                  [
                                     {
                                         fieldName: "slug",
@@ -51,7 +51,7 @@
                                     }
                                 ]
                                 '
-                             :header-fields='[
+                           :header-fields='[
                                 "__slot:checkboxes",
                                 {
                                 name: "slug",
@@ -86,19 +86,19 @@
                                 "__slot:actions:actionRemove",
                                 "__slot:actions:actionsEditInline"
                                 ]'
-                             :track-by="'slug'"
-                             :initial-data="{{ $film }}"
-                             :is-search-able="false"
-                             :search-table-data-url="'../../search/actor'"
-                             :sort="'yes'"
-                             :options-url="'../list/actor'"
-                             :get-table-data-url="'../list/film'"
-                             :entry-url="'../film/'"
-                             :identifier-of-entry="'slug'"
-                             :edit-success-action="'reload'"
+                           :track-by="'slug'"
+                           :initial-data="{{ $film }}"
+                           :is-search-able="false"
+                           :search-table-data-url="'../../search/actor'"
+                           :sort="'yes'"
+                           :options-url="'../list/actor'"
+                           :get-table-data-url="'../list/film'"
+                           :entry-url="'../film/'"
+                           :identifier-of-entry="'slug'"
+                           :edit-success-action="'reload'"
             ></table-control>
 
-{{--{{ $film }}--}}
+            {{--{{ $film }}--}}
 
 
         </div>

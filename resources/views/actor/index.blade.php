@@ -1,4 +1,3 @@
-
 <!-- <meta name="csrf-token" content="{{ csrf_token() }}">
 -->
 
@@ -18,7 +17,7 @@ https://github.com/Egorvah/vudal
     <section class="section">
         <div class="container">
             <table-control :table-title="'All Actors'"
-                             :edit-form-definition='
+                           :edit-form-definition='
                                  [
                                     {
                                         fieldName: "slug",
@@ -61,7 +60,7 @@ https://github.com/Egorvah/vudal
                                     }
                                 ]
                                 '
-                             :header-fields='[
+                           :header-fields='[
                                 // "__slot:checkboxes",
                                 {
                                 name: "slug",
@@ -101,16 +100,16 @@ https://github.com/Egorvah/vudal
                                 "__slot:actions:actionRemove",
                                 "__slot:actions:actionsEditInline"
                                 ]'
-                             :track-by="'slug'"
-                             :initial-data="{{ $actors }}"
-                             :is-search-able="false"
-                             :search-table-data-url="'../../search/actor'"
-                             :sort="'yes'"
-                             :options-url="'list/film'"
-                             :get-table-data-url="'list/actor'"
-                             :entry-url="'actor/'"
-                             :identifier-of-entry="'slug'"
-                             :edit-success-action="'update'"
+                           :track-by="'slug'"
+                           :initial-data="{{ $actors }}"
+                           :is-search-able="false"
+                           :search-table-data-url="'../../search/actor'"
+                           :sort="'yes'"
+                           :options-url="'list/film'"
+                           :get-table-data-url="'list/actor'"
+                           :entry-url="'actor/'"
+                           :identifier-of-entry="'slug'"
+                           :edit-success-action="'update'"
             ></table-control>
 
         </div>

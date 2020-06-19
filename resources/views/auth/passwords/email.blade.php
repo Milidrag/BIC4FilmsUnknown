@@ -22,10 +22,10 @@
                                 @csrf
                                 <div class="form-group">
                                     <label class="form-label" for="email">{{ __('E-Mail Address') }}</label>
-                                        <input name="email" id="email"
-                                               class="form-control @error('email') is-danger @enderror"
-                                               type="email"
-                                               value="{{ old('email') }}" autocomplete="email" autofocus>
+                                    <input name="email" id="email"
+                                           class="form-control @error('email') is-danger @enderror"
+                                           type="email"
+                                           value="{{ old('email') }}" autocomplete="email" autofocus>
                                     @error('email')
                                     <p class="help is-danger">{{ $message }}</p>
                                     @enderror

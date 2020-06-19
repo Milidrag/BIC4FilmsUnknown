@@ -50,12 +50,12 @@
                         }
                     ]
                     '
-                    :options-url="'../../list/film'"
-                    :create-url="'.'"
-                    :edit-url="'.'"
-                    v-bind:dialog-mode="'create'"
-{{--                v-bind:form-data=formData--}}
-{{--                :dialogCallback=''--}}
+                :options-url="'../../list/film'"
+                :create-url="'.'"
+                :edit-url="'.'"
+                v-bind:dialog-mode="'create'"
+                {{--                v-bind:form-data=formData--}}
+                {{--                :dialogCallback=''--}}
             >
             </dialog-control>
 

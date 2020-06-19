@@ -7,7 +7,7 @@
             <h1>Show film</h1>
 
             <table-control :table-title="'Actor list of film: {{ $film['name'] }}'"
-                             :edit-form-definition='
+                           :edit-form-definition='
                                  [
                                     {
                                         fieldName: "slug",
@@ -50,7 +50,7 @@
                                     }
                                 ]
                                 '
-                             :header-fields='[
+                           :header-fields='[
                                 "__slot:checkboxes",
                                 {
                                 name: "slug",
@@ -90,18 +90,17 @@
                                 "__slot:actions:actionRemove",
                                 "__slot:actions:actionsEditInline"
                                 ]'
-                             :track-by="'slug'"
-                             :initial-data="{{ $actor }}"
-                             :is-search-able="false"
-                             :search-table-data-url="'../../search/actor'"
-                             :sort="'yes'"
-                             :options-url="'../list/film'"
-                             :get-table-data-url="'../list/actor'"
-                             :entry-url="'../actor/'"
-                             :identifier-of-entry="'slug'"
-                             :edit-success-action="'reload'"
+                           :track-by="'slug'"
+                           :initial-data="{{ $actor }}"
+                           :is-search-able="false"
+                           :search-table-data-url="'../../search/actor'"
+                           :sort="'yes'"
+                           :options-url="'../list/film'"
+                           :get-table-data-url="'../list/actor'"
+                           :entry-url="'../actor/'"
+                           :identifier-of-entry="'slug'"
+                           :edit-success-action="'reload'"
             ></table-control>
-
 
 
         </div>

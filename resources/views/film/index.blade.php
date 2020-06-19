@@ -6,7 +6,7 @@
         <div class="container">
             <!-- here's a table showing all films in database -->
             <table-control :table-title="'All Films'"
-                             :edit-form-definition='
+                           :edit-form-definition='
                                  [
                                     {
                                         fieldName: "slug",
@@ -49,7 +49,7 @@
                                     }
                                 ]
                                 '
-                             :header-fields='[
+                           :header-fields='[
                                 // "__slot:checkboxes",
                                 {
                                 name: "slug",
@@ -90,16 +90,16 @@
                                 "__slot:actions:actionsEditInline"
                                 ]'
 
-                             :track-by="'slug'"
-                             :initial-data="{{ $films }}"
-                             :is-search-able="false"
-                             :search-table-data-url="'../../search/doesnotexist'"
-                             :sort="'yes'"
-                             :options-url="'list/actor'"
-                             :get-table-data-url="'list/film'"
-                             :entry-url="'film/'"
-                             :identifier-of-entry="'slug'"
-                             :edit-success-action="'update'"
+                           :track-by="'slug'"
+                           :initial-data="{{ $films }}"
+                           :is-search-able="false"
+                           :search-table-data-url="'../../search/doesnotexist'"
+                           :sort="'yes'"
+                           :options-url="'list/actor'"
+                           :get-table-data-url="'list/film'"
+                           :entry-url="'film/'"
+                           :identifier-of-entry="'slug'"
+                           :edit-success-action="'update'"
 
             ></table-control>
 

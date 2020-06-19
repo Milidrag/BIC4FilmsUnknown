@@ -12,7 +12,6 @@
 -->
 
 
-
 <template>
     <div id="datatable-control">
         <h3 class="title">{{ tableTitle }}</h3>
@@ -64,14 +63,15 @@
             :dtButtonControl="dtButtonControl"
         >
         </datatable-light>
-       <br>
-   </div>
+        <br>
+    </div>
 </template>
 
 
 <script>
     // This imports <b-modal> as well as the v-b-modal directive as a plugin:
-    import { ButtonPlugin }  from "bootstrap-vue";
+    import {ButtonPlugin} from "bootstrap-vue";
+
     Vue.use(ButtonPlugin);
 
     import Vue from 'vue';
@@ -94,7 +94,7 @@
 
     export default {
         name: "TableControl",
-        props : {
+        props: {
             tableTitle: {
                 type: String,
                 required: false,
@@ -180,37 +180,37 @@
                 default: "list/film"
             },
             // url that fetches the complete dataset
-            getTableDataUrl:{
+            getTableDataUrl: {
                 type: String,
                 required: true,
                 default: "list/actor"
             },
             // url to use to update / delete a table entry
-            entryUrl:{
+            entryUrl: {
                 type: String,
                 required: true,
                 default: "actor/"
             },
             // table row contains multiple attributes which of them should be used to update an entry e.g. /actor/{slug}
-            identifierOfEntry:{
+            identifierOfEntry: {
                 type: String,
                 required: true,
                 default: "slug"
             },
             // url where to post queries
-            searchTableDataUrl:{
-                type:String,
+            searchTableDataUrl: {
+                type: String,
                 required: false,
                 default: "search/actor"
             },
             // is appended to the body when posting to searchUrl
-            searchSelector:{
+            searchSelector: {
                 type: String,
                 required: false,
                 default: "q="
             }
         },
-        data: function() {
+        data: function () {
             return {
                 workingData: this.initialData,
                 formData: {},
@@ -219,8 +219,8 @@
             };
         },
         methods: {
-            actionSearch: function (event){
-                if ( this.isSearchAble === true ){
+            actionSearch: function (event) {
+                if (this.isSearchAble === true) {
                     // var searchString = document.getElementById('input-search').value;
                     var searchString = this.form.q;
                     this.form
@@ -228,121 +228,121 @@
                         .then((response) => {
                             this.processBackendResponse(response);
                             this.form.successMessage = 'The query returned ' + this.workingData.length + ' results';
-                            this.updateUserInfo("info",this.form.successMessage);
+                            this.updateUserInfo("info", this.form.successMessage);
                             this.form.q = searchString;
                             // this.dialogOkCallback();
-                        }).catch(  (error) => {
-                            this.updateUserInfo("alert",this.form.failMessage + " Reset filter...");
-                            this.form.q = searchString;
-                            this.serverDataGet( this.getTableDataUrl );
-                        });
+                        }).catch((error) => {
+                        this.updateUserInfo("alert", this.form.failMessage + " Reset filter...");
+                        this.form.q = searchString;
+                        this.serverDataGet(this.getTableDataUrl);
+                    });
                 } else {
-                    this.updateUserInfo("warning","Searching is not supported.");
+                    this.updateUserInfo("warning", "Searching is not supported.");
                 }
 
             },
-            dtButtonControl: function(event, props){
-                if (event.target.id === 'edit-btn-seperate'){
-                    window.location.href = this.entryUrl + props.rowData[ this.identifierOfEntry ] + '/edit';
-                } else if (event.target.id === 'edit-btn'){
+            dtButtonControl: function (event, props) {
+                if (event.target.id === 'edit-btn-seperate') {
+                    window.location.href = this.entryUrl + props.rowData[this.identifierOfEntry] + '/edit';
+                } else if (event.target.id === 'edit-btn') {
                     this.dtEditClick(props);
-                } else if (event.target.id === 'remove-btn'){
+                } else if (event.target.id === 'remove-btn') {
                     this.dtRemoveClick(props);
-                } else if (event.target.id === 'details-btn'){
+                } else if (event.target.id === 'details-btn') {
                     // href would be better but it introduces more coupling with the table
-                    window.location.href = this.entryUrl + props.rowData[ this.identifierOfEntry ];
+                    window.location.href = this.entryUrl + props.rowData[this.identifierOfEntry];
                 }
             },
-            dtEditClick: function(props){
+            dtEditClick: function (props) {
                 this.formData = {};
                 this.formData = props.rowData;
-                this.$bvModal.show( "edit-form-dialog" );
+                this.$bvModal.show("edit-form-dialog");
             },
-            dtRemoveClick: function(props){
-                axios.delete(this.entryUrl + props['rowData'][this.identifierOfEntry] )
+            dtRemoveClick: function (props) {
+                axios.delete(this.entryUrl + props['rowData'][this.identifierOfEntry])
                     .then(response => {
-                        const deletedItem = this.workingData.find( (entry) => {
+                        const deletedItem = this.workingData.find((entry) => {
                             // find the deleted element
                             return entry.slug === props['rowData'][this.identifierOfEntry];
-                        } )
+                        })
                         if (~deletedItem) {// if the item exists in array
-                            this.workingData.splice(this.workingData.indexOf(deletedItem), 1 ) //delete the row
+                            this.workingData.splice(this.workingData.indexOf(deletedItem), 1) //delete the row
                             // this.updateTableView(); // update the view
                         }
-                    }).catch(  (error) => {
-                        this.dialogFailedCallback();
+                    }).catch((error) => {
+                    this.dialogFailedCallback();
                 });
             },
-            dialogCallback( formulaData ) {
+            dialogCallback(formulaData) {
                 // console.log("running " + JSON.stringify(formulaData) );
-                axios.put(this.entryUrl + formulaData[this.identifierOfEntry] , formulaData )
-                    .then( (response) => {
+                axios.put(this.entryUrl + formulaData[this.identifierOfEntry], formulaData)
+                    .then((response) => {
                         this.dialogOkCallback()
-                    }).catch(  (error) => {
-                        this.dialogFailedCallback();
+                    }).catch((error) => {
+                    this.dialogFailedCallback();
                 });
             },
             dialogOkCallback() {
 
-                if (this.editSuccessAction === 'reload'){
+                if (this.editSuccessAction === 'reload') {
                     this.updateUserInfo("info", "record has been updated. reloading page");
                     window.location.href = '';
-                } else if ( this.editSuccessAction === 'update'){
+                } else if (this.editSuccessAction === 'update') {
                     this.updateUserInfo("info", "record has been updated.");
-                    this.serverDataGet( this.getTableDataUrl );
+                    this.serverDataGet(this.getTableDataUrl);
                 }
             },
             dialogFailedCallback() {
                 this.updateUserInfo("warning", "cannot update record");
             },
-            processBackendResponse: function (response){
+            processBackendResponse: function (response) {
                 //document.getElementById("container1").insertAdjacentHTML('beforeend', '<div>'+ JSON.stringify(response) + '</div>');
                 var newData = [];
-                for (var key in response){
+                for (var key in response) {
                     // dynamically change date when isDate is present
-                    for (var hIndex in this.headerFields){
-                        if (typeof this.headerFields[hIndex].isDate !== 'undefined' && this.headerFields[hIndex].isDate == true){
+                    for (var hIndex in this.headerFields) {
+                        if (typeof this.headerFields[hIndex].isDate !== 'undefined' && this.headerFields[hIndex].isDate == true) {
                             var headerName = this.headerFields[hIndex]["name"];
-                            response[key][headerName] = formatDate(response[key][headerName] );
+                            response[key][headerName] = formatDate(response[key][headerName]);
                         }
                     }
-                    newData.push( response[key] );
+                    newData.push(response[key]);
                 }
                 // needed to rerender the page
                 this.workingData = newData;
                 // this.updateTableView();
             },
-            serverDataGet: function (Url){
-                axios.get(Url).then( (res) => {
+            serverDataGet: function (Url) {
+                axios.get(Url).then((res) => {
                     this.processBackendResponse(res.data);
                     this.updateUserInfo("info", "Updating...");
-                }).catch(  (error) => {
+                }).catch((error) => {
                     this.updateUserInfo("warning", "Getupdate failed");
                 });
             },
-            serverDataSearch: function (Url, body){
-                axios.post(Url, body).then( (res) => {
+            serverDataSearch: function (Url, body) {
+                axios.post(Url, body).then((res) => {
                     this.processBackendResponse(res.data);
                     this.updateUserInfo("info", "Updating...");
-                }).catch(  (error) => {
+                }).catch((error) => {
                     this.updateUserInfo("warning", "Searchupdate failed");
                 });
             },
-            updateUserInfo: function (level, info){
+            updateUserInfo: function (level, info) {
                 var element = document.getElementById("user-info");
-                    element.classList.remove("alert");
-                    element.classList.remove("alert-success");
-                    element.classList.remove("alert-info");
-                    element.classList.remove("alert-warning");
-                    element.classList.remove("alert-danger");
+                element.classList.remove("alert");
+                element.classList.remove("alert-success");
+                element.classList.remove("alert-info");
+                element.classList.remove("alert-warning");
+                element.classList.remove("alert-danger");
                 element.innerHTML = info;
-                if (level === "success" ){
+                if (level === "success") {
                     element.classList.add("alert");
                     element.classList.add("alert-success");
-                } else if (level === "info" ){
+                } else if (level === "info") {
                     element.classList.add("alert");
                     element.classList.add("alert-info");
-                } else if ( level === "warning" ){
+                } else if (level === "warning") {
                     element.classList.add("alert");
                     element.classList.add("alert-warning");
                 } else {
@@ -350,7 +350,7 @@
                     element.classList.add("alert-danger");
                 }
                 element.classList.add("hidden");
-                setTimeout(function(){
+                setTimeout(function () {
                     // element.classList.remove("hidden");
                     element.className = 'user-info';
                     element.innerHTML = '';
@@ -361,15 +361,15 @@
             // reformat initial data
             this.processBackendResponse(this.workingData);
             // get list for dropdowns
-            axios.get( this.optionsUrl ).then( (res) => {
+            axios.get(this.optionsUrl).then((res) => {
                 // console.log(res)
                 this.dropdownListing = res.data
-            }).catch(  (error) => {
+            }).catch((error) => {
                 this.updateUserInfo("warn", "Failed to get optionsdata");
             });
         },
         mounted() {
-            if (this.isSearchAble){
+            if (this.isSearchAble) {
                 document.getElementById('input-search').addEventListener("keyup", this.actionSearch);
                 // document.getElementById('btn-search').addEventListener("click", this.actionSearch);
             }
@@ -386,7 +386,7 @@
         font-size: 17px;
     }
 
-    #datatable-control .hidden{
+    #datatable-control .hidden {
         visibility: hidden;
         opacity: 0;
         transition: visibility 0s 10s, opacity 10s linear;
@@ -428,6 +428,7 @@
         #datatable-control .search-form {
             float: none;
         }
+
         #datatable-control a, #datatable-control .search-form input[type=text], #datatable-control .search-form button {
             float: none;
             display: block;
@@ -436,6 +437,7 @@
             margin: 0;
             padding: 14px;
         }
+
         #datatable-control .search-form input[type=text] {
             border: 1px solid #ccc;
         }

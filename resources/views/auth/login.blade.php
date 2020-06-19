@@ -13,7 +13,7 @@
                             @if (session('status'))
                                 <article class="message is-success">
                                     <div class="message-body">
-                                       {{ session('status') }}
+                                        {{ session('status') }}
                                     </div>
                                 </article>
                             @endif
@@ -23,9 +23,9 @@
                                 <div class="form-group">
                                     <label class="form-label" for="email">Email</label>
                                     <input id="email" title="email" name="email" type="email" required
-                                               autocomplete="email" autofocus
-                                               class="form-control @error('email') is-danger @enderror"
-                                               value="{{old('email')}}">
+                                           autocomplete="email" autofocus
+                                           class="form-control @error('email') is-danger @enderror"
+                                           value="{{old('email')}}">
                                     @error('email')
                                     <p class="help is-danger">Email is not valid</p>
                                     @enderror
@@ -43,7 +43,8 @@
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="remember"
                                             {{ old('remember') ? 'checked' : '' }}>
-                                        <label class="custom-control-label" for="remember"> {{ __('Remember Me') }} </label>
+                                        <label class="custom-control-label"
+                                               for="remember"> {{ __('Remember Me') }} </label>
                                     </div>
                                 </div>
                                 <div class="form-group">

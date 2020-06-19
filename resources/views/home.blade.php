@@ -10,7 +10,8 @@
                     </header>
                     <div class="card-body">
                         @if (session('status'))
-                            <query-message :success="true" :fail="false" message="{{ session('status') }}"></query-message>
+                            <query-message :success="true" :fail="false"
+                                           message="{{ session('status') }}"></query-message>
                         @endif
                         <p>Welcome <strong>{{ auth()->user()->name }}</strong></p>
                     </div>

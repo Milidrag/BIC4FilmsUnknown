@@ -21,22 +21,23 @@
                 <!--
                 <b-button id="edit-btn" variant="primary" @click="$bvModal.show('bv-modal-example')">Edit</b-button>
                 -->
-                <b-button id="edit-btn" variant="primary"  @click="dtButtonControl($event, props)">Edit</b-button>
+                <b-button id="edit-btn" variant="primary" @click="dtButtonControl($event, props)">Edit</b-button>
             </template>
 
             <template v-slot:actionEditSeperat="props">
-    <!--            <b-button id="edit-btn-seperate" variant="primary" v-bind:href="entryUrl + ''+ props.rowData[identifierOfEntry] + '/edit'" >Edit extra</b-button>-->
-                <b-button id="edit-btn-seperate" variant="primary" @click="dtButtonControl($event, props)">Edit extra</b-button>
+                <!--            <b-button id="edit-btn-seperate" variant="primary" v-bind:href="entryUrl + ''+ props.rowData[identifierOfEntry] + '/edit'" >Edit extra</b-button>-->
+                <b-button id="edit-btn-seperate" variant="primary" @click="dtButtonControl($event, props)">Edit extra
+                </b-button>
             </template>
 
             <!-- Action remove slot -->
             <template v-slot:actionRemove="props">
-                <b-button id="remove-btn" variant="danger"  @click="dtButtonControl($event, props)">Remove</b-button>
+                <b-button id="remove-btn" variant="danger" @click="dtButtonControl($event, props)">Remove</b-button>
             </template>
             s
             <!-- Action "Show Details" slot -->
             <template v-slot:actionShowDetails="props">
-    <!--            <b-button id="details-btn" v-bindef:hr="entryUrl + ''+ props.rowData[identifierOfEntry]" variant="primary" @click="dtButtonControl($event, props)">Details</b-button>-->
+                <!--            <b-button id="details-btn" v-bindef:hr="entryUrl + ''+ props.rowData[identifierOfEntry]" variant="primary" @click="dtButtonControl($event, props)">Details</b-button>-->
                 <b-button id="details-btn" variant="primary" @click="dtButtonControl($event, props)">Details</b-button>
             </template>
 
@@ -95,7 +96,7 @@
 
 <script>
     import Spinner from "vue-simple-spinner";
-    import { DataTable, ItemsPerPageDropdown, Pagination } from "v-datatable-light";
+    import {DataTable, ItemsPerPageDropdown, Pagination} from "v-datatable-light";
     import orderBy from "lodash.orderby";
 
     var workingData = [];
@@ -108,7 +109,7 @@
             Pagination,
             Spinner
         },
-        props : {
+        props: {
             tableTitle: {
                 type: String,
                 required: false,
@@ -134,7 +135,7 @@
                 default: "none"
             },
             // url to use to update / delete a table entry
-            entryUrl:{
+            entryUrl: {
                 type: String,
                 required: true,
                 default: "actor/"
@@ -149,12 +150,12 @@
             dtButtonControl: {
                 type: Function,
                 required: false,
-                default: function  (){
+                default: function () {
 
                 }
             },
         },
-        data: function() {
+        data: function () {
             workingData = this.initialData;
 
             return {
@@ -192,13 +193,11 @@
             }
         },
 
-        computed: {
-
-        },
+        computed: {},
         watch: {
             // runs when parent changes its data
             initialData: {
-                handler: function(newData, oldData){
+                handler: function (newData, oldData) {
                     this.isLoading = true;
                     workingData = newData;
                     this.updateTableView();
@@ -255,18 +254,18 @@
                 const end = this.currentPage * this.itemsPerPage;
                 this.data = sortedData.slice(start, end);
             },
-            updateCurrentPage: function(currentPage) {
+            updateCurrentPage: function (currentPage) {
                 this.currentPage = currentPage;
             },
-            updateItemsPerPage: function(itemsPerPage) {
+            updateItemsPerPage: function (itemsPerPage) {
                 this.itemsPerPage = parseInt(itemsPerPage);
                 if (this.itemsPerPage >= workingData.length) {
                     this.data = workingData;
                 } else {
-                    this.data = workingData.slice(0, this.itemsPerPage );
+                    this.data = workingData.slice(0, this.itemsPerPage);
                 }
             },
-            updateTableView: function(){
+            updateTableView: function () {
                 this.totalItems = workingData.length;
                 this.updateItemsPerPage(this.itemsPerPage);
                 this.changePage(this.currentPage);
@@ -321,6 +320,7 @@
     .v-datatable-light .header-item.no-sortable {
         cursor: default;
     }
+
     .v-datatable-light .header-item.no-sortable:hover {
         color: #00d1b2;
     }
@@ -378,6 +378,7 @@
     .v-datatable-light .arrow.down:hover {
         border-top: 8px solid #ed9b19;
     }
+
     /* example colorization of cells / rows / columns
     #datatable-light .v-datatable-light .row-1 .column-2 {
         color: green;
@@ -390,6 +391,7 @@
         justify-content: space-between;
         width: 600px;
     }
+
     /* End Datatable CSS */
 
     /* Pagination CSS */
@@ -432,6 +434,7 @@
         box-shadow: none;
         opacity: 0.65;
     }
+
     /* END PAGINATION CSS */
 
     /* ITEMS PER PAGE DROPDOWN CSS */
@@ -447,10 +450,8 @@
     .item-per-page-dropdown:hover {
         cursor: pointer;
     }
+
     /* END ITEMS PER PAGE DROPDOWN CSS */
-
-
-
 
 
 </style>
