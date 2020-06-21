@@ -5,30 +5,28 @@
             <tr class="title is-6">
                 <table-element element-type="th">Name</table-element>
                 <table-element element-type="th">Description</table-element>
-                <table-element element-type="th" text-class="has-text-centered">Films</table-element>
                 <table-element element-type="th">Created</table-element>
                 <table-element element-type="th">Modified</table-element>
-                <table-element element-type="th"></table-element>
+                <table-element element-type="th">Edit</table-element>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="actor in actors" :key="actor.id">
+            <tr v-for="film in films" :key="film.id">
                 <table-element element-type="td">
-                    <a :href="'/actor/' + actor.slug"
-                       :title="actor.name" v-text="actor.name"/>
+                    <a :href="'/film/' + film.slug"
+                       :title="film.name" v-text="film.name"/>
                 </table-element>
-                <table-element element-type="td">{{ actor.description }}</table-element>
-                <table-element element-type="td" text-class="has-text-centered">{{ actor.film.name }}</table-element>
-                <table-element element-type="td">{{ actor.created_at | moment('DD.MM.YYYY') }}</table-element>
-                <table-element element-type="td">{{ actor.updated_at | moment('DD.MM.YYYY') }}</table-element>
+                <table-element element-type="td">{{ film.description }}</table-element>
+                <table-element element-type="td">{{ film.created_at | moment('DD.MM.YYYY') }}</table-element>
+                <table-element element-type="td">{{ film.updated_at | moment('DD.MM.YYYY') }}</table-element>
                 <table-element element-type="td">
                     <p class="buttons">
-                        <a :href="'/actor/' + actor.slug + '/edit'" class="button is-info is-outlined is-small">
+                        <a :href="'/film/' + film.slug + '/edit'" class="button is-info is-outlined is-small">
                             <span class="icon">
                               <i class="fa fa-edit"></i>
                             </span>
                         </a>
-                        <button v-if="!actor.film.length" @click="openDeleteModal(actor)" class="button is-danger is-outlined is-small">
+                        <button @click="openDeleteModal(film)" class="button is-danger is-outlined is-small">
                             <span class="icon">
                               <i class="fa fa-remove"></i>
                             </span>
@@ -43,9 +41,9 @@
 
 <script>
     export default {
-        name: "ActorListComponent",
+        name: "FilmListComponent",
         props: {
-            actors: {
+            films: {
                 required: true
             }
         },
@@ -53,13 +51,13 @@
             TableElement
         },
         methods: {
-            openDeleteModal(actor) {
+            openDeleteModal(film) {
                 this.$emit('open-modal',
                     {
-                        id: actor.id,
-                        title: actor.name,
-                        content: 'Do you really want to delete this actor?',
-                        url: '/actor/' + actor.slug
+                        id: film.id,
+                        title: film.name,
+                        content: 'Do you really want to delete this film?',
+                        url: '/film/' + film.slug
                     });
             }
         }

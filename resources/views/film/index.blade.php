@@ -4,7 +4,7 @@
 @section('content')
     <section class="section">
         <div class="container">
-            <h1>List film</h1>
+            <films :all-films="{{$films}}"></films>
         </div>
     </section>
 @endsection

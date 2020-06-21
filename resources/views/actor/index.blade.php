@@ -3,8 +3,6 @@
 
 @section('content')
     <section class="section">
-        <div class="container">
-            <actors :all-actors="{{ $actor->load('film') }}" ></actors>
-        </div>
+            <actors :all-actors="{{$actors}}"></actors>
     </section>
 @endsection

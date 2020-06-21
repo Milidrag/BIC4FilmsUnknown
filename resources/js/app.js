@@ -26,6 +26,9 @@ Vue.component('create-actor', require('./components/CreateActor.vue').default);
 Vue.component('create-film', require('./components/CreateFilm.vue').default);
 Vue.component('actors', require('./components/ActorsComponent.vue').default);
 Vue.component('hero', require('./components/base/HeroComponent.vue').default);
+Vue.component('films', require('./components/FilmsComponent.vue').default);
+Vue.component('search-actor', require('./components/SearchActorComponent').default);
+
 
 
 

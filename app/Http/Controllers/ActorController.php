@@ -24,9 +24,9 @@ class ActorController extends Controller
      */
     public function index()
     {
-        $actor = Actor::all()->load('film');
+        $actors = Actor::all()->load('film');
 
-        return view('actor.index', compact('actor'));
+        return view('actor.index', compact('actors'));
     }
 
     /**
@@ -112,6 +112,7 @@ class ActorController extends Controller
     public function search()
     {
         return view('actor.search');
+
     }
 
 
@@ -123,19 +124,21 @@ class ActorController extends Controller
      */
     public function query(Request $request)
     {
-        $search = $request->validate([
-            'q' => 'required'
-        ])['q'];
+
+        $search = $request->input('name');
 
         return Actor::query()
             ->where('name', 'LIKE', "%{$search}%")
-            ->orWhere('description', 'LIKE', "%{$search}%")
+          /*  ->orWhere('description', 'LIKE', "%{$search}%")
             ->orWhereHas('film', function ($q) use ($search){
                 $q  ->where('name', 'LIKE', "%{$search}%")
                     ->orWhere('description', 'LIKE', "%{$search}%");
             })
-            ->with('film')
+            ->with('film')*/
             ->get();
+
+
+
     }
 
     /**
