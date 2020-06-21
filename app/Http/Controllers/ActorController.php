@@ -125,12 +125,13 @@ class ActorController extends Controller
     public function query(Request $request)
     {
 
+      //  $search = $request->input('name');
         $search = $request->input('name');
 
         return Actor::query()
-            ->where('name', 'LIKE', "%{$search}%")
-          /*  ->orWhere('description', 'LIKE', "%{$search}%")
-            ->orWhereHas('film', function ($q) use ($search){
+            ->where('name', 'LIKE', "%$search%")
+            ->orWhere('description', 'LIKE', "%{$search}%")
+           /* ->orWhereHas('film', function ($q) use ($search){
                 $q  ->where('name', 'LIKE', "%{$search}%")
                     ->orWhere('description', 'LIKE', "%{$search}%");
             })

@@ -2568,8 +2568,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     submit: function submit() {
       axios.post('actor/', {
-        name: 'Brown, Hickle and Botsford',
-        film: ''
+        name: 'Brown, Hickle and Botsford'
       }).then(function () {
         console.log("Success. . . . ");
         alert("Successfully Driver Added");

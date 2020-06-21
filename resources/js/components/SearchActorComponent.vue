@@ -33,8 +33,7 @@
         methods: {
             submit() {
                 axios.post('actor/', {
-                    name: 'Brown, Hickle and Botsford',
-                    film: ''
+                    name: 'Brown, Hickle and Botsford'
                 })
                     .then(() => {
                         console.log("Success. . . . ")
