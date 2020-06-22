@@ -3,6 +3,6 @@
 
 @section('content')
     <section class="section">
-        <edit-actor :current-actor="{{$actor}}"></edit-actor>
+        <create-actor :is-editable="true" :current-actor="{{$actor}}"></create-actor>
     </section>
 @endsection

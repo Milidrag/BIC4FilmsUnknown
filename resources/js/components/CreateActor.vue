@@ -63,6 +63,7 @@
 
 <script>
     let form = new Form({
+        'title' : '',
         'id': '',
         'name': '',
         'description': '',
@@ -133,6 +134,7 @@
                 this.form.name = this.currentActor.name;
                 this.form.description = this.currentActor.description;
                 this.form.film_id = this.currentActor.film_id;
+                this.form.title = 'edit actor'
 
                 this.form.noReset = ['actors_id', 'name', 'description', 'film_id'];
             } else {
