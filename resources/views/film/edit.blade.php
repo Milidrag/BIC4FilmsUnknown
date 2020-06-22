@@ -4,7 +4,7 @@
 @section('content')
     <section class="section">
         <div class="container">
-            <h1>Edit film</h1>
+            <create-film :is-editable="true" :current-film="{{$film}}"></create-film>
         </div>
     </section>
 @endsection

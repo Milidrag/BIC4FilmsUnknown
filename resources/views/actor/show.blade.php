@@ -3,8 +3,6 @@
 
 @section('content')
     <section class="section">
-        <div class="container">
-            <h1>Show actor</h1>
-        </div>
+        <show :current-object="{{$actor}}"></show>
     </section>
 @endsection

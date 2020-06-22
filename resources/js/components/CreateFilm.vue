@@ -105,7 +105,7 @@
                 this.form.film_id = this.currentFilm.id;
                 this.form.name = this.currentFilm.name;
                 this.form.description = this.currentFilm.description;
-
+                this.form.title = 'edit film'
 
             } else {
                 this.url = '/film';

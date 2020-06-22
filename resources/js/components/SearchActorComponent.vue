@@ -6,7 +6,7 @@
 
 
             <div class="field">
-                <label class="label" for="name">Name</label>
+                <label class="label" for="name">Name of the actor or part of the specific description</label>
                 <div class="control">
                     <input id="name" v-model="name" class="input"></input>
                 </div>
