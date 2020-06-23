@@ -3,23 +3,19 @@
         <table class="table is-fullwidth is-hoverable">
             <thead>
             <tr class="title is-6">
-                <table-element element-type="th">Name</table-element>
-                <table-element element-type="th">Description</table-element>
-                <table-element element-type="th">Created</table-element>
-                <table-element element-type="th">Modified</table-element>
-                <table-element element-type="th">Edit</table-element>
+                <table-element element-type="th" text-class="has-text-centered">Name</table-element>
+                <table-element element-type="th" text-class="has-text-centered">Description</table-element>
+                <table-element element-type="th" text-class="has-text-centered">Edit</table-element>
             </tr>
             </thead>
             <tbody>
             <tr v-for="film in films" :key="film.id">
-                <table-element element-type="td">
+                <table-element element-type="td" text-class="has-text-centered">
                     <a :href="'/film/' + film.slug"
                        :title="film.name" v-text="film.name"/>
                 </table-element>
-                <table-element element-type="td">{{ film.description }}</table-element>
-                <table-element element-type="td">{{ film.created_at | moment('DD.MM.YYYY') }}</table-element>
-                <table-element element-type="td">{{ film.updated_at | moment('DD.MM.YYYY') }}</table-element>
-                <table-element element-type="td">
+                <table-element element-type="td" text-class="has-text-left">{{ film.description }}</table-element>
+                <table-element element-type="td" text-class="has-text-centered">
                     <p class="buttons">
                         <a :href="'/film/' + film.slug + '/edit'" class="button is-info is-outlined is-small">
                             <span class="icon">

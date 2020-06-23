@@ -3,11 +3,9 @@
         <table class="table is-fullwidth is-hoverable">
             <thead>
             <tr class="title is-6">
-                <table-element element-type="th">Name</table-element>
-                <table-element element-type="th">Description</table-element>
+                <table-element element-type="th" text-class="has-text-centered">Name</table-element>
+                <table-element element-type="th" text-class="has-text-centered">Description</table-element>
                 <table-element element-type="th" text-class="has-text-centered">Films</table-element>
-                <table-element element-type="th">Created</table-element>
-                <table-element element-type="th">Modified</table-element>
                 <table-element element-type="th"></table-element>
             </tr>
             </thead>
@@ -17,10 +15,8 @@
                     <a :href="'/actor/' + actor.slug"
                        :title="actor.name" v-text="actor.name"/>
                 </table-element>
-                <table-element element-type="td">{{ actor.description }}</table-element>
+                <table-element element-type="td" text-class="has-text-left">{{ actor.description }}</table-element>
                 <table-element element-type="td" text-class="has-text-centered">{{ actor.film.name }}</table-element>
-                <table-element element-type="td">{{ actor.created_at | moment('DD.MM.YYYY') }}</table-element>
-                <table-element element-type="td">{{ actor.updated_at | moment('DD.MM.YYYY') }}</table-element>
                 <table-element element-type="td">
                     <p class="buttons">
                         <a :href="'/actor/' + actor.slug + '/edit'" class="button is-info is-outlined is-small">

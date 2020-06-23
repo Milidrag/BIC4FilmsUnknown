@@ -3,7 +3,7 @@
         <div class="columns is-multiline">
             <div class="card blog-card column is-half is-offset-one-quarter">
                 <header class="card-header">
-                    <h1 class="card-header-title is-centered" v-text="edit ? form.title : 'New film'"/>
+                    <h1 class="card-header-title is-centered" v-text="edit ? form.title : 'NEW FILM'"/>
                 </header>
                 <div class="card-content">
                     <div class="content">
@@ -13,9 +13,8 @@
 
 
                             <div class="field">
-                                <label class="label" for="name">Name</label>
                                 <div class="control">
-                                    <input id="name" v-model="form.name" class="input"></input>
+                                    <input id="name" v-model="form.name" class="input is-primary is-rounded" placeholder="Name"></input>
                                 </div>
                                 <p class="help is-danger" v-if="form.errors.has('name')"
                                    v-text="form.errors.get('name')"/>
@@ -24,7 +23,7 @@
                             <div class="field">
                                 <label class="label" for="description">Description</label>
                                 <div class="control">
-                                    <textarea id="description" v-model="form.description" class="textarea"></textarea>
+                                    <textarea id="description" v-model="form.description" class="textarea is-primary is-rounded"></textarea>
                                 </div>
                                 <p class="help is-danger" v-if="form.errors.has('description')"
                                    v-text="form.errors.get('description')"/>
@@ -35,7 +34,7 @@
                                 </p>
                             </div>
 
-                            <button type="submit" class="button is-large is-primary is-outlined is-fullwidth"
+                            <button type="submit" class="button is-large is-primary is-outlined is-fullwidth is-rounded"
                                     v-text="edit ? 'Save' : 'Post'"/>
                         </form>
                     </div>

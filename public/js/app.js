@@ -1947,10 +1947,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ActorListComponent",
   props: {
@@ -2073,7 +2069,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -2274,7 +2269,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 var form = new Form({
   'id': '',
   'name': '',
@@ -2377,10 +2371,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
 //
 //
 //
@@ -2583,6 +2573,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ShowActorComponent",
   data: function data() {
@@ -2622,6 +2615,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -20558,13 +20559,27 @@ var render = function() {
           "tr",
           { staticClass: "title is-6" },
           [
-            _c("table-element", { attrs: { "element-type": "th" } }, [
-              _vm._v("Name")
-            ]),
+            _c(
+              "table-element",
+              {
+                attrs: {
+                  "element-type": "th",
+                  "text-class": "has-text-centered"
+                }
+              },
+              [_vm._v("Name")]
+            ),
             _vm._v(" "),
-            _c("table-element", { attrs: { "element-type": "th" } }, [
-              _vm._v("Description")
-            ]),
+            _c(
+              "table-element",
+              {
+                attrs: {
+                  "element-type": "th",
+                  "text-class": "has-text-centered"
+                }
+              },
+              [_vm._v("Description")]
+            ),
             _vm._v(" "),
             _c(
               "table-element",
@@ -20576,14 +20591,6 @@ var render = function() {
               },
               [_vm._v("Films")]
             ),
-            _vm._v(" "),
-            _c("table-element", { attrs: { "element-type": "th" } }, [
-              _vm._v("Created")
-            ]),
-            _vm._v(" "),
-            _c("table-element", { attrs: { "element-type": "th" } }, [
-              _vm._v("Modified")
-            ]),
             _vm._v(" "),
             _c("table-element", { attrs: { "element-type": "th" } })
           ],
@@ -20605,9 +20612,13 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
-              _c("table-element", { attrs: { "element-type": "td" } }, [
-                _vm._v(_vm._s(actor.description))
-              ]),
+              _c(
+                "table-element",
+                {
+                  attrs: { "element-type": "td", "text-class": "has-text-left" }
+                },
+                [_vm._v(_vm._s(actor.description))]
+              ),
               _vm._v(" "),
               _c(
                 "table-element",
@@ -20619,14 +20630,6 @@ var render = function() {
                 },
                 [_vm._v(_vm._s(actor.film.name))]
               ),
-              _vm._v(" "),
-              _c("table-element", { attrs: { "element-type": "td" } }, [
-                _vm._v(_vm._s(_vm._f("moment")(actor.created_at, "DD.MM.YYYY")))
-              ]),
-              _vm._v(" "),
-              _c("table-element", { attrs: { "element-type": "td" } }, [
-                _vm._v(_vm._s(_vm._f("moment")(actor.updated_at, "DD.MM.YYYY")))
-              ]),
               _vm._v(" "),
               _c("table-element", { attrs: { "element-type": "td" } }, [
                 _c("p", { staticClass: "buttons" }, [
@@ -20777,12 +20780,12 @@ var render = function() {
             _c("h1", {
               staticClass: "card-header-title is-centered",
               domProps: {
-                textContent: _vm._s(_vm.edit ? _vm.form.title : "New actor")
+                textContent: _vm._s(_vm.edit ? _vm.form.title : "NEW ACTOR")
               }
             })
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "card-content" }, [
+          _c("div", { staticClass: "card-content background" }, [
             _c(
               "div",
               { staticClass: "content" },
@@ -20806,13 +20809,7 @@ var render = function() {
                     }
                   },
                   [
-                    _c("div", { staticClass: "field" }, [
-                      _c(
-                        "label",
-                        { staticClass: "label", attrs: { for: "name" } },
-                        [_vm._v("Name")]
-                      ),
-                      _vm._v(" "),
+                    _c("div", { staticClass: "field transbox" }, [
                       _c("div", { staticClass: "control" }, [
                         _c("input", {
                           directives: [
@@ -20823,8 +20820,8 @@ var render = function() {
                               expression: "form.name"
                             }
                           ],
-                          staticClass: "input",
-                          attrs: { id: "name" },
+                          staticClass: "input is-primary is-rounded",
+                          attrs: { id: "name", placeholder: "Name" },
                           domProps: { value: _vm.form.name },
                           on: {
                             input: function($event) {
@@ -20858,7 +20855,8 @@ var render = function() {
                         _c(
                           "div",
                           {
-                            staticClass: "select is-fullwidth",
+                            staticClass:
+                              "select is-fullwidth is-rounded is-primary",
                             class: _vm.loading ? "is-loading" : ""
                           },
                           [
@@ -20958,7 +20956,7 @@ var render = function() {
                               expression: "form.description"
                             }
                           ],
-                          staticClass: "textarea",
+                          staticClass: "textarea is-primary is-rounded",
                           attrs: { id: "description" },
                           domProps: { value: _vm.form.description },
                           on: {
@@ -20992,7 +20990,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("button", {
                       staticClass:
-                        "button is-large is-primary is-outlined is-fullwidth",
+                        "button is-large is-primary is-outlined is-fullwidth is-rounded",
                       attrs: { type: "submit", disabled: _vm.loading },
                       domProps: {
                         textContent: _vm._s(_vm.edit ? "Save" : "Post")
@@ -21061,7 +21059,7 @@ var render = function() {
             _c("h1", {
               staticClass: "card-header-title is-centered",
               domProps: {
-                textContent: _vm._s(_vm.edit ? _vm.form.title : "New film")
+                textContent: _vm._s(_vm.edit ? _vm.form.title : "NEW FILM")
               }
             })
           ]),
@@ -21091,12 +21089,6 @@ var render = function() {
                   },
                   [
                     _c("div", { staticClass: "field" }, [
-                      _c(
-                        "label",
-                        { staticClass: "label", attrs: { for: "name" } },
-                        [_vm._v("Name")]
-                      ),
-                      _vm._v(" "),
                       _c("div", { staticClass: "control" }, [
                         _c("input", {
                           directives: [
@@ -21107,8 +21099,8 @@ var render = function() {
                               expression: "form.name"
                             }
                           ],
-                          staticClass: "input",
-                          attrs: { id: "name" },
+                          staticClass: "input is-primary is-rounded",
+                          attrs: { id: "name", placeholder: "Name" },
                           domProps: { value: _vm.form.name },
                           on: {
                             input: function($event) {
@@ -21148,7 +21140,7 @@ var render = function() {
                               expression: "form.description"
                             }
                           ],
-                          staticClass: "textarea",
+                          staticClass: "textarea is-primary is-rounded",
                           attrs: { id: "description" },
                           domProps: { value: _vm.form.description },
                           on: {
@@ -21182,7 +21174,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("button", {
                       staticClass:
-                        "button is-large is-primary is-outlined is-fullwidth",
+                        "button is-large is-primary is-outlined is-fullwidth is-rounded",
                       attrs: { type: "submit" },
                       domProps: {
                         textContent: _vm._s(_vm.edit ? "Save" : "Post")
@@ -21290,25 +21282,38 @@ var render = function() {
           "tr",
           { staticClass: "title is-6" },
           [
-            _c("table-element", { attrs: { "element-type": "th" } }, [
-              _vm._v("Name")
-            ]),
+            _c(
+              "table-element",
+              {
+                attrs: {
+                  "element-type": "th",
+                  "text-class": "has-text-centered"
+                }
+              },
+              [_vm._v("Name")]
+            ),
             _vm._v(" "),
-            _c("table-element", { attrs: { "element-type": "th" } }, [
-              _vm._v("Description")
-            ]),
+            _c(
+              "table-element",
+              {
+                attrs: {
+                  "element-type": "th",
+                  "text-class": "has-text-centered"
+                }
+              },
+              [_vm._v("Description")]
+            ),
             _vm._v(" "),
-            _c("table-element", { attrs: { "element-type": "th" } }, [
-              _vm._v("Created")
-            ]),
-            _vm._v(" "),
-            _c("table-element", { attrs: { "element-type": "th" } }, [
-              _vm._v("Modified")
-            ]),
-            _vm._v(" "),
-            _c("table-element", { attrs: { "element-type": "th" } }, [
-              _vm._v("Edit")
-            ])
+            _c(
+              "table-element",
+              {
+                attrs: {
+                  "element-type": "th",
+                  "text-class": "has-text-centered"
+                }
+              },
+              [_vm._v("Edit")]
+            )
           ],
           1
         )
@@ -21321,58 +21326,72 @@ var render = function() {
             "tr",
             { key: film.id },
             [
-              _c("table-element", { attrs: { "element-type": "td" } }, [
-                _c("a", {
-                  attrs: { href: "/film/" + film.slug, title: film.name },
-                  domProps: { textContent: _vm._s(film.name) }
-                })
-              ]),
+              _c(
+                "table-element",
+                {
+                  attrs: {
+                    "element-type": "td",
+                    "text-class": "has-text-centered"
+                  }
+                },
+                [
+                  _c("a", {
+                    attrs: { href: "/film/" + film.slug, title: film.name },
+                    domProps: { textContent: _vm._s(film.name) }
+                  })
+                ]
+              ),
               _vm._v(" "),
-              _c("table-element", { attrs: { "element-type": "td" } }, [
-                _vm._v(_vm._s(film.description))
-              ]),
+              _c(
+                "table-element",
+                {
+                  attrs: { "element-type": "td", "text-class": "has-text-left" }
+                },
+                [_vm._v(_vm._s(film.description))]
+              ),
               _vm._v(" "),
-              _c("table-element", { attrs: { "element-type": "td" } }, [
-                _vm._v(_vm._s(_vm._f("moment")(film.created_at, "DD.MM.YYYY")))
-              ]),
-              _vm._v(" "),
-              _c("table-element", { attrs: { "element-type": "td" } }, [
-                _vm._v(_vm._s(_vm._f("moment")(film.updated_at, "DD.MM.YYYY")))
-              ]),
-              _vm._v(" "),
-              _c("table-element", { attrs: { "element-type": "td" } }, [
-                _c("p", { staticClass: "buttons" }, [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "button is-info is-outlined is-small",
-                      attrs: { href: "/film/" + film.slug + "/edit" }
-                    },
-                    [
-                      _c("span", { staticClass: "icon" }, [
-                        _c("i", { staticClass: "fa fa-edit" })
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "button is-danger is-outlined is-small",
-                      on: {
-                        click: function($event) {
-                          return _vm.openDeleteModal(film)
+              _c(
+                "table-element",
+                {
+                  attrs: {
+                    "element-type": "td",
+                    "text-class": "has-text-centered"
+                  }
+                },
+                [
+                  _c("p", { staticClass: "buttons" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "button is-info is-outlined is-small",
+                        attrs: { href: "/film/" + film.slug + "/edit" }
+                      },
+                      [
+                        _c("span", { staticClass: "icon" }, [
+                          _c("i", { staticClass: "fa fa-edit" })
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "button is-danger is-outlined is-small",
+                        on: {
+                          click: function($event) {
+                            return _vm.openDeleteModal(film)
+                          }
                         }
-                      }
-                    },
-                    [
-                      _c("span", { staticClass: "icon" }, [
-                        _c("i", { staticClass: "fa fa-remove" })
-                      ])
-                    ]
-                  )
-                ])
-              ])
+                      },
+                      [
+                        _c("span", { staticClass: "icon" }, [
+                          _c("i", { staticClass: "fa fa-remove" })
+                        ])
+                      ]
+                    )
+                  ])
+                ]
+              )
             ],
             1
           )
@@ -21478,114 +21497,150 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _vm._v("\n    Which actor you want to see?\n\n    "),
-    _c(
-      "form",
-      {
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.submit($event)
-          }
-        }
-      },
-      [
-        _c("div", { staticClass: "field" }, [
-          _c("label", { staticClass: "label", attrs: { for: "name" } }, [
-            _vm._v("Name of the actor or part of the specific description")
+    _c("div", { staticClass: "columns is-multiline" }, [
+      _c(
+        "div",
+        { staticClass: "card blog-card column is-half is-offset-one-quarter" },
+        [
+          _c("header", { staticClass: "card-header" }, [
+            _c("h1", {
+              staticClass: "card-header-title is-centered",
+              domProps: { textContent: _vm._s("SEARCH ACTOR") }
+            })
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "control" }, [
-            _c("input", {
-              directives: [
+          _c("div", { staticClass: "card-content " }, [
+            _c("div", { staticClass: "content" }, [
+              _c(
+                "form",
                 {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.name,
-                  expression: "name"
-                }
-              ],
-              staticClass: "input",
-              attrs: { id: "name" },
-              domProps: { value: _vm.name },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.submit($event)
+                    }
                   }
-                  _vm.name = $event.target.value
-                }
-              }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("button", {
-          staticClass: "button is-large is-primary is-outlined is-fullwidth",
-          attrs: { type: "submit" }
-        })
-      ]
-    ),
-    _vm._v(" "),
-    _c("table", { staticClass: "table is-fullwidth is-hoverable" }, [
-      _c("thead", [
-        _c(
-          "tr",
-          { staticClass: "title is-4" },
-          [
-            _c("table-element", { attrs: { "element-type": "th" } }, [
-              _vm._v("Name")
-            ]),
-            _vm._v(" "),
-            _c("table-element", { attrs: { "element-type": "th" } }, [
-              _vm._v("Description")
-            ]),
-            _vm._v(" "),
-            _c("table-element", { attrs: { "element-type": "th" } }, [
-              _vm._v("Created")
-            ]),
-            _vm._v(" "),
-            _c("table-element", { attrs: { "element-type": "th" } }, [
-              _vm._v("Modified")
-            ])
-          ],
-          1
-        )
-      ]),
-      _vm._v(" "),
-      _c(
-        "tbody",
-        _vm._l(_vm.actors, function(actor) {
-          return _c(
-            "tr",
-            { key: actor.id },
-            [
-              _c("table-element", { attrs: { "element-type": "td" } }, [
-                _c("a", {
-                  attrs: {
-                    href: "/actor/" + actor.slug + "/edit",
-                    title: actor.name
-                  },
-                  domProps: { textContent: _vm._s(actor.name) }
-                })
-              ]),
+                },
+                [
+                  _c("div", { staticClass: "field" }, [
+                    _c("div", { staticClass: "control" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.name,
+                            expression: "name"
+                          }
+                        ],
+                        staticClass: "input",
+                        attrs: {
+                          id: "name",
+                          placeholder:
+                            "Name of the actor or part of the specific description"
+                        },
+                        domProps: { value: _vm.name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.name = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("button", {
+                    staticClass:
+                      "button is-large is-primary is-outlined is-fullwidth is-rounded",
+                    attrs: { type: "submit" },
+                    domProps: { textContent: _vm._s("Search") }
+                  })
+                ]
+              ),
               _vm._v(" "),
-              _c("table-element", { attrs: { "element-type": "td" } }, [
-                _vm._v(_vm._s(actor.description))
-              ]),
-              _vm._v(" "),
-              _c("table-element", { attrs: { "element-type": "td" } }, [
-                _vm._v(_vm._s(_vm._f("moment")(actor.created_at, "DD.MM.YYYY")))
-              ]),
-              _vm._v(" "),
-              _c("table-element", { attrs: { "element-type": "td" } }, [
-                _vm._v(_vm._s(_vm._f("moment")(actor.updated_at, "DD.MM.YYYY")))
+              _c("table", { staticClass: "table is-fullwidth is-hoverable" }, [
+                _c("thead", [
+                  _c(
+                    "tr",
+                    [
+                      _c(
+                        "table-element",
+                        {
+                          attrs: {
+                            "element-type": "th",
+                            "text-class": " has-text-centered"
+                          }
+                        },
+                        [_vm._v("Name")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "table-element",
+                        {
+                          attrs: {
+                            "element-type": "th",
+                            "text-class": " has-text-centered"
+                          }
+                        },
+                        [_vm._v("Description")]
+                      )
+                    ],
+                    1
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.actors, function(actor) {
+                    return _c(
+                      "tr",
+                      {
+                        key: actor.id,
+                        attrs: { "text-class": " has-text-centered" }
+                      },
+                      [
+                        _c(
+                          "table-element",
+                          {
+                            attrs: {
+                              "element-type": "td",
+                              "text-class": " has-text-centered"
+                            }
+                          },
+                          [
+                            _c("a", {
+                              attrs: {
+                                href: "/actor/" + actor.slug + "/edit",
+                                title: actor.name
+                              },
+                              domProps: { textContent: _vm._s(actor.name) }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "table-element",
+                          {
+                            attrs: {
+                              "element-type": "td",
+                              "text-class": " has-text-left"
+                            }
+                          },
+                          [_vm._v(_vm._s(actor.description))]
+                        )
+                      ],
+                      1
+                    )
+                  }),
+                  0
+                )
               ])
-            ],
-            1
-          )
-        }),
-        0
+            ])
+          ])
+        ]
       )
     ])
   ])
@@ -21612,33 +21667,63 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "table-container is-fullwidth" }, [
-    _c("table", [
-      _c(
-        "thead",
-        _vm._l(Object.keys(_vm.currentObject), function(object) {
-          return _c(
-            "tr",
-            [
-              _c("table-element", { attrs: { "element-type": "th" } }, [
-                _vm._v(" " + _vm._s(object))
-              ]),
-              _vm._v(" "),
-              _c("table-element", { attrs: { "element-type": "th" } }, [
-                _vm._v("      :       ")
-              ]),
-              _vm._v(" "),
-              _c("table-element", { attrs: { "element-type": "th" } }, [
-                _vm._v(" " + _vm._s(_vm.currentObject[object]) + " ")
+  return _c(
+    "div",
+    { staticClass: "container" },
+    [
+      _c("hero", {
+        staticClass: "column is-three-quarter is-offset-two-fifth",
+        attrs: { "main-title": "SHOW" }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "columns" }, [
+        _c(
+          "div",
+          { staticClass: "column is-three-fifths is-offset-one-fifth" },
+          [
+            _c("div", { staticClass: "box custom-box" }, [
+              _c("table", [
+                _c(
+                  "thead",
+                  _vm._l(Object.keys(_vm.currentObject), function(object) {
+                    return _c(
+                      "tr",
+                      [
+                        _c(
+                          "table-element",
+                          { attrs: { "element-type": "th" } },
+                          [_vm._v(" " + _vm._s(object))]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "table-element",
+                          { attrs: { "element-type": "th" } },
+                          [_vm._v("      :       ")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "table-element",
+                          { attrs: { "element-type": "td" } },
+                          [
+                            _vm._v(
+                              " " + _vm._s(_vm.currentObject[object]) + " "
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  }),
+                  0
+                )
               ])
-            ],
-            1
-          )
-        }),
-        0
-      )
-    ])
-  ])
+            ])
+          ]
+        )
+      ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

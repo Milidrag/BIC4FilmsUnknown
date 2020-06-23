@@ -3,19 +3,18 @@
         <div class="columns is-multiline">
             <div class="card blog-card column is-half is-offset-one-quarter">
                 <header class="card-header">
-                    <h1 class="card-header-title is-centered" v-text="edit ? form.title : 'New actor'"/>
+                    <h1 class="card-header-title is-centered" v-text="edit ? form.title : 'NEW ACTOR'"/>
                 </header>
-                <div class="card-content">
+                <div class="card-content background">
                     <div class="content">
                         <query-message :success="form.isSuccess()" :fail="form.isFail()"
                                        :message="form.failMessage || form.successMessage"></query-message>
                         <form @submit.prevent="submit">
 
 
-                            <div class="field">
-                                <label class="label" for="name">Name</label>
+                            <div class="field transbox">
                                 <div class="control">
-                                    <input id="name" v-model="form.name" class="input"></input>
+                                    <input id="name" v-model="form.name" class="input is-primary is-rounded" placeholder="Name"></input>
                                 </div>
                                 <p class="help is-danger" v-if="form.errors.has('name')"
                                    v-text="form.errors.get('name')"/>
@@ -24,7 +23,7 @@
                             <div class="field">
                                 <label class="label" for="film">Films</label>
                                 <div class="control">
-                                    <div class="select is-fullwidth" :class="loading ? 'is-loading' : ''">
+                                    <div class="select is-fullwidth is-rounded is-primary" :class="loading ? 'is-loading' : ''">
                                         <select id="film" :disabled="loading" v-model="form.film_id">
                                             <option v-if="loading" :value="this.form.film_id"> Loading...</option>
                                             <option v-for="cat in films" v-if="!loading" v-text="cat.name"
@@ -40,7 +39,7 @@
                             <div class="field">
                                 <label class="label" for="description">Description</label>
                                 <div class="control">
-                                    <textarea id="description" v-model="form.description" class="textarea"></textarea>
+                                    <textarea id="description" v-model="form.description" class="textarea is-primary is-rounded"></textarea>
                                 </div>
                                 <p class="help is-danger" v-if="form.errors.has('description')"
                                    v-text="form.errors.get('description')"/>
@@ -51,7 +50,7 @@
                                 </p>
                             </div>
 
-                            <button type="submit" class="button is-large is-primary is-outlined is-fullwidth"
+                            <button type="submit" class="button is-large is-primary is-outlined is-fullwidth is-rounded"
                                     v-text="edit ? 'Save' : 'Post'" :disabled="loading"/>
                         </form>
                     </div>
