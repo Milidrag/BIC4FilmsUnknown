@@ -56,8 +56,9 @@ Also it is possible to write custom styles in ```/resources/sass/_custom.scss```
 3. Copy ".env.example" and name it ".env"
 4. Run "php artisan key:generate" to generate encryption key for your application.
 5. Run "php artisan migrate" to create all needed TABLES.
-6. Run "php artisan db:seed to migrate the DATA
+6. Run "php artisan db:seed" to migrate the DATA
 7. Run "php artisan serve" to starte the page
+8. Open your webrowser with the following url "http://localhost:8000/home"
 
 
 
