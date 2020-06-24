@@ -254,6 +254,7 @@
                 }
             },
             dtEditClick: function (props) {
+                alert(JSON.stringify(props.rowData));
                 this.formData = {};
                 this.formData = props.rowData;
                 this.$bvModal.show("edit-form-dialog");

@@ -41,7 +41,7 @@
                                         fieldName: "actors",
                                         fieldLabel: "Actors that play in the film",
                                         fieldIsDisplayed: true,
-                                        isMandatory: true,
+                                        isMandatory: false,
                                         isMultiple: true,
                                         validationFailedMessage: "A Film description is required",
                                         fieldType: "b-form-select",
@@ -51,11 +51,11 @@
                                 '
                            :header-fields='[
                                 // "__slot:checkboxes",
-                                {
-                                name: "slug",
-                                label: "Slug",
-                                sortable: true
-                                },
+                                // {
+                                // name: "slug",
+                                // label: "Slug",
+                                // sortable: true
+                                // },
                                 {
                                 name: "name",
                                 label: "Name",
@@ -67,11 +67,11 @@
                                 sortable: true,
                                 // customElement: "DescriptionNew"
                                 },
-                                {
-                                name: "id",
-                                label: "FilmNr",
-                                sortable: true
-                                },
+                                // {
+                                // name: "id",
+                                // label: "FilmNr",
+                                // sortable: true
+                                // },
                                 {
                                 name: "created_at",
                                 label: "Created",
@@ -90,7 +90,7 @@
                                 "__slot:actions:actionsEditInline"
                                 ]'
 
-                           :track-by="'slug'"
+                           :track-by="'name'"
                            :initial-data="{{ $films }}"
                            :is-search-able="false"
                            :search-table-data-url="'../../search/doesnotexist'"

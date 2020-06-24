@@ -31,9 +31,9 @@
                         },
                         {
                             fieldName: "actors",
-                            fieldLabel: "Actors that play in the film",
+                            fieldLabel: "Actors that may play in the film",
                             fieldIsDisplayed: true,
-                            isMandatory: true,
+                            isMandatory: false,
                             isMultiple: true,
                             validationFailedMessage: "A Film description is required",
                             fieldType: "b-form-select",

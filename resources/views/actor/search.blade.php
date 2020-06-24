@@ -62,11 +62,11 @@ https://github.com/Egorvah/vudal
                                 '
                            :header-fields='[
                                 // "__slot:checkboxes",
-                                {
-                                name: "slug",
-                                label: "Slug",
-                                sortable: true
-                                },
+                                // {
+                                // name: "slug",
+                                // label: "Slug",
+                                // sortable: true
+                                // },
                                 {
                                 name: "name",
                                 label: "Name",
@@ -78,11 +78,11 @@ https://github.com/Egorvah/vudal
                                 sortable: true,
                                 // customElement: "DescriptionNew"
                                 },
-                                {
-                                name: "film_id",
-                                label: "FilmNr",
-                                sortable: true
-                                },
+                                // {
+                                // name: "film_id",
+                                // label: "FilmNr",
+                                // sortable: true
+                                // },
                                 {
                                 name: "created_at",
                                 label: "Created",
@@ -100,7 +100,7 @@ https://github.com/Egorvah/vudal
                                 "__slot:actions:actionRemove",
                                 "__slot:actions:actionsEditInline"
                                 ]'
-                           :track-by="'slug'"
+                           :track-by="'name'"
                            :initial-data="{{ $actors }}"
                            :is-search-able="true"
                            :search-table-data-url="'../../search/actor'"

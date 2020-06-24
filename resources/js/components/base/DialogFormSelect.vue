@@ -1,12 +1,12 @@
 <template>
-    <b-form-group
+    <b-form-group v-if="isMandatory === true"
         :state="fieldState"
         v-bind:label="fieldLabel"
         v-bind:label-for="fieldId"
         :invalid-feedback="validationFailedMessage"
     >
 
-        <b-form-select v-if="isMandatory && isMultiple"
+        <b-form-select v-if="isMultiple === true"
                        v-bind:id="fieldId"
                        v-model="fieldInput"
                        :options="fieldOptions"
@@ -18,7 +18,7 @@
                        multiple
                        required
         ></b-form-select>
-        <b-form-select v-else-if="isMandatory && !isMultiple"
+        <b-form-select v-else
                        v-bind:id="fieldId"
                        v-model="fieldInput"
                        :options="fieldOptions"
@@ -29,11 +29,15 @@
                        disabled-field="notEnabled"
                        required
         ></b-form-select>
-        <b-form-select v-else-if="!isMandatory && isMultiple"
+    </b-form-group>
+    <b-form-group v-else
+                  v-bind:label="fieldLabel"
+                  v-bind:label-for="fieldId"
+    >
+        <b-form-select v-if="isMultiple === true"
                        v-bind:id="fieldId"
                        v-model="fieldInput"
                        :options="fieldOptions"
-                       :state="fieldState"
                        class="mb-3"
                        :value-field="fieldOptionsId"
                        :text-field="fieldOptionsDisplayName"
@@ -44,7 +48,6 @@
                        v-bind:id="fieldId"
                        v-model="fieldInput"
                        :options="fieldOptions"
-                       :state="fieldState"
                        class="mb-3"
                        :value-field="fieldOptionsId"
                        :text-field="fieldOptionsDisplayName"
@@ -125,6 +128,7 @@
         computed: {
             fieldState() {
                 // console.log( "dialog selected: computed field " + JSON.stringify (this.fieldInput) );
+                // console.log( "dialog selected: computed field " + JSON.stringify (this.fieldOptions) );
                 if (this.isMultiple === true && Array.isArray(this.fieldInput)) {
                     if (this.fieldInput.length === 0) {
                         return false;
@@ -133,7 +137,15 @@
                     }
                     //(this.isMultiple === false ){
                 } else {
-                    return typeof this.fieldOptions[this.fieldInput] !== 'undefined' ? true : false
+                    // todo not a nice solution - get rid of the foreach. happens because the entry id does not match the array id
+                    for (var i = 0; i < this.fieldOptions.length; i++){
+                        // console.log(JSON.stringify(this.fieldOptions[i]));
+                        if (this.fieldOptions[i]["id"] === this.fieldInput ){
+                            return true;
+                        }
+                    }
+                    // return typeof this.fieldOptions[this.fieldInput] !== 'undefined' ? true : false
+                    return false;
                 }
             },
         },

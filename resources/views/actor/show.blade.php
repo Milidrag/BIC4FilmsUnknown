@@ -52,12 +52,12 @@
                                 ]
                                 '
                            :header-fields='[
-                                "__slot:checkboxes",
-                                {
-                                name: "slug",
-                                label: "Slug",
-                                sortable: true
-                                },
+                                // "__slot:checkboxes",
+                                // {
+                                // name: "slug",
+                                // label: "Slug",
+                                // sortable: true
+                                // },
                                 {
                                 name: "name",
                                 label: "Name",
@@ -86,7 +86,7 @@
                                 "__slot:actions:actionRemove",
                                 "__slot:actions:actionsEditInline"
                                 ]'
-                           :track-by="'slug'"
+                           :track-by="'name'"
                            :initial-data="{{ $film }}"
                            :is-search-able="false"
                            :search-table-data-url="'../../search/actor'"

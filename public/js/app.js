@@ -2224,7 +2224,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 // This imports <b-modal> as well as the v-b-modal directive as a plugin:
 
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["ButtonPlugin"]);
@@ -2406,6 +2405,7 @@ var formJs = new Form({
       }
     },
     dtEditClick: function dtEditClick(props) {
+      alert(JSON.stringify(props.rowData));
       this.formData = {};
       this.formData = props.rowData;
       this.$bvModal.show("edit-form-dialog");
@@ -2566,6 +2566,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -3000,6 +3001,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["FormInputPlugin"]);
@@ -3068,6 +3070,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_M
   computed: {
     fieldState: function fieldState() {
       // console.log( "dialog selected: computed field " + JSON.stringify (this.fieldInput) );
+      // console.log( "dialog selected: computed field " + JSON.stringify (this.fieldOptions) );
       if (this.isMultiple === true && Array.isArray(this.fieldInput)) {
         if (this.fieldInput.length === 0) {
           return false;
@@ -3076,7 +3079,16 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_M
         } //(this.isMultiple === false ){
 
       } else {
-        return typeof this.fieldOptions[this.fieldInput] !== 'undefined' ? true : false;
+        // todo not a nice solution - get rid of the foreach. happens because the entry id does not match the array id
+        for (var i = 0; i < this.fieldOptions.length; i++) {
+          // console.log(JSON.stringify(this.fieldOptions[i]));
+          if (this.fieldOptions[i]["id"] === this.fieldInput) {
+            return true;
+          }
+        } // return typeof this.fieldOptions[this.fieldInput] !== 'undefined' ? true : false
+
+
+        return false;
       }
     }
   },
@@ -45478,7 +45490,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n#dialog-control .hidden[data-v-63f8cfcc]{\n    visibility: hidden;\n    opacity: 0;\n    transition: visibility 0s 10s, opacity 10s linear;\n}\n\n", ""]);
+exports.push([module.i, "\n#dialog-control .hidden[data-v-63f8cfcc] {\n    visibility: hidden;\n    opacity: 0;\n    transition: visibility 0s 10s, opacity 10s linear;\n}\n\n", ""]);
 
 // exports
 
@@ -45497,7 +45509,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n#datatable-control .user-info {\n    float: left;\n    padding: 6px;\n    font-size: 17px;\n}\n#datatable-control .hidden{\n    visibility: hidden;\n    opacity: 0;\n    transition: visibility 0s 10s, opacity 10s linear;\n}\n#datatable-control .search-container {\n    float: right;\n}\n#datatable-control .search-form {\n    box-sizing: border-box;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    background-position: 10px 10px;\n    background-repeat: no-repeat;\n    background-color: white;\n}\n#datatable-control .search-form input[type=text] {\n    padding: 6px;\n    font-size: 17px;\n    border: none;\n}\n#datatable-control .search-form button {\n    float: right;\n    padding: 6px 10px;\n    background: #ddd;\n    font-size: 17px;\n    border: none;\n    cursor: pointer;\n}\n#datatable-control .search-form button:hover {\n    background: #ccc;\n}\n@media screen and (max-width: 600px) {\n#datatable-control .search-form {\n        float: none;\n}\n#datatable-control a, #datatable-control .search-form input[type=text], #datatable-control .search-form button {\n        float: none;\n        display: block;\n        text-align: left;\n        width: 100%;\n        margin: 0;\n        padding: 14px;\n}\n#datatable-control .search-form input[type=text] {\n        border: 1px solid #ccc;\n}\n}\n", ""]);
+exports.push([module.i, "\n#datatable-control .user-info {\n    float: left;\n    padding: 6px;\n    font-size: 17px;\n}\n#datatable-control .hidden {\n    visibility: hidden;\n    opacity: 0;\n    transition: visibility 0s 10s, opacity 10s linear;\n}\n#datatable-control .search-container {\n    float: right;\n}\n#datatable-control .search-form {\n    box-sizing: border-box;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    background-position: 10px 10px;\n    background-repeat: no-repeat;\n    background-color: white;\n}\n#datatable-control .search-form input[type=text] {\n    padding: 6px;\n    font-size: 17px;\n    border: none;\n}\n#datatable-control .search-form button {\n    float: right;\n    padding: 6px 10px;\n    background: #ddd;\n    font-size: 17px;\n    border: none;\n    cursor: pointer;\n}\n#datatable-control .search-form button:hover {\n    background: #ccc;\n}\n@media screen and (max-width: 600px) {\n#datatable-control .search-form {\n        float: none;\n}\n#datatable-control a, #datatable-control .search-form input[type=text], #datatable-control .search-form button {\n        float: none;\n        display: block;\n        text-align: left;\n        width: 100%;\n        margin: 0;\n        padding: 14px;\n}\n#datatable-control .search-form input[type=text] {\n        border: 1px solid #ccc;\n}\n}\n", ""]);
 
 // exports
 
@@ -45516,7 +45528,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*\n default color was:\n    color: #337ab7;\n    instead of\n    color: #00d1b2;\n*/\n#datatable-light {\n    /*font-family: \"Avenir\", Helvetica, Arial, sans-serif;*/\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n    text-align: center;\n    color: #00b89c;\n    margin-top: 60px;\n}\n#datatable-light .title {\n    margin-bottom: 30px;\n}\n#datatable-light .items-per-page {\n    height: 100%;\n    display: flex;\n    align-items: flex-start;\n    color: #00d1b2;\n}\n#datatable-light .items-per-page label {\n    margin: 0 15px;\n}\n\n/* Datatable CSS */\n.v-datatable-light .header-item {\n    cursor: pointer;\n    color: #00d1b2;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light .header-item:hover {\n    color: #ed9b19;\n}\n.v-datatable-light .header-item.no-sortable {\n    cursor: default;\n}\n.v-datatable-light .header-item.no-sortable:hover {\n    color: #00d1b2;\n}\nb {\n    /*font-family: Helvetica;*/\n    color: #222222;\n    padding: 0px;\n}\n.v-datatable-light .header-item .th-wrapper {\n    display: flex;\n    width: 100%;\n    height: 100%;\n    font-weight: bold;\n    align-items: center;\n}\n.v-datatable-light .header-item .th-wrapper.checkboxes {\n    justify-content: center;\n}\n.v-datatable-light .header-item .th-wrapper .arrows-wrapper {\n    display: flex;\n    flex-direction: column;\n    margin-left: 10px;\n    justify-content: space-between;\n}\n.v-datatable-light .header-item .th-wrapper .arrows-wrapper.centralized {\n    justify-content: center;\n}\n.v-datatable-light .arrow {\n    transition: color 0.15s ease-in-out;\n    width: 0;\n    height: 0;\n    border-left: 8px solid transparent;\n    border-right: 8px solid transparent;\n}\n.v-datatable-light .arrow.up {\n    border-bottom: 8px solid #00d1b2;\n    margin-bottom: 5px;\n}\n.v-datatable-light .arrow.up:hover {\n    border-bottom: 8px solid #ed9b19;\n}\n.v-datatable-light .arrow.down {\n    border-top: 8px solid #00d1b2;\n}\n.v-datatable-light .arrow.down:hover {\n    border-top: 8px solid #ed9b19;\n}\n/* example colorization of cells / rows / columns\n#datatable-light .v-datatable-light .row-1 .column-2 {\n    color: green;\n}\n*/\n.v-datatable-light .datatable-footer {\n    display: flex;\n    justify-content: space-between;\n    width: 600px;\n}\n/* End Datatable CSS */\n\n/* Pagination CSS */\n.v-datatable-light-pagination {\n    list-style: none;\n    display: flex;\n    align-items: flex-end;\n    justify-content: flex-end;\n    margin: 0;\n    padding: 0;\n    width: 300px;\n    height: 30px;\n}\n.v-datatable-light-pagination .pagination-item {\n    width: 30px;\n    margin-right: 5px;\n    font-size: 16px;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light-pagination .pagination-item.selected {\n    color: #ed9b19;\n}\n.v-datatable-light-pagination .pagination-item .page-btn {\n    background-color: transparent;\n    outline: none;\n    border: none;\n    color: #00d1b2;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light-pagination .pagination-item .page-btn:hover {\n    color: #ed9b19;\n}\n.v-datatable-light-pagination .pagination-item .page-btn:disabled {\n    cursor: not-allowed;\n    box-shadow: none;\n    opacity: 0.65;\n}\n/* END PAGINATION CSS */\n\n/* ITEMS PER PAGE DROPDOWN CSS */\n.item-per-page-dropdown {\n    background-color: transparent;\n    min-height: 30px;\n    border: 1px solid #00d1b2;\n    border-radius: 5px;\n    color: #00d1b2;\n}\n.item-per-page-dropdown:hover {\n    cursor: pointer;\n}\n/* END ITEMS PER PAGE DROPDOWN CSS */\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*\n default color was:\n    color: #337ab7;\n    instead of\n    color: #00d1b2;\n*/\n#datatable-light {\n    /*font-family: \"Avenir\", Helvetica, Arial, sans-serif;*/\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n    text-align: center;\n    color: #00b89c;\n    margin-top: 60px;\n}\n#datatable-light .title {\n    margin-bottom: 30px;\n}\n#datatable-light .items-per-page {\n    height: 100%;\n    display: flex;\n    align-items: flex-start;\n    color: #00d1b2;\n}\n#datatable-light .items-per-page label {\n    margin: 0 15px;\n}\n\n/* Datatable CSS */\n.v-datatable-light .header-item {\n    cursor: pointer;\n    color: #00d1b2;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light .header-item:hover {\n    color: #ed9b19;\n}\n.v-datatable-light .header-item.no-sortable {\n    cursor: default;\n}\n.v-datatable-light .header-item.no-sortable:hover {\n    color: #00d1b2;\n}\nb {\n    /*font-family: Helvetica;*/\n    color: #222222;\n    padding: 0px;\n}\n.v-datatable-light .header-item .th-wrapper {\n    display: flex;\n    width: 100%;\n    height: 100%;\n    font-weight: bold;\n    align-items: center;\n}\n.v-datatable-light .header-item .th-wrapper.checkboxes {\n    justify-content: center;\n}\n.v-datatable-light .header-item .th-wrapper .arrows-wrapper {\n    display: flex;\n    flex-direction: column;\n    margin-left: 10px;\n    justify-content: space-between;\n}\n.v-datatable-light .header-item .th-wrapper .arrows-wrapper.centralized {\n    justify-content: center;\n}\n.v-datatable-light .arrow {\n    transition: color 0.15s ease-in-out;\n    width: 0;\n    height: 0;\n    border-left: 8px solid transparent;\n    border-right: 8px solid transparent;\n}\n.v-datatable-light .arrow.up {\n    border-bottom: 8px solid #00d1b2;\n    margin-bottom: 5px;\n}\n.v-datatable-light .arrow.up:hover {\n    border-bottom: 8px solid #ed9b19;\n}\n.v-datatable-light .arrow.down {\n    border-top: 8px solid #00d1b2;\n}\n.v-datatable-light .arrow.down:hover {\n    border-top: 8px solid #ed9b19;\n}\n\n/* example colorization of cells / rows / columns\n#datatable-light .v-datatable-light .row-1 .column-2 {\n    color: green;\n}\n*/\n.v-datatable-light .datatable-footer {\n    display: flex;\n    justify-content: space-between;\n    width: 600px;\n}\n\n/* End Datatable CSS */\n\n/* Pagination CSS */\n.v-datatable-light-pagination {\n    list-style: none;\n    display: flex;\n    align-items: flex-end;\n    justify-content: flex-end;\n    margin: 0;\n    padding: 0;\n    width: 300px;\n    height: 30px;\n}\n.v-datatable-light-pagination .pagination-item {\n    width: 30px;\n    margin-right: 5px;\n    font-size: 16px;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light-pagination .pagination-item.selected {\n    color: #ed9b19;\n}\n.v-datatable-light-pagination .pagination-item .page-btn {\n    background-color: transparent;\n    outline: none;\n    border: none;\n    color: #00d1b2;\n    transition: color 0.15s ease-in-out;\n}\n.v-datatable-light-pagination .pagination-item .page-btn:hover {\n    color: #ed9b19;\n}\n.v-datatable-light-pagination .pagination-item .page-btn:disabled {\n    cursor: not-allowed;\n    box-shadow: none;\n    opacity: 0.65;\n}\n\n/* END PAGINATION CSS */\n\n/* ITEMS PER PAGE DROPDOWN CSS */\n.item-per-page-dropdown {\n    background-color: transparent;\n    min-height: 30px;\n    border: 1px solid #00d1b2;\n    border-radius: 5px;\n    color: #00d1b2;\n}\n.item-per-page-dropdown:hover {\n    cursor: pointer;\n}\n\n/* END ITEMS PER PAGE DROPDOWN CSS */\n\n\n", ""]);
 
 // exports
 
@@ -69892,7 +69904,7 @@ var render = function() {
                           }
                         }
                       },
-                      [_vm._v("Edit extra")]
+                      [_vm._v("Edit extra\n            ")]
                     )
                   ]
                 }
@@ -70110,99 +70122,104 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "b-form-group",
-    {
-      attrs: {
-        state: _vm.fieldState,
-        label: _vm.fieldLabel,
-        "label-for": _vm.fieldId,
-        "invalid-feedback": _vm.validationFailedMessage
-      }
-    },
-    [
-      _vm.isMandatory && _vm.isMultiple
-        ? _c("b-form-select", {
-            staticClass: "mb-3",
-            attrs: {
-              id: _vm.fieldId,
-              options: _vm.fieldOptions,
-              state: _vm.fieldState,
-              "value-field": _vm.fieldOptionsId,
-              "text-field": _vm.fieldOptionsDisplayName,
-              "disabled-field": "notEnabled",
-              multiple: "",
-              required: ""
-            },
-            model: {
-              value: _vm.fieldInput,
-              callback: function($$v) {
-                _vm.fieldInput = $$v
-              },
-              expression: "fieldInput"
-            }
-          })
-        : _vm.isMandatory && !_vm.isMultiple
-        ? _c("b-form-select", {
-            staticClass: "mb-3",
-            attrs: {
-              id: _vm.fieldId,
-              options: _vm.fieldOptions,
-              state: _vm.fieldState,
-              "value-field": _vm.fieldOptionsId,
-              "text-field": _vm.fieldOptionsDisplayName,
-              "disabled-field": "notEnabled",
-              required: ""
-            },
-            model: {
-              value: _vm.fieldInput,
-              callback: function($$v) {
-                _vm.fieldInput = $$v
-              },
-              expression: "fieldInput"
-            }
-          })
-        : !_vm.isMandatory && _vm.isMultiple
-        ? _c("b-form-select", {
-            staticClass: "mb-3",
-            attrs: {
-              id: _vm.fieldId,
-              options: _vm.fieldOptions,
-              state: _vm.fieldState,
-              "value-field": _vm.fieldOptionsId,
-              "text-field": _vm.fieldOptionsDisplayName,
-              "disabled-field": "notEnabled",
-              multiple: ""
-            },
-            model: {
-              value: _vm.fieldInput,
-              callback: function($$v) {
-                _vm.fieldInput = $$v
-              },
-              expression: "fieldInput"
-            }
-          })
-        : _c("b-form-select", {
-            staticClass: "mb-3",
-            attrs: {
-              id: _vm.fieldId,
-              options: _vm.fieldOptions,
-              state: _vm.fieldState,
-              "value-field": _vm.fieldOptionsId,
-              "text-field": _vm.fieldOptionsDisplayName,
-              "disabled-field": "notEnabled"
-            },
-            model: {
-              value: _vm.fieldInput,
-              callback: function($$v) {
-                _vm.fieldInput = $$v
-              },
-              expression: "fieldInput"
-            }
-          })
-    ],
-    1
-  )
+  return _vm.isMandatory === true
+    ? _c(
+        "b-form-group",
+        {
+          attrs: {
+            state: _vm.fieldState,
+            label: _vm.fieldLabel,
+            "label-for": _vm.fieldId,
+            "invalid-feedback": _vm.validationFailedMessage
+          }
+        },
+        [
+          _vm.isMultiple === true
+            ? _c("b-form-select", {
+                staticClass: "mb-3",
+                attrs: {
+                  id: _vm.fieldId,
+                  options: _vm.fieldOptions,
+                  state: _vm.fieldState,
+                  "value-field": _vm.fieldOptionsId,
+                  "text-field": _vm.fieldOptionsDisplayName,
+                  "disabled-field": "notEnabled",
+                  multiple: "",
+                  required: ""
+                },
+                model: {
+                  value: _vm.fieldInput,
+                  callback: function($$v) {
+                    _vm.fieldInput = $$v
+                  },
+                  expression: "fieldInput"
+                }
+              })
+            : _c("b-form-select", {
+                staticClass: "mb-3",
+                attrs: {
+                  id: _vm.fieldId,
+                  options: _vm.fieldOptions,
+                  state: _vm.fieldState,
+                  "value-field": _vm.fieldOptionsId,
+                  "text-field": _vm.fieldOptionsDisplayName,
+                  "disabled-field": "notEnabled",
+                  required: ""
+                },
+                model: {
+                  value: _vm.fieldInput,
+                  callback: function($$v) {
+                    _vm.fieldInput = $$v
+                  },
+                  expression: "fieldInput"
+                }
+              })
+        ],
+        1
+      )
+    : _c(
+        "b-form-group",
+        { attrs: { label: _vm.fieldLabel, "label-for": _vm.fieldId } },
+        [
+          _vm.isMultiple === true
+            ? _c("b-form-select", {
+                staticClass: "mb-3",
+                attrs: {
+                  id: _vm.fieldId,
+                  options: _vm.fieldOptions,
+                  "value-field": _vm.fieldOptionsId,
+                  "text-field": _vm.fieldOptionsDisplayName,
+                  "disabled-field": "notEnabled",
+                  multiple: ""
+                },
+                model: {
+                  value: _vm.fieldInput,
+                  callback: function($$v) {
+                    _vm.fieldInput = $$v
+                  },
+                  expression: "fieldInput"
+                }
+              })
+            : _c("b-form-select", {
+                staticClass: "mb-3",
+                attrs: {
+                  id: _vm.fieldId,
+                  options: _vm.fieldOptions,
+                  "value-field": _vm.fieldOptionsId,
+                  "text-field": _vm.fieldOptionsDisplayName,
+                  "disabled-field": "notEnabled"
+                },
+                model: {
+                  value: _vm.fieldInput,
+                  callback: function($$v) {
+                    _vm.fieldInput = $$v
+                  },
+                  expression: "fieldInput"
+                }
+              })
+        ],
+        1
+      )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -83937,7 +83954,12 @@ var Errors = /*#__PURE__*/function () {
   _createClass(Errors, [{
     key: "has",
     value: function has(field) {
-      return this.errors.hasOwnProperty(field);
+      // bugfix sometimes this.erros is undefined
+      if (typeof this.errors !== 'undefined') {
+        return this.errors.hasOwnProperty(field);
+      } else {
+        return null;
+      }
     }
   }, {
     key: "any",
