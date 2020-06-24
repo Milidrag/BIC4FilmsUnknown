@@ -29,19 +29,13 @@ Die folgenden Komponenten wurden für die Implementierung der gewünschten Funkt
 
 Die Komponenten sind im Projekt unter folgendem Pfad zu finden: ```/resources/js/components/base/```
 
-#### DeleteModalComponent.vue
-
-#### ErrorBoxComponent.vue
-
-#### HeroComponent.vue
-
-#### QueryMessage.vue
-
-#### QueryMessageComponent.vue
-
-#### SuccessBoxComponent.vue
-
-#### TableElementComponent.vue
+- DeleteModalComponent.vue
+- ErrorBoxComponent.vue
+- HeroComponent.vue
+- QueryMessage.vue
+- QueryMessageComponent.vue
+- SuccessBoxComponent.vue
+- TableElementComponent.vue
 
 ### Views 
 Views können in unserem Projekt unter folgendem Pfad gefunden werden: ```/resources/views```.
