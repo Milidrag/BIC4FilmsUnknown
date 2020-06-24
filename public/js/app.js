@@ -2405,7 +2405,6 @@ var formJs = new Form({
       }
     },
     dtEditClick: function dtEditClick(props) {
-      alert(JSON.stringify(props.rowData));
       this.formData = {};
       this.formData = props.rowData;
       this.$bvModal.show("edit-form-dialog");
@@ -2769,7 +2768,7 @@ var workingData = [];
   methods: {
     changeDescription: function changeDescription(event, id) {
       this.data = this.data.map(function (item) {
-        return item.id === id ? _objectSpread({}, item, {
+        return item.id === id ? _objectSpread(_objectSpread({}, item), {}, {
           description: event.target.value
         }) : item;
       });
@@ -2999,9 +2998,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["FormInputPlugin"]);
@@ -3070,7 +3066,6 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_M
   computed: {
     fieldState: function fieldState() {
       // console.log( "dialog selected: computed field " + JSON.stringify (this.fieldInput) );
-      // console.log( "dialog selected: computed field " + JSON.stringify (this.fieldOptions) );
       if (this.isMultiple === true && Array.isArray(this.fieldInput)) {
         if (this.fieldInput.length === 0) {
           return false;
@@ -3079,16 +3074,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_M
         } //(this.isMultiple === false ){
 
       } else {
-        // todo not a nice solution - get rid of the foreach. happens because the entry id does not match the array id
-        for (var i = 0; i < this.fieldOptions.length; i++) {
-          // console.log(JSON.stringify(this.fieldOptions[i]));
-          if (this.fieldOptions[i]["id"] === this.fieldInput) {
-            return true;
-          }
-        } // return typeof this.fieldOptions[this.fieldInput] !== 'undefined' ? true : false
-
-
-        return false;
+        return typeof this.fieldOptions[this.fieldInput] !== 'undefined' ? true : false;
       }
     }
   },
@@ -70122,104 +70108,99 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.isMandatory === true
-    ? _c(
-        "b-form-group",
-        {
-          attrs: {
-            state: _vm.fieldState,
-            label: _vm.fieldLabel,
-            "label-for": _vm.fieldId,
-            "invalid-feedback": _vm.validationFailedMessage
-          }
-        },
-        [
-          _vm.isMultiple === true
-            ? _c("b-form-select", {
-                staticClass: "mb-3",
-                attrs: {
-                  id: _vm.fieldId,
-                  options: _vm.fieldOptions,
-                  state: _vm.fieldState,
-                  "value-field": _vm.fieldOptionsId,
-                  "text-field": _vm.fieldOptionsDisplayName,
-                  "disabled-field": "notEnabled",
-                  multiple: "",
-                  required: ""
-                },
-                model: {
-                  value: _vm.fieldInput,
-                  callback: function($$v) {
-                    _vm.fieldInput = $$v
-                  },
-                  expression: "fieldInput"
-                }
-              })
-            : _c("b-form-select", {
-                staticClass: "mb-3",
-                attrs: {
-                  id: _vm.fieldId,
-                  options: _vm.fieldOptions,
-                  state: _vm.fieldState,
-                  "value-field": _vm.fieldOptionsId,
-                  "text-field": _vm.fieldOptionsDisplayName,
-                  "disabled-field": "notEnabled",
-                  required: ""
-                },
-                model: {
-                  value: _vm.fieldInput,
-                  callback: function($$v) {
-                    _vm.fieldInput = $$v
-                  },
-                  expression: "fieldInput"
-                }
-              })
-        ],
-        1
-      )
-    : _c(
-        "b-form-group",
-        { attrs: { label: _vm.fieldLabel, "label-for": _vm.fieldId } },
-        [
-          _vm.isMultiple === true
-            ? _c("b-form-select", {
-                staticClass: "mb-3",
-                attrs: {
-                  id: _vm.fieldId,
-                  options: _vm.fieldOptions,
-                  "value-field": _vm.fieldOptionsId,
-                  "text-field": _vm.fieldOptionsDisplayName,
-                  "disabled-field": "notEnabled",
-                  multiple: ""
-                },
-                model: {
-                  value: _vm.fieldInput,
-                  callback: function($$v) {
-                    _vm.fieldInput = $$v
-                  },
-                  expression: "fieldInput"
-                }
-              })
-            : _c("b-form-select", {
-                staticClass: "mb-3",
-                attrs: {
-                  id: _vm.fieldId,
-                  options: _vm.fieldOptions,
-                  "value-field": _vm.fieldOptionsId,
-                  "text-field": _vm.fieldOptionsDisplayName,
-                  "disabled-field": "notEnabled"
-                },
-                model: {
-                  value: _vm.fieldInput,
-                  callback: function($$v) {
-                    _vm.fieldInput = $$v
-                  },
-                  expression: "fieldInput"
-                }
-              })
-        ],
-        1
-      )
+  return _c(
+    "b-form-group",
+    {
+      attrs: {
+        state: _vm.fieldState,
+        label: _vm.fieldLabel,
+        "label-for": _vm.fieldId,
+        "invalid-feedback": _vm.validationFailedMessage
+      }
+    },
+    [
+      _vm.isMandatory && _vm.isMultiple
+        ? _c("b-form-select", {
+            staticClass: "mb-3",
+            attrs: {
+              id: _vm.fieldId,
+              options: _vm.fieldOptions,
+              state: _vm.fieldState,
+              "value-field": _vm.fieldOptionsId,
+              "text-field": _vm.fieldOptionsDisplayName,
+              "disabled-field": "notEnabled",
+              multiple: "",
+              required: ""
+            },
+            model: {
+              value: _vm.fieldInput,
+              callback: function($$v) {
+                _vm.fieldInput = $$v
+              },
+              expression: "fieldInput"
+            }
+          })
+        : _vm.isMandatory && !_vm.isMultiple
+        ? _c("b-form-select", {
+            staticClass: "mb-3",
+            attrs: {
+              id: _vm.fieldId,
+              options: _vm.fieldOptions,
+              state: _vm.fieldState,
+              "value-field": _vm.fieldOptionsId,
+              "text-field": _vm.fieldOptionsDisplayName,
+              "disabled-field": "notEnabled",
+              required: ""
+            },
+            model: {
+              value: _vm.fieldInput,
+              callback: function($$v) {
+                _vm.fieldInput = $$v
+              },
+              expression: "fieldInput"
+            }
+          })
+        : !_vm.isMandatory && _vm.isMultiple
+        ? _c("b-form-select", {
+            staticClass: "mb-3",
+            attrs: {
+              id: _vm.fieldId,
+              options: _vm.fieldOptions,
+              state: _vm.fieldState,
+              "value-field": _vm.fieldOptionsId,
+              "text-field": _vm.fieldOptionsDisplayName,
+              "disabled-field": "notEnabled",
+              multiple: ""
+            },
+            model: {
+              value: _vm.fieldInput,
+              callback: function($$v) {
+                _vm.fieldInput = $$v
+              },
+              expression: "fieldInput"
+            }
+          })
+        : _c("b-form-select", {
+            staticClass: "mb-3",
+            attrs: {
+              id: _vm.fieldId,
+              options: _vm.fieldOptions,
+              state: _vm.fieldState,
+              "value-field": _vm.fieldOptionsId,
+              "text-field": _vm.fieldOptionsDisplayName,
+              "disabled-field": "notEnabled"
+            },
+            model: {
+              value: _vm.fieldInput,
+              callback: function($$v) {
+                _vm.fieldInput = $$v
+              },
+              expression: "fieldInput"
+            }
+          })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -70431,7 +70412,12 @@ function normalizeComponent (
     options._ssrRegister = hook
   } else if (injectStyles) {
     hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      ? function () {
+        injectStyles.call(
+          this,
+          (options.functional ? this.parent : this).$root.$options.shadowRoot
+        )
+      }
       : injectStyles
   }
 
@@ -84164,8 +84150,8 @@ var Form = /*#__PURE__*/function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! H:\Priv\Dokumente.Arbeit\Technikum.Wien\Programmieren\s04_IEu01_unknownFilms\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! H:\Priv\Dokumente.Arbeit\Technikum.Wien\Programmieren\s04_IEu01_unknownFilms\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/db/Documents/BIC4FilmsUnknown/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/db/Documents/BIC4FilmsUnknown/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -125,7 +125,7 @@
                     </div>
                 </li>
             @else
-                <li class="nav-item b-nav-dropdown dropdown">
+                <li class="nav-item b-nav-dropdown dropdown ml-auto">
                     <a role="button" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"
                        href="#">
                         <span> {{ Auth::user()->name }} </span>
