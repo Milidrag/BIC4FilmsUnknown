@@ -60,5 +60,9 @@ Also it is possible to write custom styles in ```/resources/sass/_custom.scss```
 7. Run "php artisan serve" to starte the page
 8. Open your webrowser with the following url "http://localhost:8000/home"
 
+#### GIT Link
+
+https://github.com/Milidrag/BIC4FilmsUnknown.git
+BIC4FilmsUnknown_milo branch
 
 
